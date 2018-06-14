@@ -1,0 +1,71 @@
+buildscript {
+	ext { 
+		springBootVersion = '1.5.8.RELEASE' 
+	}
+    repositories { 
+    	mavenCentral() 
+    }
+    dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath('se.transmode.gradle:gradle-docker:1.2')
+		classpath 'org.ajoberstar:grgit:1.1.0'
+	}
+}
+
+plugins { id "io.spring.dependency-management" version "1.0.4.RELEASE" }
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'idea'
+
+// Se establece la version del proyecto
+if (project.hasProperty('projectversion')) {
+  project.version = projectversion
+} else {
+  project.version = '1.0.0'
+}
+
+bootRun {
+	addResources = true
+}
+
+// Nombre del archivo Java a desplegar como JAR
+jar {
+    baseName = 'dsite-backend'
+    version = project.version
+}
+
+// Clase que va a lanzar la aplicacion
+springBoot {
+	mainClass = "com.dsite.ApiApplication"
+}
+
+// Version del JDK
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+	mavenLocal()
+}
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+	compile('org.springframework.boot:spring-boot-starter-jdbc')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	compile("org.springframework.boot:spring-boot-starter-thymeleaf") // Motor de plantillas de XML/XHTML/HTML5
+	//compile('org.springframework.boot:spring-boot-starter-security') // Seguridad al servicio
+	
+	compile ('mysql:mysql-connector-java:6.0.6')
+	compile group: 'joda-time', name: 'joda-time', version: '2.3'
+	
+	compileOnly 'org.projectlombok:lombok:1.16.20'	
+	compile('net.sf.dozer:dozer:5.5.1')
+	compile('io.jsonwebtoken:jjwt:0.6.0')
+	
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+dependencyManagement {
+    imports { mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}") }
+}

@@ -1,0 +1,93 @@
+# ===============================
+# = HTTP/HTTPS
+# ===============================
+server:
+  # --- Define el puerto donde se ejecuta el server ---
+  port: ${vcap.application.port:8888}
+
+
+---
+ 
+frontend:
+ server: localhost
+ port: 4200
+
+# ===============================
+# = SPRING CONFIG
+# ===============================
+spring:
+  profiles: default
+  
+  security.jwt:
+  tokenExpirationTime: 240 # Number of minutes
+  refreshTokenExpTime: 1440 # Minutes
+  tokenIssuer: http://www.tss.com.pe
+  tokenSigningKey: xm8EV6Hy5RMFK4EEACIDAwQus  
+
+  mail:
+    host: smtp.gmail.com
+    port: 465
+    sender: admin@dsite.pe
+    username: admin@dsite.pe
+    password: admin
+    fromIP: dsite.pe
+
+# ===============================
+# = DATA SOURCE
+# ===============================
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: 'jdbc:mysql://108.167.137.44:3306/nemesisd_dsite?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=America/Lima'
+    username: nemesisd_root
+    password: nemesisid
+    tomcat:
+      initial-size: 2 # number of initial connections
+      max-idle: 1 # max number of idle connections.
+      min-idle: 0 # min number of idle connections.
+      max-active: 50 # maximum number of connections you allow for the pool
+      
+      test-while-idle: true
+      test-on-borrow: true
+      validation-query: SELECT 1
+      
+      time-between-eviction-runs-millis: 5000
+      min-evictable-idle-time-millis: 60000
+      
+      num-tests-per-eviction-run: 10
+      remove-abandoned: true
+      remove-abandoned-timeout: 180
+      defaultReadOnly: false
+      
+# ===============================
+# = JPA / HIBERNATE
+# ===============================
+  jpa:    
+    # --- El lenguaje de SQL que usará Hibernate contra la base de datos. ---
+    # --- Parametro opcional ya que hibernate lo puede intentar deducir a partir de los datos de conexión ---
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    # --- Se puede poner en ambiente test para ver las sentencias SQL ---
+    show-sql: true
+    
+    hibernate:
+      # --- Si la BD esta vacio, update crea la tabla y si se alterado la tabla la actualiza, ---
+      # --- none es para produccion e impide que se actualice el modelo de base de datos ---
+      ddl-auto: none
+      # --- Naming es importante configurar que se recojan los nombres fisicos de la BD para los setters de las entidades ---
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        
+    properties:
+      hibernate:
+          # --- Interceptor aplica para cuando haya un insert o update
+          order_inserts: true
+          order_updates: true
+          ejb:
+            interceptor: com.dsite.jpa.DsiteEntityInterceptorImpl
+          jdbc:
+            batch_size: 400
+            batch_versioned_data: true
+
+---
+spring:
+  profiles: produccion
