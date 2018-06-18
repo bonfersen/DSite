@@ -3,13 +3,12 @@ package com.dsite.domain.model.views;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-
 /**
  * The persistent class for the vwListaContratasAsignadas database table.
  * 
  */
 public class VwListaContratasAsignada implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 	private String actasContrata;
 	private int idContratasObra;
@@ -19,6 +18,15 @@ public class VwListaContratasAsignada implements Serializable {
 	private String moneda;
 	private String nombreCorto;
 	private String tipoTrabajo;
+	private String idTGEstadoLiquidacion;
+
+	public String getIdTGEstadoLiquidacion() {
+		return idTGEstadoLiquidacion;
+	}
+
+	public void setIdTGEstadoLiquidacion(String idTGEstadoLiquidacion) {
+		this.idTGEstadoLiquidacion = idTGEstadoLiquidacion;
+	}
 
 	public VwListaContratasAsignada() {
 	}
@@ -31,7 +39,6 @@ public class VwListaContratasAsignada implements Serializable {
 		this.actasContrata = actasContrata;
 	}
 
-
 	public int getIdContratasObra() {
 		return this.idContratasObra;
 	}
@@ -39,7 +46,6 @@ public class VwListaContratasAsignada implements Serializable {
 	public void setIdContratasObra(int idContratasObra) {
 		this.idContratasObra = idContratasObra;
 	}
-
 
 	public int getIdObra() {
 		return this.idObra;
@@ -49,7 +55,6 @@ public class VwListaContratasAsignada implements Serializable {
 		this.idObra = idObra;
 	}
 
-
 	public BigDecimal getImportePresupuestoObra() {
 		return this.importePresupuestoObra;
 	}
@@ -57,7 +62,6 @@ public class VwListaContratasAsignada implements Serializable {
 	public void setImportePresupuestoObra(BigDecimal importePresupuestoObra) {
 		this.importePresupuestoObra = importePresupuestoObra;
 	}
-
 
 	public BigDecimal getImporteTipoCambio() {
 		return this.importeTipoCambio;
@@ -67,7 +71,6 @@ public class VwListaContratasAsignada implements Serializable {
 		this.importeTipoCambio = importeTipoCambio;
 	}
 
-
 	public String getMoneda() {
 		return this.moneda;
 	}
@@ -76,7 +79,6 @@ public class VwListaContratasAsignada implements Serializable {
 		this.moneda = moneda;
 	}
 
-
 	public String getNombreCorto() {
 		return this.nombreCorto;
 	}
@@ -84,7 +86,6 @@ public class VwListaContratasAsignada implements Serializable {
 	public void setNombreCorto(String nombreCorto) {
 		this.nombreCorto = nombreCorto;
 	}
-
 
 	public String getTipoTrabajo() {
 		return this.tipoTrabajo;

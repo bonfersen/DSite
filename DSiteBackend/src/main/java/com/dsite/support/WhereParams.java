@@ -54,8 +54,34 @@ public class WhereParams {
         return "";
     }
     
+    public String filterDateHasta_US(String sqlFilterEnd, Date end) {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+
+        if (end != null) {
+            return sqlFilterEnd + "<='" + sdf.format(end) + " 23:59:59'  ";
+        }
+        return "";
+    }
+
+    public String filterDateFrom_LIM(String sqlFilterStart, Date start) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        if (start != null) {
+            return sqlFilterStart + " >='" + sdf.format(start) + " 00:00:00'  ";
+        }
+        return "";
+    }
+    
+    public String filterDateTo_LIM(String sqlFilterEnd, Date end) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        if (end != null) {
+            return sqlFilterEnd + "<='" + sdf.format(end) + " 23:59:59'  ";
+        }
+        return "";
+    }
+    
     public String filterDate_US(String sqlFilterStart, Date start) {
-//        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
         if (start != null) {
@@ -81,15 +107,6 @@ public class WhereParams {
         return "";
     }
     
-    public String filterDateHasta_US(String sqlFilterEnd, Date end) {
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-
-        if (end != null) {
-            return sqlFilterEnd + "<='" + sdf.format(end) + " 23:59:59'  ";
-        }
-        return "";
-    }
-
     public String filterRangeDate(String sqlFilter, Date start, Date end) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 

@@ -10,15 +10,26 @@ import org.springframework.stereotype.Repository;
 import com.dsite.domain.model.views.VwAdelantoContrata;
 import com.dsite.domain.model.views.VwAdelantoPagadoContrata;
 import com.dsite.domain.model.views.VwBandejaAdelantoRechazadoContrata;
+import com.dsite.domain.model.views.VwBandejaAprobadoCajaChica;
+import com.dsite.domain.model.views.VwBandejaAsignacionCierreEconomico;
 import com.dsite.domain.model.views.VwBandejaBudget;
+import com.dsite.domain.model.views.VwBandejaCierreEconomico;
 import com.dsite.domain.model.views.VwBandejaCrm;
 import com.dsite.domain.model.views.VwBandejaCustomerService;
+import com.dsite.domain.model.views.VwBandejaDepositoCajaChica;
 import com.dsite.domain.model.views.VwBandejaLiquidacionContrata;
 import com.dsite.domain.model.views.VwBandejaPagoAdelantoContrata;
+import com.dsite.domain.model.views.VwBandejaRechazoCajaChica;
+import com.dsite.domain.model.views.VwBandejaReembolsoDescuentoCajaChica;
+import com.dsite.domain.model.views.VwBandejaRendicionCajaChica;
 import com.dsite.domain.model.views.VwBandejaSolicitudAdelantoContrata;
+import com.dsite.domain.model.views.VwBandejaSolicitudCajaChica;
 import com.dsite.domain.model.views.VwBudget;
 import com.dsite.domain.model.views.VwConcursoContrata;
+import com.dsite.domain.model.views.VwControlDocumentario;
 import com.dsite.domain.model.views.VwCrm;
+import com.dsite.domain.model.views.VwDetalleRendicionCajaChica;
+import com.dsite.domain.model.views.VwDocumentosAdjuntos;
 import com.dsite.domain.model.views.VwLiquidacionContrata;
 import com.dsite.domain.model.views.VwLiquidacionCustomerService;
 import com.dsite.domain.model.views.VwListaActasContrata;
@@ -27,20 +38,32 @@ import com.dsite.domain.model.views.VwListaContratasAsignada;
 import com.dsite.domain.model.views.VwListaPagosContrata;
 import com.dsite.domain.model.views.VwOfertaCustomerService;
 import com.dsite.domain.model.views.VwPagoContrata;
+import com.dsite.domain.model.views.VwRendicionCajaChica;
 import com.dsite.domain.model.views.VwSeguimientoActaContrata;
 import com.dsite.domain.model.views.VwUbigeo;
 import com.dsite.dto.model.views.VwAdelantoContrataFilter;
 import com.dsite.dto.model.views.VwAdelantoPagadoContrataFilter;
 import com.dsite.dto.model.views.VwBandejaAdelantoRechazadoContrataFilter;
+import com.dsite.dto.model.views.VwBandejaAprobadoCajaChicaFilter;
+import com.dsite.dto.model.views.VwBandejaAsignacionCierreEconomicoFilter;
 import com.dsite.dto.model.views.VwBandejaBudgetFilter;
+import com.dsite.dto.model.views.VwBandejaCierreEconomicoFilter;
 import com.dsite.dto.model.views.VwBandejaCrmFilter;
 import com.dsite.dto.model.views.VwBandejaCustomerServiceFilter;
+import com.dsite.dto.model.views.VwBandejaDepositoCajaChicaFilter;
 import com.dsite.dto.model.views.VwBandejaLiquidacionContrataFilter;
 import com.dsite.dto.model.views.VwBandejaPagoAdelantoContrataFilter;
+import com.dsite.dto.model.views.VwBandejaRechazoCajaChicaFilter;
+import com.dsite.dto.model.views.VwBandejaReembolsoDescuentoCajaChicaFilter;
+import com.dsite.dto.model.views.VwBandejaRendicionCajaChicaFilter;
 import com.dsite.dto.model.views.VwBandejaSolicitudAdelantoContrataFilter;
+import com.dsite.dto.model.views.VwBandejaSolicitudCajaChicaFilter;
 import com.dsite.dto.model.views.VwBudgetFilter;
 import com.dsite.dto.model.views.VwConcursoContrataFilter;
+import com.dsite.dto.model.views.VwControlDocumentarioFilter;
 import com.dsite.dto.model.views.VwCrmFilter;
+import com.dsite.dto.model.views.VwDetalleRendicionCajaChicaFilter;
+import com.dsite.dto.model.views.VwDocumentosAdjuntosFilter;
 import com.dsite.dto.model.views.VwLiquidacionContrataFilter;
 import com.dsite.dto.model.views.VwLiquidacionCustomerServiceFilter;
 import com.dsite.dto.model.views.VwListaActasContrataFilter;
@@ -49,6 +72,7 @@ import com.dsite.dto.model.views.VwListaContratasAsignadaFilter;
 import com.dsite.dto.model.views.VwListaPagosContrataFilter;
 import com.dsite.dto.model.views.VwOfertaCustomerServiceFilter;
 import com.dsite.dto.model.views.VwPagoContrataFilter;
+import com.dsite.dto.model.views.VwRendicionCajaChicaFilter;
 import com.dsite.dto.model.views.VwSeguimientoActaContrataFilter;
 import com.dsite.dto.model.views.VwUbigeoFilter;
 import com.dsite.support.WhereParams;
@@ -111,7 +135,7 @@ public class VistasJDBCRepository implements VistasRepository {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT ");
 		sql.append(" v.nombreCorto, v.tipoTrabajo, v.actasContrata, v.importePresupuestoObra, v.moneda, ");
-		sql.append(" v.importeTipoCambio, v.idObra, v.idContratasObra ");
+		sql.append(" v.importeTipoCambio, v.idObra, v.idContratasObra, v.idTGEstadoLiquidacion ");
 		sql.append(" FROM vwListaContratasAsignadas v ");
 		sql.append(" WHERE 1=1");
 		if (ValidateUtil.isNotEmpty(vwListaContratasAsignadaFilter.getIdObra()))
@@ -593,6 +617,255 @@ public class VistasJDBCRepository implements VistasRepository {
 		sql.append(" WHERE 1=1");
 		if (ValidateUtil.isNotEmpty(vwCrmFilter.getCodigoDSite()))
 			sql.append(params.filter(" AND v.codigoDSite = :codigoDSite ", vwCrmFilter.getCodigoDSite()));
+		return sql.toString();
+	}
+
+	@Override
+	public List<VwBandejaSolicitudCajaChica> findBandejaSolicitudCajaChica(VwBandejaSolicitudCajaChicaFilter vwBandejaSolicitudCajaChicaFilter) {
+		WhereParams params = new WhereParams();
+		String sql = findBandejaSolicitudCajaChicaQuery(vwBandejaSolicitudCajaChicaFilter, params);
+
+		return jdbcTemplate.query(sql.toString(), params.getParams(), new BeanPropertyRowMapper<VwBandejaSolicitudCajaChica>(VwBandejaSolicitudCajaChica.class));
+	}
+
+	private String findBandejaSolicitudCajaChicaQuery(VwBandejaSolicitudCajaChicaFilter vwBandejaSolicitudCajaChicaFilter, WhereParams params) {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT ");
+		sql.append(" v.nombreReal, v.idTGProyecto, v.idTGArea, v.codigoDSite, v.proyecto, v.area, v.idEmpleadoSustentador, v.idTGTipoCaja, ");
+		sql.append(" v.idEmpleadoBeneficiario, v.importeCaja, v.importeViatico, v.importeTotal, v.detalle, v.idTGEstadoCajaChica, v.fechaAprobacion, ");
+		sql.append(" v.motivoRechazo ");
+		sql.append(" FROM vwBandejaSolicitudCajaChica v ");
+		sql.append(" WHERE 1=1");
+		return sql.toString();
+	}
+
+	@Override
+	public List<VwBandejaDepositoCajaChica> findBandejaDepositoCajaChica(VwBandejaDepositoCajaChicaFilter vwBandejaDepositoCajaChicaFilter) {
+		WhereParams params = new WhereParams();
+		String sql = findBandejaDepositoCajaChicaQuery(vwBandejaDepositoCajaChicaFilter, params);
+
+		return jdbcTemplate.query(sql.toString(), params.getParams(), new BeanPropertyRowMapper<VwBandejaDepositoCajaChica>(VwBandejaDepositoCajaChica.class));
+	}
+
+	private String findBandejaDepositoCajaChicaQuery(VwBandejaDepositoCajaChicaFilter vwBandejaDepositoCajaChicaFilter, WhereParams params) {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT ");
+		sql.append(" v.nombreReal, v.idTGProyecto, v.idTGArea, v.codigoDSite, v.proyecto, v.area, v.idEmpleadoSustentador, v.idTGTipoCaja, ");
+		sql.append(" v.idEmpleadoBeneficiario, v.importeCaja, v.importeViatico, v.importeTotal, v.detalle, v.idTGEstadoCajaChica, v.fechaAprobacion, ");
+		sql.append(" v.motivoRechazo, v.fechaPago, v.empleadoSustentador, v.empleadoBeneficiario, v.tipoCaja, v.estadoCajaChica ");
+		sql.append(" FROM vwBandejaDepositoCajaChica v ");
+		sql.append(" WHERE 1=1");
+		sql.append(params.filterDateFrom_LIM(" AND v.fechaPago ", vwBandejaDepositoCajaChicaFilter.getFechaPagoInicio()));
+		sql.append(params.filterDateTo_LIM(" AND v.fechaPago ", vwBandejaDepositoCajaChicaFilter.getFechaPagoFin()));
+		return sql.toString();
+	}
+
+	@Override
+	public List<VwBandejaRendicionCajaChica> findBandejaRendicionCajaChica(VwBandejaRendicionCajaChicaFilter vwBandejaRendicionCajaChicaFilter) {
+		WhereParams params = new WhereParams();
+		String sql = findBandejaRendicionCajaChicaQuery(vwBandejaRendicionCajaChicaFilter, params);
+
+		return jdbcTemplate.query(sql.toString(), params.getParams(), new BeanPropertyRowMapper<VwBandejaRendicionCajaChica>(VwBandejaRendicionCajaChica.class));
+	}
+
+	private String findBandejaRendicionCajaChicaQuery(VwBandejaRendicionCajaChicaFilter vwBandejaRendicionCajaChicaFilter, WhereParams params) {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT ");
+		sql.append(" v.nombreReal, v.idTGProyecto, v.idTGArea, v.codigoDSite, v.proyecto, v.area, v.idEmpleadoSustentador, v.idTGTipoCaja, ");
+		sql.append(" v.idEmpleadoBeneficiario, v.importeCaja, v.rendirCaja, v.importeViatico, v.rendirViatico, v.importeTotal, v.detalle, ");
+		sql.append(" v.idTGEstadoCajaChica, v.fechaAprobacion, v.motivoRechazo, v.fechaPago, v.empleadoSustentador, v.empleadoBeneficiario, ");
+		sql.append(" v.tipoCaja, v.estadoCajaChica ");
+		sql.append(" FROM vwBandejaRendicionCajaChica v ");
+		sql.append(" WHERE 1=1");
+		if (ValidateUtil.isNotEmpty(vwBandejaRendicionCajaChicaFilter.getIdEmpleadoSustentador()))
+			sql.append(params.filter(" AND v.idEmpleadoSustentador = :idEmpleadoSustentador ", vwBandejaRendicionCajaChicaFilter.getIdEmpleadoSustentador()));
+		return sql.toString();
+	}
+
+	@Override
+	public List<VwRendicionCajaChica> findRendicionCajaChica(VwRendicionCajaChicaFilter vwRendicionCajaChicaFilter) {
+		WhereParams params = new WhereParams();
+		String sql = findRendicionCajaChicaQuery(vwRendicionCajaChicaFilter, params);
+
+		return jdbcTemplate.query(sql.toString(), params.getParams(), new BeanPropertyRowMapper<VwRendicionCajaChica>(VwRendicionCajaChica.class));
+	}
+
+	private String findRendicionCajaChicaQuery(VwRendicionCajaChicaFilter vwRendicionCajaChicaFilter, WhereParams params) {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT ");
+		sql.append(" v.codigoDSite, v.importeCaja, v.importeViatico, v.fechaPago, v.importeAbonoCaja, v.importeRendidoCaja, v.importeReembolsoCaja, v.importeDescuentoCaja, ");
+		sql.append(" v.importeAbonoViatico, v.importeRendidoViatico, v.importeDescuentoViatico, v.idResumenRendicionCajaChica, v.idRendicionCajaChica, v.codigoRendicion, ");
+		sql.append(" v.idCajaChicaObra ");
+		sql.append(" FROM vwRendicionCajaChica v ");
+		sql.append(" WHERE 1=1");
+		if (ValidateUtil.isNotEmpty(vwRendicionCajaChicaFilter.getCodigoRendicion()))
+			sql.append(params.filter(" AND v.codigoRendicion = :codigoRendicion ", vwRendicionCajaChicaFilter.getCodigoRendicion()));
+		return sql.toString();
+	}
+
+	@Override
+	public List<VwDetalleRendicionCajaChica> findDetalleRendicionCajaChica(VwDetalleRendicionCajaChicaFilter vwDetalleRendicionCajaChicaFilter) {
+		WhereParams params = new WhereParams();
+		String sql = findDetalleRendicionCajaChicaQuery(vwDetalleRendicionCajaChicaFilter, params);
+
+		return jdbcTemplate.query(sql.toString(), params.getParams(), new BeanPropertyRowMapper<VwDetalleRendicionCajaChica>(VwDetalleRendicionCajaChica.class));
+	}
+
+	private String findDetalleRendicionCajaChicaQuery(VwDetalleRendicionCajaChicaFilter vwDetalleRendicionCajaChicaFilter, WhereParams params) {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT ");
+		sql.append(" v.fechaComprobanteCajaViatico, v.idTGTipoComprobante, v.tipoComprobante, v.idTGTipoGasto, v.tipoGasto, v.numeroComprobanteCajaViatico, ");
+		sql.append(" v.descripcionCajaViatico, v.importeRendidoCaja, v.importeRendidoViatico, v.idCajaChicaObra, v.idRendicionCajaChica, v.idResumenRendicionCajaChica, ");
+		sql.append(" v.idRendicion, v.codigoRendicion, v.codigoDSite ");
+		sql.append(" FROM vwDetalleRendicionCajaChica v ");
+		sql.append(" WHERE 1=1");
+		if (ValidateUtil.isNotEmpty(vwDetalleRendicionCajaChicaFilter.getCodigoRendicion()))
+			sql.append(params.filter(" AND v.codigoRendicion = :codigoRendicion ", vwDetalleRendicionCajaChicaFilter.getCodigoRendicion()));
+		return sql.toString();
+	}
+
+	@Override
+	public List<VwBandejaReembolsoDescuentoCajaChica> findBandejaReembolsoDescuentoCajaChica(
+			VwBandejaReembolsoDescuentoCajaChicaFilter vwBandejaReembolsoDescuentoCajaChicaFilter) {
+		WhereParams params = new WhereParams();
+		String sql = findBandejaReembolsoDescuentoCajaChicaQuery(vwBandejaReembolsoDescuentoCajaChicaFilter, params);
+
+		return jdbcTemplate.query(sql.toString(), params.getParams(), new BeanPropertyRowMapper<VwBandejaReembolsoDescuentoCajaChica>(VwBandejaReembolsoDescuentoCajaChica.class));
+	}
+
+	private String findBandejaReembolsoDescuentoCajaChicaQuery(VwBandejaReembolsoDescuentoCajaChicaFilter vwBandejaReembolsoDescuentoCajaChicaFilter, WhereParams params) {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT ");
+		sql.append(" v.codigoRendicion, v.idTGTipoRendicion, v.tipoRendicion, v.tipoOperacion, v.idTGEstadoRendicion, v.estadoRendicion, v.importeReembolsoDescuento, ");
+		sql.append(" v.fechaReembolso, v.fechaDescuento, v.empleadoSustentador, v.idTGTipoCaja, v.tipoCaja, v.idRendicionCajaChica, v.idResumenRendicionCajaChica, ");
+		sql.append(" v.idCajaChicaObra, v.codigoDSite ");
+		sql.append(" FROM vwBandejaReembolsoDescuentoCajaChica v ");
+		sql.append(" WHERE 1=1");
+		if (ValidateUtil.isNotEmpty(vwBandejaReembolsoDescuentoCajaChicaFilter.getIdTGEstadoRendicion()))
+			sql.append(params.filter(" AND v.idTGEstadoRendicion = :idTGEstadoRendicion ", vwBandejaReembolsoDescuentoCajaChicaFilter.getIdTGEstadoRendicion()));
+		return sql.toString();
+	}
+
+	@Override
+	public List<VwBandejaAprobadoCajaChica> findBandejaAprobadoCajaChica(VwBandejaAprobadoCajaChicaFilter vwBandejaAprobadoCajaChicaFilter) {
+		WhereParams params = new WhereParams();
+		String sql = findBandejaAprobadoCajaChicaQuery(vwBandejaAprobadoCajaChicaFilter, params);
+
+		return jdbcTemplate.query(sql.toString(), params.getParams(), new BeanPropertyRowMapper<VwBandejaAprobadoCajaChica>(VwBandejaAprobadoCajaChica.class));
+	}
+
+	private String findBandejaAprobadoCajaChicaQuery(VwBandejaAprobadoCajaChicaFilter vwBandejaAprobadoCajaChicaFilter, WhereParams params) {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT ");
+		sql.append(" v.codigoDSite, v.idTGArea, v.area, v.idTGProyecto, v.proyecto, v.nombreReal, v.idEmpleadoSustentador, v.empleadoSustentador, v.idTGTipoCaja, ");
+		sql.append(" v.tipoCaja, v.idEmpleadoBeneficiario, v.empleadoBeneficiario, v.importeCaja, v.importeViatico, v.importeTotal, v.detalle, ");
+		sql.append(" v.fechaAprobacion, v.idUsuarioAprobacion, v.empleadoAprobacion, v.idCajaChicaObra, v.idTGEstadoCajaChica, v.idObra ");
+		sql.append(" FROM vwBandejaAprobadoCajaChica v ");
+		sql.append(" WHERE 1=1");
+		sql.append(params.filterDateFrom_LIM(" AND v.fechaAprobacion ", vwBandejaAprobadoCajaChicaFilter.getFechaAprobacionInicio()));
+		sql.append(params.filterDateTo_LIM(" AND v.fechaAprobacion ", vwBandejaAprobadoCajaChicaFilter.getFechaAprobacionFin()));
+		return sql.toString();
+	}
+
+	@Override
+	public List<VwBandejaRechazoCajaChica> findBandejaRechazoCajaChica(VwBandejaRechazoCajaChicaFilter vwBandejaRechazoCajaChicaFilter) {
+		WhereParams params = new WhereParams();
+		String sql = findBandejaRechazoCajaChicaQuery(vwBandejaRechazoCajaChicaFilter, params);
+
+		return jdbcTemplate.query(sql.toString(), params.getParams(), new BeanPropertyRowMapper<VwBandejaRechazoCajaChica>(VwBandejaRechazoCajaChica.class));
+	}
+
+	private String findBandejaRechazoCajaChicaQuery(VwBandejaRechazoCajaChicaFilter vwBandejaRechazoCajaChicaFilter, WhereParams params) {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT ");
+		sql.append(" v.codigoDSite, v.idTGArea, v.area, v.idTGProyecto, v.proyecto, v.nombreReal, v.idEmpleadoSustentador, v.empleadoSustentador, ");
+		sql.append(" v.idTGTipoCaja, v.tipoCaja, v.idEmpleadoBeneficiario, v.empleadoBeneficiario, v.importeCaja, v.importeViatico, v.importeTotal, ");
+		sql.append(" v.detalle, v.fechaRechazo, v.motivoRechazo, v.idUsuarioRechazo, v.empleadoRechazo, v.idCajaChicaObra, v.idTGEstadoCajaChica, ");
+		sql.append(" v.estadoCajaChica, v.idObra ");
+		sql.append(" FROM vwBandejaRechazoCajaChica v ");
+		sql.append(" WHERE 1=1");
+		sql.append(params.filterDateFrom_LIM(" AND v.fechaRechazo ", vwBandejaRechazoCajaChicaFilter.getFechaRechazoInicio()));
+		sql.append(params.filterDateTo_LIM(" AND v.fechaRechazo ", vwBandejaRechazoCajaChicaFilter.getFechaRechazoFin()));
+		return sql.toString();
+	}
+
+	@Override
+	public List<VwBandejaAsignacionCierreEconomico> findBandejaAsignacionCierreEconomico(VwBandejaAsignacionCierreEconomicoFilter vwBandejaAsignacionCierreEconomicoFilter) {
+		WhereParams params = new WhereParams();
+		String sql = findBandejaAsignacionCierreEconomicoQuery(vwBandejaAsignacionCierreEconomicoFilter, params);
+
+		return jdbcTemplate.query(sql.toString(), params.getParams(), new BeanPropertyRowMapper<VwBandejaAsignacionCierreEconomico>(VwBandejaAsignacionCierreEconomico.class));
+	}
+
+	private String findBandejaAsignacionCierreEconomicoQuery(VwBandejaAsignacionCierreEconomicoFilter vwBandejaAsignacionCierreEconomicoFilter, WhereParams params) {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT ");
+		sql.append(" v.codigoDSite, v.idTGArea, v.area, v.nombreReal, v.tipoTrabajo, v.cantidadContratasAsignadas, v.idObra, v.fechaFinalizacion ");
+		sql.append(" FROM vwBandejaAsignacionCierreEconomico v ");
+		sql.append(" WHERE 1=1");
+		if (ValidateUtil.isNotEmpty(vwBandejaAsignacionCierreEconomicoFilter.getIdTGArea()))
+			sql.append(params.filter(" AND v.idTGArea = :idTGArea ", vwBandejaAsignacionCierreEconomicoFilter.getIdTGArea()));
+		return sql.toString();
+	}
+
+	@Override
+	public List<VwBandejaCierreEconomico> findBandejaCierreEconomico(VwBandejaCierreEconomicoFilter vwBandejaCierreEconomicoFilter) {
+		WhereParams params = new WhereParams();
+		String sql = findBandejaCierreEconomicoQuery(vwBandejaCierreEconomicoFilter, params);
+
+		return jdbcTemplate.query(sql.toString(), params.getParams(), new BeanPropertyRowMapper<VwBandejaCierreEconomico>(VwBandejaCierreEconomico.class));
+	}
+
+	private String findBandejaCierreEconomicoQuery(VwBandejaCierreEconomicoFilter vwBandejaCierreEconomicoFilter, WhereParams params) {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT ");
+		sql.append(" v.idTGEstadoCierreEconomico, v.estadoCierreEconomico, v.codigoCierre, v.ebc, v.fechaAsignacion ");
+		sql.append(" FROM vwBandejaCierreEconomico v ");
+		sql.append(" WHERE 1=1");
+		if (ValidateUtil.isNotEmpty(vwBandejaCierreEconomicoFilter.getIdTGEstadoCierreEconomico()))
+			sql.append(params.filter(" AND v.idTGEstadoCierreEconomico = :idTGEstadoCierreEconomico ", vwBandejaCierreEconomicoFilter.getIdTGEstadoCierreEconomico()));
+		return sql.toString();
+	}
+
+	@Override
+	public List<VwControlDocumentario> findControlDocumentario(VwControlDocumentarioFilter vwControlDocumentarioFilter) {
+		WhereParams params = new WhereParams();
+		String sql = findControlDocumentarioQuery(vwControlDocumentarioFilter, params);
+
+		return jdbcTemplate.query(sql.toString(), params.getParams(), new BeanPropertyRowMapper<VwControlDocumentario>(VwControlDocumentario.class));
+	}
+
+	private String findControlDocumentarioQuery(VwControlDocumentarioFilter vwControlDocumentarioFilter, WhereParams params) {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT ");
+		sql.append(" v.idObra, v.codigoDSite, v.area, v.contrata, v.tipoTrabajo, v.porcentajeActasAprobadas, v.nombreReal, v.cierre, ");
+		sql.append(" v.comentarioCierreEconomico, v.codigoCierre, v.estadoActaCampo, v.estadoActaFinal, v.estadoRptFoto, v.estadoSga, ");
+		sql.append(" v.idActaCampo, v.idActaFinal, v.idRptFoto, v.idSga, v.idMotivoRechazoActaCampo, v.idMotivoRechazoActaFinal, ");
+		sql.append(" v.idMotivoRechazoRptFoto, v.idMotivoRechazoSga ");
+		sql.append(" FROM vwControlDocumentario v ");
+		sql.append(" WHERE 1=1");
+		if (ValidateUtil.isNotEmpty(vwControlDocumentarioFilter.getCodigoCierre()))
+			sql.append(params.filter(" AND v.codigoCierre = :codigoCierre ", vwControlDocumentarioFilter.getCodigoCierre()));
+		return sql.toString();
+	}
+
+	@Override
+	public List<VwDocumentosAdjuntos> findDocumentosAdjuntos(VwDocumentosAdjuntosFilter vwDocumentosAdjuntosFilter) {
+		WhereParams params = new WhereParams();
+		String sql = findDocumentosAdjuntosQuery(vwDocumentosAdjuntosFilter, params);
+
+		return jdbcTemplate.query(sql.toString(), params.getParams(), new BeanPropertyRowMapper<VwDocumentosAdjuntos>(VwDocumentosAdjuntos.class));
+	}
+
+	private String findDocumentosAdjuntosQuery(VwDocumentosAdjuntosFilter vwDocumentosAdjuntosFilter, WhereParams params) {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT ");
+		sql.append(" v.idDocumentosAdjunto, v.directorio, v.nombreArchivo, v.idTabla, v.idTGNombreTabla, v.idTipoDocumentoAdjunto,  ");
+		sql.append(" v.fechaCreacion, v.usuarioCreacion, v.fechaModificacion, v.usuarioModificacion ");
+		sql.append(" FROM vwDocumentosAdjuntos v ");
+		sql.append(" WHERE 1=1");
+		sql.append(params.filter(" AND v.idTabla = :idTabla ", vwDocumentosAdjuntosFilter.getIdTabla()));
+		sql.append(params.filter(" AND v.idTGNombreTabla = :idTGNombreTabla ", vwDocumentosAdjuntosFilter.getIdTGNombreTabla()));
 		return sql.toString();
 	}
 }

@@ -12,15 +12,26 @@ import com.dsite.domain.model.repository.jdbc.VistasRepository;
 import com.dsite.domain.model.views.VwAdelantoContrata;
 import com.dsite.domain.model.views.VwAdelantoPagadoContrata;
 import com.dsite.domain.model.views.VwBandejaAdelantoRechazadoContrata;
+import com.dsite.domain.model.views.VwBandejaAprobadoCajaChica;
+import com.dsite.domain.model.views.VwBandejaAsignacionCierreEconomico;
 import com.dsite.domain.model.views.VwBandejaBudget;
+import com.dsite.domain.model.views.VwBandejaCierreEconomico;
 import com.dsite.domain.model.views.VwBandejaCrm;
 import com.dsite.domain.model.views.VwBandejaCustomerService;
+import com.dsite.domain.model.views.VwBandejaDepositoCajaChica;
 import com.dsite.domain.model.views.VwBandejaLiquidacionContrata;
 import com.dsite.domain.model.views.VwBandejaPagoAdelantoContrata;
+import com.dsite.domain.model.views.VwBandejaRechazoCajaChica;
+import com.dsite.domain.model.views.VwBandejaReembolsoDescuentoCajaChica;
+import com.dsite.domain.model.views.VwBandejaRendicionCajaChica;
 import com.dsite.domain.model.views.VwBandejaSolicitudAdelantoContrata;
+import com.dsite.domain.model.views.VwBandejaSolicitudCajaChica;
 import com.dsite.domain.model.views.VwBudget;
 import com.dsite.domain.model.views.VwConcursoContrata;
+import com.dsite.domain.model.views.VwControlDocumentario;
 import com.dsite.domain.model.views.VwCrm;
+import com.dsite.domain.model.views.VwDetalleRendicionCajaChica;
+import com.dsite.domain.model.views.VwDocumentosAdjuntos;
 import com.dsite.domain.model.views.VwLiquidacionContrata;
 import com.dsite.domain.model.views.VwLiquidacionCustomerService;
 import com.dsite.domain.model.views.VwListaActasContrata;
@@ -29,20 +40,32 @@ import com.dsite.domain.model.views.VwListaContratasAsignada;
 import com.dsite.domain.model.views.VwListaPagosContrata;
 import com.dsite.domain.model.views.VwOfertaCustomerService;
 import com.dsite.domain.model.views.VwPagoContrata;
+import com.dsite.domain.model.views.VwRendicionCajaChica;
 import com.dsite.domain.model.views.VwSeguimientoActaContrata;
 import com.dsite.domain.model.views.VwUbigeo;
 import com.dsite.dto.model.views.VwAdelantoContrataFilter;
 import com.dsite.dto.model.views.VwAdelantoPagadoContrataFilter;
 import com.dsite.dto.model.views.VwBandejaAdelantoRechazadoContrataFilter;
+import com.dsite.dto.model.views.VwBandejaAprobadoCajaChicaFilter;
+import com.dsite.dto.model.views.VwBandejaAsignacionCierreEconomicoFilter;
 import com.dsite.dto.model.views.VwBandejaBudgetFilter;
+import com.dsite.dto.model.views.VwBandejaCierreEconomicoFilter;
 import com.dsite.dto.model.views.VwBandejaCrmFilter;
 import com.dsite.dto.model.views.VwBandejaCustomerServiceFilter;
+import com.dsite.dto.model.views.VwBandejaDepositoCajaChicaFilter;
 import com.dsite.dto.model.views.VwBandejaLiquidacionContrataFilter;
 import com.dsite.dto.model.views.VwBandejaPagoAdelantoContrataFilter;
+import com.dsite.dto.model.views.VwBandejaRechazoCajaChicaFilter;
+import com.dsite.dto.model.views.VwBandejaReembolsoDescuentoCajaChicaFilter;
+import com.dsite.dto.model.views.VwBandejaRendicionCajaChicaFilter;
 import com.dsite.dto.model.views.VwBandejaSolicitudAdelantoContrataFilter;
+import com.dsite.dto.model.views.VwBandejaSolicitudCajaChicaFilter;
 import com.dsite.dto.model.views.VwBudgetFilter;
 import com.dsite.dto.model.views.VwConcursoContrataFilter;
+import com.dsite.dto.model.views.VwControlDocumentarioFilter;
 import com.dsite.dto.model.views.VwCrmFilter;
+import com.dsite.dto.model.views.VwDetalleRendicionCajaChicaFilter;
+import com.dsite.dto.model.views.VwDocumentosAdjuntosFilter;
 import com.dsite.dto.model.views.VwLiquidacionContrataFilter;
 import com.dsite.dto.model.views.VwLiquidacionCustomerServiceFilter;
 import com.dsite.dto.model.views.VwListaActasContrataFilter;
@@ -51,6 +74,7 @@ import com.dsite.dto.model.views.VwListaContratasAsignadaFilter;
 import com.dsite.dto.model.views.VwListaPagosContrataFilter;
 import com.dsite.dto.model.views.VwOfertaCustomerServiceFilter;
 import com.dsite.dto.model.views.VwPagoContrataFilter;
+import com.dsite.dto.model.views.VwRendicionCajaChicaFilter;
 import com.dsite.dto.model.views.VwSeguimientoActaContrataFilter;
 import com.dsite.dto.model.views.VwUbigeoFilter;
 import com.dsite.service.intf.VistasService;
@@ -59,16 +83,16 @@ import com.dsite.service.intf.VistasService;
 public class VistasServiceImpl implements VistasService {
 
 	final Logger LOGGER = LoggerFactory.getLogger(getClass());
-	
+
 	@Autowired
 	VistasRepository vistasRepository;
-	
+
 	@Autowired
 	Mapper mapper;
-	
+
 	@Override
 	public List<VwBandejaBudget> findBandejaBudget(VwBandejaBudgetFilter vwbandejaBudgetFilter) {
-		List<VwBandejaBudget> vwBandejaBudgets = vistasRepository.findBandejaBudget(vwbandejaBudgetFilter);		
+		List<VwBandejaBudget> vwBandejaBudgets = vistasRepository.findBandejaBudget(vwbandejaBudgetFilter);
 		return vwBandejaBudgets;
 	}
 
@@ -140,13 +164,15 @@ public class VistasServiceImpl implements VistasService {
 
 	@Override
 	public List<VwBandejaAdelantoRechazadoContrata> findBandejaAdelantoRechazadoContrata(VwBandejaAdelantoRechazadoContrataFilter vwBandejaAdelantoRechazadoContrataFilter) {
-		List<VwBandejaAdelantoRechazadoContrata> vwBandejaAdelantoRechazadoContratas = vistasRepository.findBandejaAdelantoRechazadoContrata(vwBandejaAdelantoRechazadoContrataFilter);
+		List<VwBandejaAdelantoRechazadoContrata> vwBandejaAdelantoRechazadoContratas = vistasRepository
+				.findBandejaAdelantoRechazadoContrata(vwBandejaAdelantoRechazadoContrataFilter);
 		return vwBandejaAdelantoRechazadoContratas;
 	}
 
 	@Override
 	public List<VwBandejaSolicitudAdelantoContrata> findBandejaSolicitudAdelantoContrata(VwBandejaSolicitudAdelantoContrataFilter vwBandejaSolicitudAdelantoContrataFilter) {
-		List<VwBandejaSolicitudAdelantoContrata> vwBandejaSolicitudAdelantoContratas = vistasRepository.findBandejaSolicitudAdelantoContrata(vwBandejaSolicitudAdelantoContrataFilter);
+		List<VwBandejaSolicitudAdelantoContrata> vwBandejaSolicitudAdelantoContratas = vistasRepository
+				.findBandejaSolicitudAdelantoContrata(vwBandejaSolicitudAdelantoContrataFilter);
 		return vwBandejaSolicitudAdelantoContratas;
 	}
 
@@ -196,5 +222,78 @@ public class VistasServiceImpl implements VistasService {
 	public List<VwCrm> findCrm(VwCrmFilter vwCrmFilter) {
 		List<VwCrm> vwCrms = vistasRepository.findCrm(vwCrmFilter);
 		return vwCrms;
+	}
+
+	@Override
+	public List<VwBandejaSolicitudCajaChica> findBandejaSolicitudCajaChica(VwBandejaSolicitudCajaChicaFilter vwBandejaSolicitudCajaChicaFilter) {
+		List<VwBandejaSolicitudCajaChica> vwList = vistasRepository.findBandejaSolicitudCajaChica(vwBandejaSolicitudCajaChicaFilter);
+		return vwList;
+	}
+
+	@Override
+	public List<VwBandejaDepositoCajaChica> findBandejaDepositoCajaChica(VwBandejaDepositoCajaChicaFilter vwBandejaDepositoCajaChicaFilter) {
+		List<VwBandejaDepositoCajaChica> vwList = vistasRepository.findBandejaDepositoCajaChica(vwBandejaDepositoCajaChicaFilter);
+		return vwList;
+	}
+
+	@Override
+	public List<VwBandejaRendicionCajaChica> findBandejaRendicionCajaChica(VwBandejaRendicionCajaChicaFilter vwBandejaRendicionCajaChicaFilter) {
+		List<VwBandejaRendicionCajaChica> vwList = vistasRepository.findBandejaRendicionCajaChica(vwBandejaRendicionCajaChicaFilter);
+		return vwList;
+	}
+
+	@Override
+	public List<VwRendicionCajaChica> findRendicionCajaChica(VwRendicionCajaChicaFilter vwRendicionCajaChicaFilter) {
+		List<VwRendicionCajaChica> vwList = vistasRepository.findRendicionCajaChica(vwRendicionCajaChicaFilter);
+		return vwList;
+	}
+
+	@Override
+	public List<VwDetalleRendicionCajaChica> findDetalleRendicionCajaChica(VwDetalleRendicionCajaChicaFilter vwDetalleRendicionCajaChicaFilter) {
+		List<VwDetalleRendicionCajaChica> vwList = vistasRepository.findDetalleRendicionCajaChica(vwDetalleRendicionCajaChicaFilter);
+		return vwList;
+	}
+
+	@Override
+	public List<VwBandejaReembolsoDescuentoCajaChica> findBandejaReembolsoDescuentoCajaChica(
+			VwBandejaReembolsoDescuentoCajaChicaFilter vwBandejaReembolsoDescuentoCajaChicaFilter) {
+		List<VwBandejaReembolsoDescuentoCajaChica> vwList = vistasRepository.findBandejaReembolsoDescuentoCajaChica(vwBandejaReembolsoDescuentoCajaChicaFilter);
+		return vwList;
+	}
+
+	@Override
+	public List<VwBandejaAprobadoCajaChica> findBandejaAprobadoCajaChica(VwBandejaAprobadoCajaChicaFilter vwBandejaAprobadoCajaChicaFilter) {
+		List<VwBandejaAprobadoCajaChica> vwList = vistasRepository.findBandejaAprobadoCajaChica(vwBandejaAprobadoCajaChicaFilter);
+		return vwList;
+	}
+
+	@Override
+	public List<VwBandejaRechazoCajaChica> findBandejaRechazoCajaChica(VwBandejaRechazoCajaChicaFilter vwBandejaRechazoCajaChicaFilter) {
+		List<VwBandejaRechazoCajaChica> vwList = vistasRepository.findBandejaRechazoCajaChica(vwBandejaRechazoCajaChicaFilter);
+		return vwList;
+	}
+
+	@Override
+	public List<VwBandejaAsignacionCierreEconomico> findBandejaAsignacionCierreEconomico(VwBandejaAsignacionCierreEconomicoFilter vwBandejaAsignacionCierreEconomicoFilter) {
+		List<VwBandejaAsignacionCierreEconomico> vwList = vistasRepository.findBandejaAsignacionCierreEconomico(vwBandejaAsignacionCierreEconomicoFilter);
+		return vwList;
+	}
+
+	@Override
+	public List<VwBandejaCierreEconomico> findBandejaCierreEconomico(VwBandejaCierreEconomicoFilter vwBandejaCierreEconomicoFilter) {
+		List<VwBandejaCierreEconomico> vwList = vistasRepository.findBandejaCierreEconomico(vwBandejaCierreEconomicoFilter);
+		return vwList;
+	}
+
+	@Override
+	public List<VwControlDocumentario> findControlDocumentario(VwControlDocumentarioFilter vwControlDocumentarioFilter) {
+		List<VwControlDocumentario> vwList = vistasRepository.findControlDocumentario(vwControlDocumentarioFilter);
+		return vwList;
+	}
+
+	@Override
+	public List<VwDocumentosAdjuntos> findDocumentosAdjuntos(VwDocumentosAdjuntosFilter vwDocumentosAdjuntosFilter) {
+		List<VwDocumentosAdjuntos> vwList = vistasRepository.findDocumentosAdjuntos(vwDocumentosAdjuntosFilter);
+		return vwList;
 	}
 }

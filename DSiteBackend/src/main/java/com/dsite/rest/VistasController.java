@@ -15,15 +15,26 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dsite.domain.model.views.VwAdelantoContrata;
 import com.dsite.domain.model.views.VwAdelantoPagadoContrata;
 import com.dsite.domain.model.views.VwBandejaAdelantoRechazadoContrata;
+import com.dsite.domain.model.views.VwBandejaAprobadoCajaChica;
+import com.dsite.domain.model.views.VwBandejaAsignacionCierreEconomico;
 import com.dsite.domain.model.views.VwBandejaBudget;
+import com.dsite.domain.model.views.VwBandejaCierreEconomico;
 import com.dsite.domain.model.views.VwBandejaCrm;
 import com.dsite.domain.model.views.VwBandejaCustomerService;
+import com.dsite.domain.model.views.VwBandejaDepositoCajaChica;
 import com.dsite.domain.model.views.VwBandejaLiquidacionContrata;
 import com.dsite.domain.model.views.VwBandejaPagoAdelantoContrata;
+import com.dsite.domain.model.views.VwBandejaRechazoCajaChica;
+import com.dsite.domain.model.views.VwBandejaReembolsoDescuentoCajaChica;
+import com.dsite.domain.model.views.VwBandejaRendicionCajaChica;
 import com.dsite.domain.model.views.VwBandejaSolicitudAdelantoContrata;
+import com.dsite.domain.model.views.VwBandejaSolicitudCajaChica;
 import com.dsite.domain.model.views.VwBudget;
 import com.dsite.domain.model.views.VwConcursoContrata;
+import com.dsite.domain.model.views.VwControlDocumentario;
 import com.dsite.domain.model.views.VwCrm;
+import com.dsite.domain.model.views.VwDetalleRendicionCajaChica;
+import com.dsite.domain.model.views.VwDocumentosAdjuntos;
 import com.dsite.domain.model.views.VwLiquidacionContrata;
 import com.dsite.domain.model.views.VwLiquidacionCustomerService;
 import com.dsite.domain.model.views.VwListaActasContrata;
@@ -32,15 +43,27 @@ import com.dsite.domain.model.views.VwListaContratasAsignada;
 import com.dsite.domain.model.views.VwListaPagosContrata;
 import com.dsite.domain.model.views.VwOfertaCustomerService;
 import com.dsite.domain.model.views.VwPagoContrata;
+import com.dsite.domain.model.views.VwRendicionCajaChica;
 import com.dsite.domain.model.views.VwSeguimientoActaContrata;
 import com.dsite.domain.model.views.VwUbigeo;
 import com.dsite.dto.model.views.VwAdelantoContrataFilter;
 import com.dsite.dto.model.views.VwAdelantoPagadoContrataFilter;
+import com.dsite.dto.model.views.VwBandejaAprobadoCajaChicaFilter;
+import com.dsite.dto.model.views.VwBandejaAsignacionCierreEconomicoFilter;
 import com.dsite.dto.model.views.VwBandejaBudgetFilter;
+import com.dsite.dto.model.views.VwBandejaCierreEconomicoFilter;
 import com.dsite.dto.model.views.VwBandejaCustomerServiceFilter;
+import com.dsite.dto.model.views.VwBandejaDepositoCajaChicaFilter;
+import com.dsite.dto.model.views.VwBandejaRechazoCajaChicaFilter;
+import com.dsite.dto.model.views.VwBandejaReembolsoDescuentoCajaChicaFilter;
+import com.dsite.dto.model.views.VwBandejaRendicionCajaChicaFilter;
+import com.dsite.dto.model.views.VwBandejaSolicitudCajaChicaFilter;
 import com.dsite.dto.model.views.VwBudgetFilter;
 import com.dsite.dto.model.views.VwConcursoContrataFilter;
+import com.dsite.dto.model.views.VwControlDocumentarioFilter;
 import com.dsite.dto.model.views.VwCrmFilter;
+import com.dsite.dto.model.views.VwDetalleRendicionCajaChicaFilter;
+import com.dsite.dto.model.views.VwDocumentosAdjuntosFilter;
 import com.dsite.dto.model.views.VwLiquidacionContrataFilter;
 import com.dsite.dto.model.views.VwLiquidacionCustomerServiceFilter;
 import com.dsite.dto.model.views.VwListaActasContrataFilter;
@@ -49,6 +72,7 @@ import com.dsite.dto.model.views.VwListaContratasAsignadaFilter;
 import com.dsite.dto.model.views.VwListaPagosContrataFilter;
 import com.dsite.dto.model.views.VwOfertaCustomerServiceFilter;
 import com.dsite.dto.model.views.VwPagoContrataFilter;
+import com.dsite.dto.model.views.VwRendicionCajaChicaFilter;
 import com.dsite.dto.model.views.VwSeguimientoActaContrataFilter;
 import com.dsite.dto.model.views.VwUbigeoFilter;
 import com.dsite.service.intf.VistasService;
@@ -296,6 +320,138 @@ public class VistasController {
     ResponseEntity<List<VwCrm>> findCrm(@RequestBody VwCrmFilter vwCrmFilter) {
         List<VwCrm> result;
         result = vistasService.findCrm(vwCrmFilter);
+        if (result == null)
+            result = new ArrayList<>();
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+	
+	@RequestMapping(value = "/findBandejaSolicitudCajaChica", method = RequestMethod.POST)
+    public @ResponseBody
+    ResponseEntity<List<VwBandejaSolicitudCajaChica>> findBandejaSolicitudCajaChica(@RequestBody VwBandejaSolicitudCajaChicaFilter filter) {
+        List<VwBandejaSolicitudCajaChica> result;
+        result = vistasService.findBandejaSolicitudCajaChica(filter);
+        if (result == null)
+            result = new ArrayList<>();
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+	
+	@RequestMapping(value = "/findBandejaDepositoCajaChica", method = RequestMethod.POST)
+    public @ResponseBody
+    ResponseEntity<List<VwBandejaDepositoCajaChica>> findBandejaDepositoCajaChica(@RequestBody VwBandejaDepositoCajaChicaFilter filter) {
+        List<VwBandejaDepositoCajaChica> result;
+        result = vistasService.findBandejaDepositoCajaChica(filter);
+        if (result == null)
+            result = new ArrayList<>();
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+	
+	@RequestMapping(value = "/findBandejaRendicionCajaChica", method = RequestMethod.POST)
+    public @ResponseBody
+    ResponseEntity<List<VwBandejaRendicionCajaChica>> findBandejaRendicionCajaChica(@RequestBody VwBandejaRendicionCajaChicaFilter filter) {
+        List<VwBandejaRendicionCajaChica> result;
+        result = vistasService.findBandejaRendicionCajaChica(filter);
+        if (result == null)
+            result = new ArrayList<>();
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+	
+	@RequestMapping(value = "/findRendicionCajaChica", method = RequestMethod.POST)
+    public @ResponseBody
+    ResponseEntity<List<VwRendicionCajaChica>> findRendicionCajaChica(@RequestBody VwRendicionCajaChicaFilter filter) {
+        List<VwRendicionCajaChica> result;
+        result = vistasService.findRendicionCajaChica(filter);
+        if (result == null)
+            result = new ArrayList<>();
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+	
+	@RequestMapping(value = "/findDetalleRendicionCajaChica", method = RequestMethod.POST)
+    public @ResponseBody
+    ResponseEntity<List<VwDetalleRendicionCajaChica>> findDetalleRendicionCajaChica(@RequestBody VwDetalleRendicionCajaChicaFilter filter) {
+        List<VwDetalleRendicionCajaChica> result;
+        result = vistasService.findDetalleRendicionCajaChica(filter);
+        if (result == null)
+            result = new ArrayList<>();
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+	
+	@RequestMapping(value = "/findBandejaReembolsoDescuentoCajaChica", method = RequestMethod.POST)
+    public @ResponseBody
+    ResponseEntity<List<VwBandejaReembolsoDescuentoCajaChica>> findBandejaReembolsoDescuentoCajaChica(@RequestBody VwBandejaReembolsoDescuentoCajaChicaFilter filter) {
+        List<VwBandejaReembolsoDescuentoCajaChica> result;
+        result = vistasService.findBandejaReembolsoDescuentoCajaChica(filter);
+        if (result == null)
+            result = new ArrayList<>();
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+	
+	@RequestMapping(value = "/findBandejaAprobadoCajaChica", method = RequestMethod.POST)
+    public @ResponseBody
+    ResponseEntity<List<VwBandejaAprobadoCajaChica>> findBandejaAprobadoCajaChica(@RequestBody VwBandejaAprobadoCajaChicaFilter filter) {
+        List<VwBandejaAprobadoCajaChica> result;
+        result = vistasService.findBandejaAprobadoCajaChica(filter);
+        if (result == null)
+            result = new ArrayList<>();
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+	
+	@RequestMapping(value = "/findBandejaRechazoCajaChica", method = RequestMethod.POST)
+    public @ResponseBody
+    ResponseEntity<List<VwBandejaRechazoCajaChica>> findBandejaRechazoCajaChica(@RequestBody VwBandejaRechazoCajaChicaFilter filter) {
+        List<VwBandejaRechazoCajaChica> result;
+        result = vistasService.findBandejaRechazoCajaChica(filter);
+        if (result == null)
+            result = new ArrayList<>();
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+	
+	@RequestMapping(value = "/findBandejaAsignacionCierreEconomico", method = RequestMethod.POST)
+    public @ResponseBody
+    ResponseEntity<List<VwBandejaAsignacionCierreEconomico>> findBandejaAsignacionCierreEconomico(@RequestBody VwBandejaAsignacionCierreEconomicoFilter filter) {
+        List<VwBandejaAsignacionCierreEconomico> result;
+        result = vistasService.findBandejaAsignacionCierreEconomico(filter);
+        if (result == null)
+            result = new ArrayList<>();
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+	
+	@RequestMapping(value = "/findBandejaCierreEconomico", method = RequestMethod.POST)
+    public @ResponseBody
+    ResponseEntity<List<VwBandejaCierreEconomico>> findBandejaCierreEconomico(@RequestBody VwBandejaCierreEconomicoFilter filter) {
+        List<VwBandejaCierreEconomico> result;
+        result = vistasService.findBandejaCierreEconomico(filter);
+        if (result == null)
+            result = new ArrayList<>();
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+	
+	@RequestMapping(value = "/findControlDocumentario", method = RequestMethod.POST)
+    public @ResponseBody
+    ResponseEntity<List<VwControlDocumentario>> findControlDocumentario(@RequestBody VwControlDocumentarioFilter filter) {
+        List<VwControlDocumentario> result;
+        result = vistasService.findControlDocumentario(filter);
+        if (result == null)
+            result = new ArrayList<>();
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+	
+	@RequestMapping(value = "/findDocumentosAdjuntos", method = RequestMethod.POST)
+    public @ResponseBody
+    ResponseEntity<List<VwDocumentosAdjuntos>> findDocumentosAdjuntos(@RequestBody VwDocumentosAdjuntosFilter filter) {
+        List<VwDocumentosAdjuntos> result;
+        result = vistasService.findDocumentosAdjuntos(filter);
         if (result == null)
             result = new ArrayList<>();
 
