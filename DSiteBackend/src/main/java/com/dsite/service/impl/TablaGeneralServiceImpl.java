@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dsite.domain.model.entities.TablaGeneral;
-import com.dsite.domain.model.repository.jpa.TablaGeneralJpaRepository;
+import com.dsite.domain.model.repository.jpa.TablaGeneralJPARepository;
 import com.dsite.dto.model.ProvinciaDTO;
 import com.dsite.dto.model.TablaGeneralDTO;
 import com.dsite.service.intf.TablaGeneralService;
@@ -21,7 +21,7 @@ public class TablaGeneralServiceImpl implements TablaGeneralService {
 	Mapper mapper;
 
 	@Autowired
-	TablaGeneralJpaRepository tablaGeneralJpaRepository;
+	TablaGeneralJPARepository tablaGeneralJpaRepository;
 
 	@Override
 	public List<TablaGeneralDTO> findByCategoria(String categoria) {

@@ -22,7 +22,7 @@ import com.dsite.domain.model.entities.Usuario;
 import com.dsite.domain.model.repository.jpa.CajaChicaObraJPARepository;
 import com.dsite.domain.model.repository.jpa.EmpleadoJPARepository;
 import com.dsite.domain.model.repository.jpa.ObraJPARepository;
-import com.dsite.domain.model.repository.jpa.TablaGeneralJpaRepository;
+import com.dsite.domain.model.repository.jpa.TablaGeneralJPARepository;
 import com.dsite.domain.model.repository.jpa.UsuarioJPARepository;
 import com.dsite.dto.model.CajaChicaObraDTO;
 import com.dsite.service.intf.CajaChicaObraService;
@@ -35,7 +35,7 @@ public class CajaChicaObraServiceImpl implements CajaChicaObraService {
 	CajaChicaObraJPARepository cajaChicaObraJPARepository;
 
 	@Autowired
-	TablaGeneralJpaRepository tablaGeneralJpaRepository;
+	TablaGeneralJPARepository tablaGeneralJpaRepository;
 
 	@Autowired
 	EmpleadoJPARepository empleadoJpaRepository;

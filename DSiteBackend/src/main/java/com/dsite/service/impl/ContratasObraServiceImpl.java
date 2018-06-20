@@ -22,7 +22,7 @@ import com.dsite.domain.model.entities.Usuario;
 import com.dsite.domain.model.repository.jpa.ContrataJPARepository;
 import com.dsite.domain.model.repository.jpa.ContratasObraJPARepository;
 import com.dsite.domain.model.repository.jpa.ObraJPARepository;
-import com.dsite.domain.model.repository.jpa.TablaGeneralJpaRepository;
+import com.dsite.domain.model.repository.jpa.TablaGeneralJPARepository;
 import com.dsite.domain.model.repository.jpa.UsuarioJPARepository;
 import com.dsite.dto.model.ActasContrataDTO;
 import com.dsite.dto.model.ContratasObraDTO;
@@ -49,7 +49,7 @@ public class ContratasObraServiceImpl implements ContratasObraService {
 	UsuarioJPARepository usuarioJPARepository;
 
 	@Autowired
-	TablaGeneralJpaRepository tablaGeneralJpaRepository;
+	TablaGeneralJPARepository tablaGeneralJpaRepository;
 
 	@Autowired
 	Mapper mapper;

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.dsite.domain.model.entities.TablaGeneral;
 
 @Repository
-public interface TablaGeneralJpaRepository extends CrudRepository<TablaGeneral, String>, JpaRepository<TablaGeneral, String> {
+public interface TablaGeneralJPARepository extends CrudRepository<TablaGeneral, String>, JpaRepository<TablaGeneral, String> {
 
 	@Query("SELECT t FROM TablaGeneral t WHERE t.categoria LIKE :categoria")
     List<TablaGeneral> findByCategoria(@Param("categoria") String categoria);

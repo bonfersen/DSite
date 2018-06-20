@@ -13,7 +13,7 @@ import com.dsite.domain.model.entities.Contrata;
 import com.dsite.domain.model.entities.TablaGeneral;
 import com.dsite.domain.model.repository.jpa.ConcursoContrataJPARepository;
 import com.dsite.domain.model.repository.jpa.ContrataJPARepository;
-import com.dsite.domain.model.repository.jpa.TablaGeneralJpaRepository;
+import com.dsite.domain.model.repository.jpa.TablaGeneralJPARepository;
 import com.dsite.dto.model.ConcursoContrataDTO;
 import com.dsite.service.intf.ConcursoContrataService;
 import com.dsite.util.ValidateUtil;
@@ -25,7 +25,7 @@ public class ConcursoContrataServiceImpl implements ConcursoContrataService {
 	ConcursoContrataJPARepository concursoContrataJPARepository;
 
 	@Autowired
-	TablaGeneralJpaRepository tablaGeneralJpaRepository;
+	TablaGeneralJPARepository tablaGeneralJpaRepository;
 	
 	@Autowired
 	ContrataJPARepository contrataJPARepository;

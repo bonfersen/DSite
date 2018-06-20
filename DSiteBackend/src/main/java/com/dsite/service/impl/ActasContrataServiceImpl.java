@@ -14,7 +14,7 @@ import com.dsite.domain.model.entities.TablaGeneral;
 import com.dsite.domain.model.entities.Usuario;
 import com.dsite.domain.model.repository.jpa.ActasContrataJPARepository;
 import com.dsite.domain.model.repository.jpa.ContratasObraJPARepository;
-import com.dsite.domain.model.repository.jpa.TablaGeneralJpaRepository;
+import com.dsite.domain.model.repository.jpa.TablaGeneralJPARepository;
 import com.dsite.domain.model.repository.jpa.UsuarioJPARepository;
 import com.dsite.dto.model.ActasContrataDTO;
 import com.dsite.service.intf.ActasContrataService;
@@ -30,7 +30,7 @@ public class ActasContrataServiceImpl implements ActasContrataService {
 	UsuarioJPARepository usuarioJPARepository;
 
 	@Autowired
-	TablaGeneralJpaRepository tablaGeneralJpaRepository;
+	TablaGeneralJPARepository tablaGeneralJpaRepository;
 
 	@Autowired
 	ContratasObraJPARepository contratasObraJPARepository;

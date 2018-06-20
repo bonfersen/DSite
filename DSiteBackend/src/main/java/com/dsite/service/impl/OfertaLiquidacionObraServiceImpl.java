@@ -13,7 +13,7 @@ import com.dsite.domain.model.entities.PresupuestoObra;
 import com.dsite.domain.model.entities.TablaGeneral;
 import com.dsite.domain.model.repository.jpa.OfertaLiquidacionObraJPARepository;
 import com.dsite.domain.model.repository.jpa.PresupuestoObraJPARepository;
-import com.dsite.domain.model.repository.jpa.TablaGeneralJpaRepository;
+import com.dsite.domain.model.repository.jpa.TablaGeneralJPARepository;
 import com.dsite.domain.model.repository.jpa.UsuarioJPARepository;
 import com.dsite.dto.model.OfertaLiquidacionObraDTO;
 import com.dsite.service.intf.OfertaLiquidacionObraService;
@@ -29,7 +29,7 @@ public class OfertaLiquidacionObraServiceImpl implements OfertaLiquidacionObraSe
 	PresupuestoObraJPARepository presupuestoObraJPARepository;
 
 	@Autowired
-	TablaGeneralJpaRepository tablaGeneralJpaRepository;
+	TablaGeneralJPARepository tablaGeneralJpaRepository;
 
 	@Autowired
 	UsuarioJPARepository usuarioJPARepository;

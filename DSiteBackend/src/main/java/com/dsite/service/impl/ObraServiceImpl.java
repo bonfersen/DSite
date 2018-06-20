@@ -23,7 +23,7 @@ import com.dsite.domain.model.repository.jpa.DistritoJPARepository;
 import com.dsite.domain.model.repository.jpa.EmpleadoJPARepository;
 import com.dsite.domain.model.repository.jpa.ObraJPARepository;
 import com.dsite.domain.model.repository.jpa.PresupuestoObraJPARepository;
-import com.dsite.domain.model.repository.jpa.TablaGeneralJpaRepository;
+import com.dsite.domain.model.repository.jpa.TablaGeneralJPARepository;
 import com.dsite.dto.model.JsonResult;
 import com.dsite.dto.model.ObraDTO;
 import com.dsite.service.intf.ObraService;
@@ -36,7 +36,7 @@ public class ObraServiceImpl implements ObraService {
 	ObraJPARepository obraJPARepository;
 
 	@Autowired
-	TablaGeneralJpaRepository tablaGeneralJpaRepository;
+	TablaGeneralJPARepository tablaGeneralJpaRepository;
 
 	@Autowired
 	DistritoJPARepository distritoJpaRepository;
