@@ -1,44 +1,49 @@
 package com.dsite.util;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.dsite.constants.DSiteCoreConstants;
 
 public class StringUtil {
 
 	private static final Logger LOG = LoggerFactory.getLogger(StringUtil.class);
 	public static final String LINE_SEP = System.getProperty("line.separator");
 
-	private static final String[] UNIDADES = { "", "UN ", "DOS ", "TRES ", "CUATRO ", "CINCO ", "SEIS ", "SIETE ",
-			"OCHO ", "NUEVE ", "DIEZ ", "ONCE ", "DOCE ", "TRECE ", "CATORCE ", "QUINCE ", "DIECISEIS", "DIECISIETE",
-			"DIECIOCHO", "DIECINUEVE", "VEINTE" };
+	private static final String[] UNIDADES = { "", "UN ", "DOS ", "TRES ", "CUATRO ", "CINCO ", "SEIS ", "SIETE ", "OCHO ", "NUEVE ", "DIEZ ", "ONCE ", "DOCE ", "TRECE ",
+			"CATORCE ", "QUINCE ", "DIECISEIS", "DIECISIETE", "DIECIOCHO", "DIECINUEVE", "VEINTE" };
 
-	private static final String[] DECENAS = { "VENTI", "TREINTA ", "CUARENTA ", "CINCUENTA ", "SESENTA ", "SETENTA ",
-			"OCHENTA ", "NOVENTA ", "CIEN " };
+	private static final String[] DECENAS = { "VENTI", "TREINTA ", "CUARENTA ", "CINCUENTA ", "SESENTA ", "SETENTA ", "OCHENTA ", "NOVENTA ", "CIEN " };
 
-	private static final String[] CENTENAS = { "CIENTO ", "DOSCIENTOS ", "TRESCIENTOS ", "CUATROCIENTOS ",
-			"QUINIENTOS ", "SEISCIENTOS ", "SETECIENTOS ", "OCHOCIENTOS ", "NOVECIENTOS " };
-	
-	private static final String[] MESES = { "ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO",
-			"JULIO", "AGOSTO", "SETIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE" };
+	private static final String[] CENTENAS = { "CIENTO ", "DOSCIENTOS ", "TRESCIENTOS ", "CUATROCIENTOS ", "QUINIENTOS ", "SEISCIENTOS ", "SETECIENTOS ", "OCHOCIENTOS ",
+			"NOVECIENTOS " };
+
+	private static final String[] MESES = { "ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SETIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE" };
 
 	public static boolean hasText(String str) {
 		return StringUtils.hasText(str);
 	}
 
-	public static String retornarMesNombre(int numeroMes){
-		if(numeroMes < 0)
+	public static String retornarMesNombre(int numeroMes) {
+		if (numeroMes < 0)
 			numeroMes = 0;
 		return MESES[numeroMes];
 	}
-	
+
 	public static String concat(Collection list, String sep) {
 		return concat(list, sep, null);
 	}
@@ -136,7 +141,8 @@ public class StringUtil {
 	public static Integer parseIntNull(String str) {
 		try {
 			return Integer.valueOf(str);
-		} catch (NumberFormatException e) {
+		}
+		catch (NumberFormatException e) {
 			return null;
 		}
 	}
@@ -147,7 +153,8 @@ public class StringUtil {
 		}
 		try {
 			return Long.valueOf(val);
-		} catch (NumberFormatException e) {
+		}
+		catch (NumberFormatException e) {
 			return null;
 		}
 	}
@@ -155,7 +162,8 @@ public class StringUtil {
 	public static BigDecimal parseBigDecimalNull(String str) {
 		try {
 			return new BigDecimal(str);
-		} catch (NumberFormatException e) {
+		}
+		catch (NumberFormatException e) {
 			return null;
 		}
 	}
@@ -174,7 +182,8 @@ public class StringUtil {
 				}
 			}
 			return isCorrect;
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			LOG.error("Error in validateTextWithPattern", e);
 		}
 		return isCorrect;
@@ -238,14 +247,16 @@ public class StringUtil {
 		int length = str.length();
 		if (length <= size) {
 			return str;
-		} else
+		}
+		else
 			return str.substring(length - size);
 	}
 
 	public static boolean eq(String str1, String str2) {
 		if (str1 != null && str2 != null) {
 			return str1.equals(str2);
-		} else
+		}
+		else
 			return str1 == null && str2 == null;
 	}
 
@@ -306,7 +317,7 @@ public class StringUtil {
 
 		return cadena;
 	}
-	
+
 	public static int getDayNumberToCode(String dayCode) {
 		int dayNumber = 1;
 		switch (dayCode) {
@@ -345,7 +356,8 @@ public class StringUtil {
 		if (value != null && !value.equals("")) {
 			if (value.length() == 1) {
 				result = "0" + value;
-			} else {
+			}
+			else {
 				result = value;
 			}
 		}
@@ -404,22 +416,22 @@ public class StringUtil {
 		String splitNumber[] = String.valueOf(doubleNumber).replace('.', '#').split("#");
 
 		// Descompone el trio de millones
-		int millon = Integer.parseInt(String.valueOf(getDigitAt(splitNumber[0], 8))
-				+ String.valueOf(getDigitAt(splitNumber[0], 7)) + String.valueOf(getDigitAt(splitNumber[0], 6)));
+		int millon = Integer
+				.parseInt(String.valueOf(getDigitAt(splitNumber[0], 8)) + String.valueOf(getDigitAt(splitNumber[0], 7)) + String.valueOf(getDigitAt(splitNumber[0], 6)));
 		if (millon == 1)
 			converted.append("UN MILLON ");
 		else if (millon > 1)
 			converted.append(convertNumber(String.valueOf(millon))).append("MILLONES ");
 
 		// Descompone el trio de miles
-		int miles = Integer.parseInt(String.valueOf(getDigitAt(splitNumber[0], 5))
-				+ String.valueOf(getDigitAt(splitNumber[0], 4)) + String.valueOf(getDigitAt(splitNumber[0], 3)));
+		int miles = Integer.parseInt(String.valueOf(getDigitAt(splitNumber[0], 5)) + String.valueOf(getDigitAt(splitNumber[0], 4)) + String.valueOf(getDigitAt(splitNumber[0], 3)));
 		if (millon >= 1) {
 			if (miles == 1)
 				converted.append(convertNumber(String.valueOf(miles))).append("MIL ");
 			else if (miles > 1)
 				converted.append(convertNumber(String.valueOf(miles))).append("MIL ");
-		} else {
+		}
+		else {
 			if (miles == 1)
 				converted.append("UN MIL ");
 
@@ -428,12 +440,13 @@ public class StringUtil {
 		}
 
 		// Descompone el ultimo trio de unidades
-		int cientos = Integer.parseInt(String.valueOf(getDigitAt(splitNumber[0], 2))
-				+ String.valueOf(getDigitAt(splitNumber[0], 1)) + String.valueOf(getDigitAt(splitNumber[0], 0)));
+		int cientos = Integer
+				.parseInt(String.valueOf(getDigitAt(splitNumber[0], 2)) + String.valueOf(getDigitAt(splitNumber[0], 1)) + String.valueOf(getDigitAt(splitNumber[0], 0)));
 		if (miles >= 1 || millon >= 1) {
 			if (cientos >= 1)
 				converted.append(convertNumber(String.valueOf(cientos)));
-		} else {
+		}
+		else {
 			if (cientos == 1)
 				converted.append("UN ");
 			if (cientos > 1)
@@ -447,10 +460,11 @@ public class StringUtil {
 		String valor = splitNumber[1];
 		if (valor.length() == 1) {
 			converted.append(splitNumber[1]).append("0").append("/100 ");
-		} else {
+		}
+		else {
 			converted.append(splitNumber[1]).append("/100 ");
 		}
-		//converted.append("U.S. DOLARES**");
+		// converted.append("U.S. DOLARES**");
 		return converted.toString();
 	}
 
@@ -486,4 +500,28 @@ public class StringUtil {
 		return 0;
 	}
 
+	public static String getExtension(String fullPath) {
+		int dot = fullPath.lastIndexOf(DSiteCoreConstants.PUNTO);
+		return fullPath.substring(dot + 1);
+	}
+
+	public static String getFileName(String fullPath) {
+		int dot = fullPath.lastIndexOf(DSiteCoreConstants.PUNTO);
+		return fullPath.substring(0, dot);
+	}
+
+	public static String getFoldersWithAnyoMesDia() {
+		Calendar cal = Calendar.getInstance();
+		Date hoy = new Date();
+		cal.setTime(hoy);
+		int anio = cal.get(1);
+		String mes = DSiteCoreConstants.CERO_CADENA + (cal.get(2) + 1);
+		mes = mes.substring(mes.length() - 2, mes.length());
+		String dia = DSiteCoreConstants.CERO_CADENA + cal.get(5);
+		dia = dia.substring(dia.length() - 2, dia.length());
+
+		String ruta = DSiteCoreConstants.SLASH + anio + DSiteCoreConstants.SLASH + mes + DSiteCoreConstants.SLASH + dia;
+
+		return ruta;
+	}
 }
