@@ -33,8 +33,52 @@ public class FileUploadController {
 		this.storageService = storageService;
 	}
 
+	/***
+	 * Metodo que obtiene el archivo para su descarga
+	 * 
+	 * @param filename
+	 * @return
+	 */
+	@RequestMapping(value = "/getFiles/{idDocumentoAdjunto}", method = RequestMethod.GET)
+	public ResponseEntity<Resource> serveFile(@PathVariable Integer idDocumentoAdjunto) {
+
+		Resource file = null;
+		try {
+			file = storageService.loadAsResource(idDocumentoAdjunto);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+	}
+
+	/**
+	 * Metodo para subir archivos al servidor
+	 * 
+	 * @param file
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody String handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("idTabla") Integer idTabla,
+			@RequestParam("idTGNombreTabla") String idTGNombreTabla, @RequestParam("idTipoDocumentoAdjunto") Integer idTipoDocumentoAdjunto) {
+		try {
+			storageService.store(file, idTabla, idTGNombreTabla, idTipoDocumentoAdjunto);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return file.getOriginalFilename();
+	}
+
+	@ExceptionHandler(StorageFileNotFoundException.class)
+	public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {
+		return ResponseEntity.notFound().build();
+	}
+
 	/**
 	 * Metodo que muestra la ruta Web de los archivos almacenados en el server
+	 * 
 	 * @param model
 	 * @return
 	 * @throws IOException
@@ -54,45 +98,4 @@ public class FileUploadController {
 
 		return model.asMap().get("files").toString();
 	}
-
-	/***
-	 * Metodo que obtiene el archivo para su descarga
-	 * @param filename
-	 * @return
-	 */
-	@RequestMapping(value = "/getFiles/{filename:.+}", method = RequestMethod.GET)
-	public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
-
-		Resource file = null;
-		try {
-			file = storageService.loadAsResource(filename);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
-	}
-
-	/**
-	 * Metodo para subir archivos al servidor
-	 * @param file
-	 * @param id
-	 * @return
-	 */
-	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody String handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("id") String id) {
-		try {
-			storageService.store(file);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		return file.getOriginalFilename();
-	}
-
-	@ExceptionHandler(StorageFileNotFoundException.class)
-	public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {
-		return ResponseEntity.notFound().build();
-	}
-
 }

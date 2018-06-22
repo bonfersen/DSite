@@ -22,8 +22,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.dsite.config.StorageProperties;
 import com.dsite.constants.DSiteCoreConstants;
+import com.dsite.dto.model.DocumentosAdjuntoDTO;
 import com.dsite.exception.StorageException;
 import com.dsite.exception.StorageFileNotFoundException;
+import com.dsite.service.intf.DocumentosAdjuntoService;
 import com.dsite.service.intf.StorageService;
 import com.dsite.util.DateUtil;
 import com.dsite.util.FileManagerUtil;
@@ -34,8 +36,11 @@ public class StorageServiceImpl implements StorageService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(StorageServiceImpl.class);
 
+	@Autowired
+	DocumentosAdjuntoService documentosAdjuntoService;
+
 	private Path rootLocation;
-	
+
 	private String directorio;
 
 	@Autowired
@@ -44,11 +49,12 @@ public class StorageServiceImpl implements StorageService {
 	}
 
 	@Override
-	public void store(MultipartFile file) throws Exception {
+	public void store(MultipartFile file, Integer idTabla, String idTGNombreTabla, Integer idTipoDocumentoAdjunto) throws Exception {
 		String filename = StringUtils.cleanPath(file.getOriginalFilename());
 		filename = StringUtil.getFileName(filename) + DSiteCoreConstants.GUION_ABAJO + StringUtils.replace(DateUtil.getHourFromDate(new Date()), DSiteCoreConstants.DOS_PUNTOS, "")
+				+ DSiteCoreConstants.GUION_ABAJO + idTabla + DSiteCoreConstants.GUION_ABAJO + idTGNombreTabla + DSiteCoreConstants.GUION_ABAJO + idTipoDocumentoAdjunto
 				+ DSiteCoreConstants.PUNTO + StringUtil.getExtension(filename);
-		
+
 		try {
 			if (file.isEmpty()) {
 				throw new StorageException("Failed to store empty file " + filename);
@@ -57,12 +63,20 @@ public class StorageServiceImpl implements StorageService {
 				// This is a security check
 				throw new StorageException("Cannot store file with relative path outside current directory " + filename);
 			}
-			try (InputStream inputStream = file.getInputStream()) {				
+			try (InputStream inputStream = file.getInputStream()) {
 				FileManagerUtil.createFoldersWithAnyoMesDia(directorio);
-				this.rootLocation = Paths.get(directorio + DSiteCoreConstants.SLASH + StringUtil.getFoldersWithAnyoMesDia());
+				this.rootLocation = Paths.get(directorio + StringUtil.getFoldersWithAnyoMesDia());
 
 				Files.copy(inputStream, this.rootLocation.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
 				LOGGER.info("Se guardo el archivo: " + filename);
+
+				DocumentosAdjuntoDTO dto = new DocumentosAdjuntoDTO();
+				dto.setNombreArchivo(filename);
+				dto.setDirectorio(directorio + StringUtil.getFoldersWithAnyoMesDia());
+				dto.setIdTabla(idTabla);
+				dto.setIdTGNombreTabla(idTGNombreTabla);
+				dto.setIdTipoDocumentoAdjunto(idTipoDocumentoAdjunto);
+				documentosAdjuntoService.createDocumentosAdjunto(dto);
 			}
 		}
 		catch (IOException e) {
@@ -87,8 +101,12 @@ public class StorageServiceImpl implements StorageService {
 	}
 
 	@Override
-	public Resource loadAsResource(String filename) throws Exception {
+	public Resource loadAsResource(Integer idDocumentoAdjunto) throws Exception {
+		String filename = null;
 		try {
+			DocumentosAdjuntoDTO documentosAdjuntoDTO = documentosAdjuntoService.findById(idDocumentoAdjunto);
+			this.rootLocation = Paths.get(documentosAdjuntoDTO.getDirectorio());
+			filename = documentosAdjuntoDTO.getNombreArchivo();
 			Path file = load(filename);
 			Resource resource = new UrlResource(file.toUri());
 			if (resource.exists() || resource.isReadable()) {

@@ -10,13 +10,13 @@ public interface StorageService {
 
     void init() throws Exception;
 
-    void store(MultipartFile file) throws Exception;
+    void store(MultipartFile file, Integer idTabla, String idTGNombreTabla, Integer idTipoDocumentoAdjunto) throws Exception;
 
     Stream<Path> loadAll() throws Exception;
 
     Path load(String filename);
 
-    Resource loadAsResource(String filename) throws Exception;
+    Resource loadAsResource(Integer idDocumentoAdjunto) throws Exception;
 
     void deleteAll();
 
