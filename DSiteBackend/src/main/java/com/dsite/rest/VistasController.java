@@ -33,6 +33,8 @@ import com.dsite.domain.model.views.VwBudget;
 import com.dsite.domain.model.views.VwConcursoContrata;
 import com.dsite.domain.model.views.VwControlDocumentario;
 import com.dsite.domain.model.views.VwCrm;
+import com.dsite.domain.model.views.VwDepositosCaja;
+import com.dsite.domain.model.views.VwDepositosViatico;
 import com.dsite.domain.model.views.VwDetalleRendicionCajaChica;
 import com.dsite.domain.model.views.VwDocumentosAdjuntos;
 import com.dsite.domain.model.views.VwLiquidacionContrata;
@@ -44,8 +46,12 @@ import com.dsite.domain.model.views.VwListaPagosContrata;
 import com.dsite.domain.model.views.VwOfertaCustomerService;
 import com.dsite.domain.model.views.VwPagoContrata;
 import com.dsite.domain.model.views.VwRendicionCajaChica;
+import com.dsite.domain.model.views.VwReporteEconomico;
+import com.dsite.domain.model.views.VwReporteEconomicoDetalleContrata;
+import com.dsite.domain.model.views.VwResumenRendicionCajaChica;
 import com.dsite.domain.model.views.VwSeguimientoActaContrata;
 import com.dsite.domain.model.views.VwUbigeo;
+import com.dsite.dto.model.ReporteEconomico;
 import com.dsite.dto.model.views.VwAdelantoContrataFilter;
 import com.dsite.dto.model.views.VwAdelantoPagadoContrataFilter;
 import com.dsite.dto.model.views.VwBandejaAprobadoCajaChicaFilter;
@@ -62,6 +68,8 @@ import com.dsite.dto.model.views.VwBudgetFilter;
 import com.dsite.dto.model.views.VwConcursoContrataFilter;
 import com.dsite.dto.model.views.VwControlDocumentarioFilter;
 import com.dsite.dto.model.views.VwCrmFilter;
+import com.dsite.dto.model.views.VwDepositosCajaFilter;
+import com.dsite.dto.model.views.VwDepositosViaticoFilter;
 import com.dsite.dto.model.views.VwDetalleRendicionCajaChicaFilter;
 import com.dsite.dto.model.views.VwDocumentosAdjuntosFilter;
 import com.dsite.dto.model.views.VwLiquidacionContrataFilter;
@@ -73,6 +81,9 @@ import com.dsite.dto.model.views.VwListaPagosContrataFilter;
 import com.dsite.dto.model.views.VwOfertaCustomerServiceFilter;
 import com.dsite.dto.model.views.VwPagoContrataFilter;
 import com.dsite.dto.model.views.VwRendicionCajaChicaFilter;
+import com.dsite.dto.model.views.VwReporteEconomicoDetalleContrataFilter;
+import com.dsite.dto.model.views.VwReporteEconomicoFilter;
+import com.dsite.dto.model.views.VwResumenRendicionCajaChicaFilter;
 import com.dsite.dto.model.views.VwSeguimientoActaContrataFilter;
 import com.dsite.dto.model.views.VwUbigeoFilter;
 import com.dsite.service.intf.VistasService;
@@ -81,380 +92,398 @@ import com.dsite.service.intf.VistasService;
 @RequestMapping(value = "/api/vistas")
 public class VistasController {
 
-	@Autowired 
-	VistasService vistasService;	
-	
+	@Autowired
+	VistasService vistasService;
+
 	@RequestMapping(value = "/findBandejaBudget", method = RequestMethod.POST)
-    public @ResponseBody
-    ResponseEntity<List<VwBandejaBudget>> findBandejaBudget(@RequestBody VwBandejaBudgetFilter vwBandejaBudgetFilter) {
-        List<VwBandejaBudget> result;
-        result = vistasService.findBandejaBudget(vwBandejaBudgetFilter);
-        if (result == null)
-            result = new ArrayList<>();
+	public @ResponseBody ResponseEntity<List<VwBandejaBudget>> findBandejaBudget(@RequestBody VwBandejaBudgetFilter vwBandejaBudgetFilter) {
+		List<VwBandejaBudget> result;
+		result = vistasService.findBandejaBudget(vwBandejaBudgetFilter);
+		if (result == null)
+			result = new ArrayList<>();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-	
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/findContratasAsignadas", method = RequestMethod.POST)
-    public @ResponseBody
-    ResponseEntity<List<VwListaContratasAsignada>> findBandejaBudget(@RequestBody VwListaContratasAsignadaFilter vwListaContratasAsignadaFilter) {
-        List<VwListaContratasAsignada> result;
-        result = vistasService.findContratasAsignadas(vwListaContratasAsignadaFilter);
-        if (result == null)
-            result = new ArrayList<>();
+	public @ResponseBody ResponseEntity<List<VwListaContratasAsignada>> findContratasAsignadas(@RequestBody VwListaContratasAsignadaFilter vwListaContratasAsignadaFilter) {
+		List<VwListaContratasAsignada> result;
+		result = vistasService.findContratasAsignadas(vwListaContratasAsignadaFilter);
+		if (result == null)
+			result = new ArrayList<>();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-	
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/findBandejaCustomerService", method = RequestMethod.POST)
-    public @ResponseBody
-    ResponseEntity<List<VwBandejaCustomerService>> findBandejaCustomerService(@RequestBody VwBandejaCustomerServiceFilter vwBandejaCustomerServiceFilter) {
-        List<VwBandejaCustomerService> result;
-        result = vistasService.findBandejaCustomerService(vwBandejaCustomerServiceFilter);
-        if (result == null)
-            result = new ArrayList<>();
+	public @ResponseBody ResponseEntity<List<VwBandejaCustomerService>> findBandejaCustomerService(@RequestBody VwBandejaCustomerServiceFilter vwBandejaCustomerServiceFilter) {
+		List<VwBandejaCustomerService> result;
+		result = vistasService.findBandejaCustomerService(vwBandejaCustomerServiceFilter);
+		if (result == null)
+			result = new ArrayList<>();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-	
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/findCajaChicaSolicitada", method = RequestMethod.POST)
-    public @ResponseBody
-    ResponseEntity<List<VwListaCajaChica>> findCajaChicaSolicitada(@RequestBody VwListaCajaChicaFilter vwListaCajaChicaFilter) {
-        List<VwListaCajaChica> result;
-        result = vistasService.findCajaChicaSolicitada(vwListaCajaChicaFilter);
-        if (result == null)
-            result = new ArrayList<>();
+	public @ResponseBody ResponseEntity<List<VwListaCajaChica>> findCajaChicaSolicitada(@RequestBody VwListaCajaChicaFilter vwListaCajaChicaFilter) {
+		List<VwListaCajaChica> result;
+		result = vistasService.findCajaChicaSolicitada(vwListaCajaChicaFilter);
+		if (result == null)
+			result = new ArrayList<>();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-	
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/findBudget", method = RequestMethod.POST)
-    public @ResponseBody
-    ResponseEntity<List<VwBudget>> findBudget(@RequestBody VwBudgetFilter vwBudgetFilter) {
-        List<VwBudget> result;
-        result = vistasService.findBudget(vwBudgetFilter);
-        if (result == null)
-            result = new ArrayList<>();
+	public @ResponseBody ResponseEntity<List<VwBudget>> findBudget(@RequestBody VwBudgetFilter vwBudgetFilter) {
+		List<VwBudget> result;
+		result = vistasService.findBudget(vwBudgetFilter);
+		if (result == null)
+			result = new ArrayList<>();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-	
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/findLiquidacionCustomerService", method = RequestMethod.POST)
-    public @ResponseBody
-    ResponseEntity<List<VwLiquidacionCustomerService>> findLiquidacionCustomerService(@RequestBody VwLiquidacionCustomerServiceFilter vwLiquidacionCustomerServiceFilter) {
-        List<VwLiquidacionCustomerService> result;
-        result = vistasService.findLiquidacionCustomerService(vwLiquidacionCustomerServiceFilter);
-        if (result == null)
-            result = new ArrayList<>();
+	public @ResponseBody ResponseEntity<List<VwLiquidacionCustomerService>> findLiquidacionCustomerService(
+			@RequestBody VwLiquidacionCustomerServiceFilter vwLiquidacionCustomerServiceFilter) {
+		List<VwLiquidacionCustomerService> result;
+		result = vistasService.findLiquidacionCustomerService(vwLiquidacionCustomerServiceFilter);
+		if (result == null)
+			result = new ArrayList<>();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-	
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/findListaActasContrata", method = RequestMethod.POST)
-    public @ResponseBody
-    ResponseEntity<List<VwListaActasContrata>> findListaActasContrata(@RequestBody VwListaActasContrataFilter vwListaActasContrataFilter) {
-        List<VwListaActasContrata> result;
-        result = vistasService.findListaActasContrata(vwListaActasContrataFilter);
-        if (result == null)
-            result = new ArrayList<>();
+	public @ResponseBody ResponseEntity<List<VwListaActasContrata>> findListaActasContrata(@RequestBody VwListaActasContrataFilter vwListaActasContrataFilter) {
+		List<VwListaActasContrata> result;
+		result = vistasService.findListaActasContrata(vwListaActasContrataFilter);
+		if (result == null)
+			result = new ArrayList<>();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-	
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/findListaPagosContrata", method = RequestMethod.POST)
-    public @ResponseBody
-    ResponseEntity<List<VwListaPagosContrata>> findListaPagosContrata(@RequestBody VwListaPagosContrataFilter vwListaPagosContrataFilter) {
-        List<VwListaPagosContrata> result;
-        result = vistasService.findListaPagosContrata(vwListaPagosContrataFilter);
-        if (result == null)
-            result = new ArrayList<>();
+	public @ResponseBody ResponseEntity<List<VwListaPagosContrata>> findListaPagosContrata(@RequestBody VwListaPagosContrataFilter vwListaPagosContrataFilter) {
+		List<VwListaPagosContrata> result;
+		result = vistasService.findListaPagosContrata(vwListaPagosContrataFilter);
+		if (result == null)
+			result = new ArrayList<>();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-	
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/findOfertaCustomerService", method = RequestMethod.POST)
-    public @ResponseBody
-    ResponseEntity<List<VwOfertaCustomerService>> findOfertaCustomerService(@RequestBody VwOfertaCustomerServiceFilter vwOfertaCustomerServiceFilter) {
-        List<VwOfertaCustomerService> result;
-        result = vistasService.findOfertaCustomerService(vwOfertaCustomerServiceFilter);
-        if (result == null)
-            result = new ArrayList<>();
+	public @ResponseBody ResponseEntity<List<VwOfertaCustomerService>> findOfertaCustomerService(@RequestBody VwOfertaCustomerServiceFilter vwOfertaCustomerServiceFilter) {
+		List<VwOfertaCustomerService> result;
+		result = vistasService.findOfertaCustomerService(vwOfertaCustomerServiceFilter);
+		if (result == null)
+			result = new ArrayList<>();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-	
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/findUbigeo", method = RequestMethod.POST)
-    public @ResponseBody
-    ResponseEntity<List<VwUbigeo>> findUbigeo(@RequestBody VwUbigeoFilter vwUbigeoFilter) {
-        List<VwUbigeo> result;
-        result = vistasService.findUbigeo(vwUbigeoFilter);
-        if (result == null)
-            result = new ArrayList<>();
+	public @ResponseBody ResponseEntity<List<VwUbigeo>> findUbigeo(@RequestBody VwUbigeoFilter vwUbigeoFilter) {
+		List<VwUbigeo> result;
+		result = vistasService.findUbigeo(vwUbigeoFilter);
+		if (result == null)
+			result = new ArrayList<>();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-	
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/findConcursoContrata", method = RequestMethod.POST)
-    public @ResponseBody
-    ResponseEntity<List<VwConcursoContrata>> findConcursoContrata(@RequestBody VwConcursoContrataFilter vwConcursoContrataFilter) {
-        List<VwConcursoContrata> result;
-        result = vistasService.findConcursoContrata(vwConcursoContrataFilter);
-        if (result == null)
-            result = new ArrayList<>();
+	public @ResponseBody ResponseEntity<List<VwConcursoContrata>> findConcursoContrata(@RequestBody VwConcursoContrataFilter vwConcursoContrataFilter) {
+		List<VwConcursoContrata> result;
+		result = vistasService.findConcursoContrata(vwConcursoContrataFilter);
+		if (result == null)
+			result = new ArrayList<>();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-	
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/findBandejaPagoAdelantoContrata", method = RequestMethod.POST)
-    public @ResponseBody
-    ResponseEntity<List<VwBandejaPagoAdelantoContrata>> findBandejaPagoAdelantoContrata() {
-        List<VwBandejaPagoAdelantoContrata> result;
-        result = vistasService.findBandejaPagoAdelantoContrata(null);
-        if (result == null)
-            result = new ArrayList<>();
+	public @ResponseBody ResponseEntity<List<VwBandejaPagoAdelantoContrata>> findBandejaPagoAdelantoContrata() {
+		List<VwBandejaPagoAdelantoContrata> result;
+		result = vistasService.findBandejaPagoAdelantoContrata(null);
+		if (result == null)
+			result = new ArrayList<>();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-	
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/findBandejaAdelantoRechazadoContrata", method = RequestMethod.POST)
-    public @ResponseBody
-    ResponseEntity<List<VwBandejaAdelantoRechazadoContrata>> findBandejaAdelantoRechazadoContrata() {
-        List<VwBandejaAdelantoRechazadoContrata> result;
-        result = vistasService.findBandejaAdelantoRechazadoContrata(null);
-        if (result == null)
-            result = new ArrayList<>();
+	public @ResponseBody ResponseEntity<List<VwBandejaAdelantoRechazadoContrata>> findBandejaAdelantoRechazadoContrata() {
+		List<VwBandejaAdelantoRechazadoContrata> result;
+		result = vistasService.findBandejaAdelantoRechazadoContrata(null);
+		if (result == null)
+			result = new ArrayList<>();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-	
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/findBandejaSolicitudAdelantoContrata", method = RequestMethod.POST)
-    public @ResponseBody
-    ResponseEntity<List<VwBandejaSolicitudAdelantoContrata>> findBandejaSolicitudAdelantoContrata() {
-        List<VwBandejaSolicitudAdelantoContrata> result;
-        result = vistasService.findBandejaSolicitudAdelantoContrata(null);
-        if (result == null)
-            result = new ArrayList<>();
+	public @ResponseBody ResponseEntity<List<VwBandejaSolicitudAdelantoContrata>> findBandejaSolicitudAdelantoContrata() {
+		List<VwBandejaSolicitudAdelantoContrata> result;
+		result = vistasService.findBandejaSolicitudAdelantoContrata(null);
+		if (result == null)
+			result = new ArrayList<>();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-	
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/findBandejaLiquidacionContrata", method = RequestMethod.POST)
-    public @ResponseBody
-    ResponseEntity<List<VwBandejaLiquidacionContrata>> findBandejaLiquidacionContrata() {
-        List<VwBandejaLiquidacionContrata> result;
-        result = vistasService.findBandejaLiquidacionContrata(null);
-        if (result == null)
-            result = new ArrayList<>();
+	public @ResponseBody ResponseEntity<List<VwBandejaLiquidacionContrata>> findBandejaLiquidacionContrata() {
+		List<VwBandejaLiquidacionContrata> result;
+		result = vistasService.findBandejaLiquidacionContrata(null);
+		if (result == null)
+			result = new ArrayList<>();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-	
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/findSeguimientoActaContrata", method = RequestMethod.POST)
-    public @ResponseBody
-    ResponseEntity<List<VwSeguimientoActaContrata>> findSeguimientoActaContrata(@RequestBody VwSeguimientoActaContrataFilter vwSeguimientoActaContrataFilter) {
-        List<VwSeguimientoActaContrata> result;
-        result = vistasService.findSeguimientoActaContrata(vwSeguimientoActaContrataFilter);
-        if (result == null)
-            result = new ArrayList<>();
+	public @ResponseBody ResponseEntity<List<VwSeguimientoActaContrata>> findSeguimientoActaContrata(@RequestBody VwSeguimientoActaContrataFilter vwSeguimientoActaContrataFilter) {
+		List<VwSeguimientoActaContrata> result;
+		result = vistasService.findSeguimientoActaContrata(vwSeguimientoActaContrataFilter);
+		if (result == null)
+			result = new ArrayList<>();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-	
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/findAdelantoPagadoContrata", method = RequestMethod.POST)
-    public @ResponseBody
-    ResponseEntity<List<VwAdelantoPagadoContrata>> findAdelantoPagadoContrata(@RequestBody VwAdelantoPagadoContrataFilter vwAdelantoPagadoContrataFilter) {
-        List<VwAdelantoPagadoContrata> result;
-        result = vistasService.findAdelantoPagadoContrata(vwAdelantoPagadoContrataFilter);
-        if (result == null)
-            result = new ArrayList<>();
+	public @ResponseBody ResponseEntity<List<VwAdelantoPagadoContrata>> findAdelantoPagadoContrata(@RequestBody VwAdelantoPagadoContrataFilter vwAdelantoPagadoContrataFilter) {
+		List<VwAdelantoPagadoContrata> result;
+		result = vistasService.findAdelantoPagadoContrata(vwAdelantoPagadoContrataFilter);
+		if (result == null)
+			result = new ArrayList<>();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-	
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/findPagoContrata", method = RequestMethod.POST)
-    public @ResponseBody
-    ResponseEntity<List<VwPagoContrata>> findPagoContrata(@RequestBody VwPagoContrataFilter vwPagoContrataFilter) {
-        List<VwPagoContrata> result;
-        result = vistasService.findPagoContrata(vwPagoContrataFilter);
-        if (result == null)
-            result = new ArrayList<>();
+	public @ResponseBody ResponseEntity<List<VwPagoContrata>> findPagoContrata(@RequestBody VwPagoContrataFilter vwPagoContrataFilter) {
+		List<VwPagoContrata> result;
+		result = vistasService.findPagoContrata(vwPagoContrataFilter);
+		if (result == null)
+			result = new ArrayList<>();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-	
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/findLiquidacionContrata", method = RequestMethod.POST)
-    public @ResponseBody
-    ResponseEntity<List<VwLiquidacionContrata>> findLiquidacionContrata(@RequestBody VwLiquidacionContrataFilter vwLiquidacionContrataFilter) {
-        List<VwLiquidacionContrata> result;
-        result = vistasService.findLiquidacionContrata(vwLiquidacionContrataFilter);
-        if (result == null)
-            result = new ArrayList<>();
+	public @ResponseBody ResponseEntity<List<VwLiquidacionContrata>> findLiquidacionContrata(@RequestBody VwLiquidacionContrataFilter vwLiquidacionContrataFilter) {
+		List<VwLiquidacionContrata> result;
+		result = vistasService.findLiquidacionContrata(vwLiquidacionContrataFilter);
+		if (result == null)
+			result = new ArrayList<>();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-	
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/findAdelantoContrata", method = RequestMethod.POST)
-    public @ResponseBody
-    ResponseEntity<List<VwAdelantoContrata>> findAdelantoContrata(@RequestBody VwAdelantoContrataFilter vwAdelantoContrataFilter) {
-        List<VwAdelantoContrata> result;
-        result = vistasService.findAdelantoContrata(vwAdelantoContrataFilter);
-        if (result == null)
-            result = new ArrayList<>();
+	public @ResponseBody ResponseEntity<List<VwAdelantoContrata>> findAdelantoContrata(@RequestBody VwAdelantoContrataFilter vwAdelantoContrataFilter) {
+		List<VwAdelantoContrata> result;
+		result = vistasService.findAdelantoContrata(vwAdelantoContrataFilter);
+		if (result == null)
+			result = new ArrayList<>();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-	
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/findBandejaCrm", method = RequestMethod.POST)
-    public @ResponseBody
-    ResponseEntity<List<VwBandejaCrm>> findBandejaCrm() {
-        List<VwBandejaCrm> result;
-        result = vistasService.findBandejaCrm(null);
-        if (result == null)
-            result = new ArrayList<>();
+	public @ResponseBody ResponseEntity<List<VwBandejaCrm>> findBandejaCrm() {
+		List<VwBandejaCrm> result;
+		result = vistasService.findBandejaCrm(null);
+		if (result == null)
+			result = new ArrayList<>();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-	
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/findCrm", method = RequestMethod.POST)
-    public @ResponseBody
-    ResponseEntity<List<VwCrm>> findCrm(@RequestBody VwCrmFilter vwCrmFilter) {
-        List<VwCrm> result;
-        result = vistasService.findCrm(vwCrmFilter);
-        if (result == null)
-            result = new ArrayList<>();
+	public @ResponseBody ResponseEntity<List<VwCrm>> findCrm(@RequestBody VwCrmFilter vwCrmFilter) {
+		List<VwCrm> result;
+		result = vistasService.findCrm(vwCrmFilter);
+		if (result == null)
+			result = new ArrayList<>();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-	
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/findBandejaSolicitudCajaChica", method = RequestMethod.POST)
-    public @ResponseBody
-    ResponseEntity<List<VwBandejaSolicitudCajaChica>> findBandejaSolicitudCajaChica(@RequestBody VwBandejaSolicitudCajaChicaFilter filter) {
-        List<VwBandejaSolicitudCajaChica> result;
-        result = vistasService.findBandejaSolicitudCajaChica(filter);
-        if (result == null)
-            result = new ArrayList<>();
+	public @ResponseBody ResponseEntity<List<VwBandejaSolicitudCajaChica>> findBandejaSolicitudCajaChica(@RequestBody VwBandejaSolicitudCajaChicaFilter filter) {
+		List<VwBandejaSolicitudCajaChica> result;
+		result = vistasService.findBandejaSolicitudCajaChica(filter);
+		if (result == null)
+			result = new ArrayList<>();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-	
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/findBandejaDepositoCajaChica", method = RequestMethod.POST)
-    public @ResponseBody
-    ResponseEntity<List<VwBandejaDepositoCajaChica>> findBandejaDepositoCajaChica(@RequestBody VwBandejaDepositoCajaChicaFilter filter) {
-        List<VwBandejaDepositoCajaChica> result;
-        result = vistasService.findBandejaDepositoCajaChica(filter);
-        if (result == null)
-            result = new ArrayList<>();
+	public @ResponseBody ResponseEntity<List<VwBandejaDepositoCajaChica>> findBandejaDepositoCajaChica(@RequestBody VwBandejaDepositoCajaChicaFilter filter) {
+		List<VwBandejaDepositoCajaChica> result;
+		result = vistasService.findBandejaDepositoCajaChica(filter);
+		if (result == null)
+			result = new ArrayList<>();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-	
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/findBandejaRendicionCajaChica", method = RequestMethod.POST)
-    public @ResponseBody
-    ResponseEntity<List<VwBandejaRendicionCajaChica>> findBandejaRendicionCajaChica(@RequestBody VwBandejaRendicionCajaChicaFilter filter) {
-        List<VwBandejaRendicionCajaChica> result;
-        result = vistasService.findBandejaRendicionCajaChica(filter);
-        if (result == null)
-            result = new ArrayList<>();
+	public @ResponseBody ResponseEntity<List<VwBandejaRendicionCajaChica>> findBandejaRendicionCajaChica(@RequestBody VwBandejaRendicionCajaChicaFilter filter) {
+		List<VwBandejaRendicionCajaChica> result;
+		result = vistasService.findBandejaRendicionCajaChica(filter);
+		if (result == null)
+			result = new ArrayList<>();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-	
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/findRendicionCajaChica", method = RequestMethod.POST)
-    public @ResponseBody
-    ResponseEntity<List<VwRendicionCajaChica>> findRendicionCajaChica(@RequestBody VwRendicionCajaChicaFilter filter) {
-        List<VwRendicionCajaChica> result;
-        result = vistasService.findRendicionCajaChica(filter);
-        if (result == null)
-            result = new ArrayList<>();
+	public @ResponseBody ResponseEntity<List<VwRendicionCajaChica>> findRendicionCajaChica(@RequestBody VwRendicionCajaChicaFilter filter) {
+		List<VwRendicionCajaChica> result;
+		result = vistasService.findRendicionCajaChica(filter);
+		if (result == null)
+			result = new ArrayList<>();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-	
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/findDetalleRendicionCajaChica", method = RequestMethod.POST)
-    public @ResponseBody
-    ResponseEntity<List<VwDetalleRendicionCajaChica>> findDetalleRendicionCajaChica(@RequestBody VwDetalleRendicionCajaChicaFilter filter) {
-        List<VwDetalleRendicionCajaChica> result;
-        result = vistasService.findDetalleRendicionCajaChica(filter);
-        if (result == null)
-            result = new ArrayList<>();
+	public @ResponseBody ResponseEntity<List<VwDetalleRendicionCajaChica>> findDetalleRendicionCajaChica(@RequestBody VwDetalleRendicionCajaChicaFilter filter) {
+		List<VwDetalleRendicionCajaChica> result;
+		result = vistasService.findDetalleRendicionCajaChica(filter);
+		if (result == null)
+			result = new ArrayList<>();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-	
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/findBandejaReembolsoDescuentoCajaChica", method = RequestMethod.POST)
-    public @ResponseBody
-    ResponseEntity<List<VwBandejaReembolsoDescuentoCajaChica>> findBandejaReembolsoDescuentoCajaChica(@RequestBody VwBandejaReembolsoDescuentoCajaChicaFilter filter) {
-        List<VwBandejaReembolsoDescuentoCajaChica> result;
-        result = vistasService.findBandejaReembolsoDescuentoCajaChica(filter);
-        if (result == null)
-            result = new ArrayList<>();
+	public @ResponseBody ResponseEntity<List<VwBandejaReembolsoDescuentoCajaChica>> findBandejaReembolsoDescuentoCajaChica(
+			@RequestBody VwBandejaReembolsoDescuentoCajaChicaFilter filter) {
+		List<VwBandejaReembolsoDescuentoCajaChica> result;
+		result = vistasService.findBandejaReembolsoDescuentoCajaChica(filter);
+		if (result == null)
+			result = new ArrayList<>();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-	
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/findBandejaAprobadoCajaChica", method = RequestMethod.POST)
-    public @ResponseBody
-    ResponseEntity<List<VwBandejaAprobadoCajaChica>> findBandejaAprobadoCajaChica(@RequestBody VwBandejaAprobadoCajaChicaFilter filter) {
-        List<VwBandejaAprobadoCajaChica> result;
-        result = vistasService.findBandejaAprobadoCajaChica(filter);
-        if (result == null)
-            result = new ArrayList<>();
+	public @ResponseBody ResponseEntity<List<VwBandejaAprobadoCajaChica>> findBandejaAprobadoCajaChica(@RequestBody VwBandejaAprobadoCajaChicaFilter filter) {
+		List<VwBandejaAprobadoCajaChica> result;
+		result = vistasService.findBandejaAprobadoCajaChica(filter);
+		if (result == null)
+			result = new ArrayList<>();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-	
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/findBandejaRechazoCajaChica", method = RequestMethod.POST)
-    public @ResponseBody
-    ResponseEntity<List<VwBandejaRechazoCajaChica>> findBandejaRechazoCajaChica(@RequestBody VwBandejaRechazoCajaChicaFilter filter) {
-        List<VwBandejaRechazoCajaChica> result;
-        result = vistasService.findBandejaRechazoCajaChica(filter);
-        if (result == null)
-            result = new ArrayList<>();
+	public @ResponseBody ResponseEntity<List<VwBandejaRechazoCajaChica>> findBandejaRechazoCajaChica(@RequestBody VwBandejaRechazoCajaChicaFilter filter) {
+		List<VwBandejaRechazoCajaChica> result;
+		result = vistasService.findBandejaRechazoCajaChica(filter);
+		if (result == null)
+			result = new ArrayList<>();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-	
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/findBandejaAsignacionCierreEconomico", method = RequestMethod.POST)
-    public @ResponseBody
-    ResponseEntity<List<VwBandejaAsignacionCierreEconomico>> findBandejaAsignacionCierreEconomico(@RequestBody VwBandejaAsignacionCierreEconomicoFilter filter) {
-        List<VwBandejaAsignacionCierreEconomico> result;
-        result = vistasService.findBandejaAsignacionCierreEconomico(filter);
-        if (result == null)
-            result = new ArrayList<>();
+	public @ResponseBody ResponseEntity<List<VwBandejaAsignacionCierreEconomico>> findBandejaAsignacionCierreEconomico(
+			@RequestBody VwBandejaAsignacionCierreEconomicoFilter filter) {
+		List<VwBandejaAsignacionCierreEconomico> result;
+		result = vistasService.findBandejaAsignacionCierreEconomico(filter);
+		if (result == null)
+			result = new ArrayList<>();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-	
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/findBandejaCierreEconomico", method = RequestMethod.POST)
-    public @ResponseBody
-    ResponseEntity<List<VwBandejaCierreEconomico>> findBandejaCierreEconomico(@RequestBody VwBandejaCierreEconomicoFilter filter) {
-        List<VwBandejaCierreEconomico> result;
-        result = vistasService.findBandejaCierreEconomico(filter);
-        if (result == null)
-            result = new ArrayList<>();
+	public @ResponseBody ResponseEntity<List<VwBandejaCierreEconomico>> findBandejaCierreEconomico(@RequestBody VwBandejaCierreEconomicoFilter filter) {
+		List<VwBandejaCierreEconomico> result;
+		result = vistasService.findBandejaCierreEconomico(filter);
+		if (result == null)
+			result = new ArrayList<>();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-	
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/findControlDocumentario", method = RequestMethod.POST)
-    public @ResponseBody
-    ResponseEntity<List<VwControlDocumentario>> findControlDocumentario(@RequestBody VwControlDocumentarioFilter filter) {
-        List<VwControlDocumentario> result;
-        result = vistasService.findControlDocumentario(filter);
-        if (result == null)
-            result = new ArrayList<>();
+	public @ResponseBody ResponseEntity<List<VwControlDocumentario>> findControlDocumentario(@RequestBody VwControlDocumentarioFilter filter) {
+		List<VwControlDocumentario> result;
+		result = vistasService.findControlDocumentario(filter);
+		if (result == null)
+			result = new ArrayList<>();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-	
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/findReporteEconomico", method = RequestMethod.POST)
+	public @ResponseBody ResponseEntity<ReporteEconomico> findReporteEconomico(@RequestBody VwReporteEconomicoFilter filter) {
+		ReporteEconomico reporteEconomico = new ReporteEconomico();
+		List<VwReporteEconomico> vwReporteEconomico = vistasService.findReporteEconomico(filter);
+		VwReporteEconomicoDetalleContrataFilter vwReporteEconomicoDetalleContrataFilter = new VwReporteEconomicoDetalleContrataFilter();
+		vwReporteEconomicoDetalleContrataFilter.setCodigoDSite(filter.getCodigoDSite());
+		List<VwReporteEconomicoDetalleContrata> vwDetalleReporteEconomico = vistasService.findReporteEconomicoDetalleContrata(vwReporteEconomicoDetalleContrataFilter);
+
+		if (vwReporteEconomico.size() > 0 && vwDetalleReporteEconomico.size() > 0) {
+			reporteEconomico.setReporteEconomico(vwReporteEconomico.get(0));
+			reporteEconomico.setDetalleReporteEconomico(vwDetalleReporteEconomico.get(0));
+		}
+		else {
+			reporteEconomico = null;
+		}
+
+		return new ResponseEntity<>(reporteEconomico, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/findDocumentosAdjuntos", method = RequestMethod.POST)
-    public @ResponseBody
-    ResponseEntity<List<VwDocumentosAdjuntos>> findDocumentosAdjuntos(@RequestBody VwDocumentosAdjuntosFilter filter) {
-        List<VwDocumentosAdjuntos> result;
-        result = vistasService.findDocumentosAdjuntos(filter);
-        if (result == null)
-            result = new ArrayList<>();
+	public @ResponseBody ResponseEntity<List<VwDocumentosAdjuntos>> findDocumentosAdjuntos(@RequestBody VwDocumentosAdjuntosFilter filter) {
+		List<VwDocumentosAdjuntos> result;
+		result = vistasService.findDocumentosAdjuntos(filter);
+		if (result == null)
+			result = new ArrayList<>();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/findDepositosViatico", method = RequestMethod.POST)
+	public @ResponseBody ResponseEntity<List<VwDepositosViatico>> findDepositosViatico(@RequestBody VwDepositosViaticoFilter filter) {
+		List<VwDepositosViatico> result;
+		result = vistasService.findDepositosViatico(filter);
+		if (result == null)
+			result = new ArrayList<>();
+
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/findDepositosCaja", method = RequestMethod.POST)
+	public @ResponseBody ResponseEntity<List<VwDepositosCaja>> findDepositosCaja(@RequestBody VwDepositosCajaFilter filter) {
+		List<VwDepositosCaja> result;
+		result = vistasService.findDepositosCaja(filter);
+		if (result == null)
+			result = new ArrayList<>();
+
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/findResumenRendicionCajaChica", method = RequestMethod.POST)
+	public @ResponseBody ResponseEntity<List<VwResumenRendicionCajaChica>> findResumenRendicionCajaChica(@RequestBody VwResumenRendicionCajaChicaFilter filter) {
+		List<VwResumenRendicionCajaChica> result;
+		result = vistasService.findResumenRendicionCajaChica(filter);
+		if (result == null)
+			result = new ArrayList<>();
+
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
 }

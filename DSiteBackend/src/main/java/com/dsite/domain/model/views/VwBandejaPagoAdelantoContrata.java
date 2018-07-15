@@ -23,7 +23,14 @@ public class VwBandejaPagoAdelantoContrata implements Serializable {
     private Integer idContrata;
     private Integer idContratasObra;
     private Integer idPagosContrata;
+    private String idTGTipoSolicitud;
     
+	public String getIdTGTipoSolicitud() {
+		return idTGTipoSolicitud;
+	}
+	public void setIdTGTipoSolicitud(String idTGTipoSolicitud) {
+		this.idTGTipoSolicitud = idTGTipoSolicitud;
+	}
 	public Integer getIdObra() {
 		return idObra;
 	}

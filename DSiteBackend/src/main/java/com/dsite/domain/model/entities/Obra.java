@@ -199,6 +199,10 @@ public class Obra implements Serializable {
 	// bi-directional many-to-one association to PresupuestoObra
 	@OneToMany(mappedBy = "obra")
 	private List<PresupuestoObra> presupuestoObras;
+	
+	private BigDecimal importeTotalPresupuestadoContrata;
+	
+	private BigDecimal importeTotalPagosContrata;
 
 	public Obra() {
 	}
@@ -691,4 +695,19 @@ public class Obra implements Serializable {
 		return presupuestoObra;
 	}
 
+	public BigDecimal getImporteTotalPresupuestadoContrata() {
+		return importeTotalPresupuestadoContrata;
+	}
+
+	public void setImporteTotalPresupuestadoContrata(BigDecimal importeTotalPresupuestadoContrata) {
+		this.importeTotalPresupuestadoContrata = importeTotalPresupuestadoContrata;
+	}
+
+	public BigDecimal getImporteTotalPagosContrata() {
+		return importeTotalPagosContrata;
+	}
+
+	public void setImporteTotalPagosContrata(BigDecimal importeTotalPagosContrata) {
+		this.importeTotalPagosContrata = importeTotalPagosContrata;
+	}
 }

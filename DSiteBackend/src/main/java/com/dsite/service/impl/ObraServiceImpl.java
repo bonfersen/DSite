@@ -140,7 +140,7 @@ public class ObraServiceImpl implements ObraService {
 		return jsonResult;
 	}
 
-	@Override
+	@Transactional
 	public JsonResult updateObra(ObraDTO obraDTO) {
 		Obra obraEntidad = new Obra();
 		JsonResult jsonResult = new JsonResult();

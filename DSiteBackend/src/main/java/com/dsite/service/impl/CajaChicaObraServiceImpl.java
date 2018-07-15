@@ -159,7 +159,7 @@ public class CajaChicaObraServiceImpl implements CajaChicaObraService {
 				
 				cajaChicaObraDTO.setFechaRechazo(cajaChicaObraEntity.getFechaRechazo());
 				break;
-			case DSiteCoreConstants.ESTADO_CAJA_CHICA_DEPOSITADO:
+			case DSiteCoreConstants.ESTADO_CAJA_CHICA_DEPOSITADO://getIdUsuarioPago
 				break;
 			case DSiteCoreConstants.ESTADO_CAJA_CHICA_ASIGNADO:
 				break;

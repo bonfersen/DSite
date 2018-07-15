@@ -16,7 +16,8 @@ public class VwBandejaReembolsoDescuentoCajaChica implements Serializable {
     private BigDecimal importeReembolsoDescuento;
     private Date fechaReembolso;
     private Date fechaDescuento;
-    private String empleadoSustentador;
+    private Integer idEmpleadoSustentador;
+    private String empleadoSustentador;    
     private String idTGTipoCaja;
     private String tipoCaja;
     private Integer idRendicionCajaChica;
@@ -119,5 +120,11 @@ public class VwBandejaReembolsoDescuentoCajaChica implements Serializable {
 	}
 	public void setCodigoDSite(String codigoDSite) {
 		this.codigoDSite = codigoDSite;
+	}
+	public Integer getIdEmpleadoSustentador() {
+		return idEmpleadoSustentador;
+	}
+	public void setIdEmpleadoSustentador(Integer idEmpleadoSustentador) {
+		this.idEmpleadoSustentador = idEmpleadoSustentador;
 	}
 }

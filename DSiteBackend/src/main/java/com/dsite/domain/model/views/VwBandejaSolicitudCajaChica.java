@@ -24,6 +24,12 @@ public class VwBandejaSolicitudCajaChica implements Serializable{
     private String idTGEstadoCajaChica;
     private Date fechaAprobacion;
     private String motivoRechazo;
+    private String empleadoSustentador;
+    private String empleadoBeneficiario;
+    private String tipoCaja;
+    private String estadoCajaChica;
+    private Integer idCajaChicaObra;
+    private Integer idObra;
     
 	public String getNombreReal() {
 		return nombreReal;
@@ -120,5 +126,41 @@ public class VwBandejaSolicitudCajaChica implements Serializable{
 	}
 	public void setMotivoRechazo(String motivoRechazo) {
 		this.motivoRechazo = motivoRechazo;
+	}
+	public String getEmpleadoSustentador() {
+		return empleadoSustentador;
+	}
+	public void setEmpleadoSustentador(String empleadoSustentador) {
+		this.empleadoSustentador = empleadoSustentador;
+	}
+	public String getEmpleadoBeneficiario() {
+		return empleadoBeneficiario;
+	}
+	public void setEmpleadoBeneficiario(String empleadoBeneficiario) {
+		this.empleadoBeneficiario = empleadoBeneficiario;
+	}
+	public String getTipoCaja() {
+		return tipoCaja;
+	}
+	public void setTipoCaja(String tipoCaja) {
+		this.tipoCaja = tipoCaja;
+	}
+	public String getEstadoCajaChica() {
+		return estadoCajaChica;
+	}
+	public void setEstadoCajaChica(String estadoCajaChica) {
+		this.estadoCajaChica = estadoCajaChica;
+	}
+	public Integer getIdCajaChicaObra() {
+		return idCajaChicaObra;
+	}
+	public void setIdCajaChicaObra(Integer idCajaChicaObra) {
+		this.idCajaChicaObra = idCajaChicaObra;
+	}
+	public Integer getIdObra() {
+		return idObra;
+	}
+	public void setIdObra(Integer idObra) {
+		this.idObra = idObra;
 	}
 }

@@ -58,6 +58,16 @@ public class DSiteCoreConstants {
 	public final static String TIPO_ENVIO_CUSTOMER_SERVICE_ACTAFINAL = "TECS004";
 	
 	/**
+	 * ESTADO_RENDICION
+	 */
+	public final static String ESTADO_RENDICION_POR_RENDIR = "ESRE001";
+	public final static String ESTADO_RENDICION_PENDIENTE = "ESRE002";
+	public final static String ESTADO_RENDICION_REEMBOLSADO = "ESRE003";
+	public final static String ESTADO_RENDICION_DESCUENTO= "ESRE004";
+	public final static String ESTADO_RENDICION_DESCONTADO = "ESRE005";
+	public final static String ESTADO_RENDICION_COMPLETADO = "ESRE006";
+	
+	/**
 	 * Cadenas numericas y decimales
 	 */
 	public static final String CERO_CADENA = "0";	

@@ -119,6 +119,10 @@ public class ObraDTO {
 	private int idUsuarioFinalizacion;
 
 	private List<PresupuestoObraDTO> presupuestoObras;
+	
+	private BigDecimal importeTotalPresupuestadoContrata;
+	
+	private BigDecimal importeTotalPagosContrata;
 
 	public int getIdObra() {
 		return idObra;
@@ -550,5 +554,21 @@ public class ObraDTO {
 
 	public void setPresupuestoObras(List<PresupuestoObraDTO> presupuestoObras) {
 		this.presupuestoObras = presupuestoObras;
+	}
+
+	public BigDecimal getImporteTotalPresupuestadoContrata() {
+		return importeTotalPresupuestadoContrata;
+	}
+
+	public void setImporteTotalPresupuestadoContrata(BigDecimal importeTotalPresupuestadoContrata) {
+		this.importeTotalPresupuestadoContrata = importeTotalPresupuestadoContrata;
+	}
+
+	public BigDecimal getImporteTotalPagosContrata() {
+		return importeTotalPagosContrata;
+	}
+
+	public void setImporteTotalPagosContrata(BigDecimal importeTotalPagosContrata) {
+		this.importeTotalPagosContrata = importeTotalPagosContrata;
 	}
 }

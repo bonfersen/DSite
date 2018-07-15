@@ -21,7 +21,7 @@ public class VwDetalleRendicionCajaChica implements Serializable {
     private Integer idResumenRendicionCajaChica;
     private Integer idRendicion;
     private String codigoRendicion;
-    private String codigoDSite;
+    private String idTGTipoRendicion;
     
 	public Date getFechaComprobanteCajaViatico() {
 		return fechaComprobanteCajaViatico;
@@ -107,10 +107,10 @@ public class VwDetalleRendicionCajaChica implements Serializable {
 	public void setCodigoRendicion(String codigoRendicion) {
 		this.codigoRendicion = codigoRendicion;
 	}
-	public String getCodigoDSite() {
-		return codigoDSite;
+	public String getIdTGTipoRendicion() {
+		return idTGTipoRendicion;
 	}
-	public void setCodigoDSite(String codigoDSite) {
-		this.codigoDSite = codigoDSite;
+	public void setIdTGTipoRendicion(String idTGTipoRendicion) {
+		this.idTGTipoRendicion = idTGTipoRendicion;
 	}
 }

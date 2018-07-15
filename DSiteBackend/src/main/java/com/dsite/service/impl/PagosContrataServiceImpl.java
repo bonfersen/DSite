@@ -78,11 +78,13 @@ public class PagosContrataServiceImpl implements PagosContrataService {
 			importePresupuestoObra = contratasObra.getImportePresupuestoObra();
 			porcentajeAdelanto = pagosContrataEntity.getPorcentajeAdelanto();			
 			//importeAdelanto = (importePresupuestoObra.multiply(porcentajeAdelanto)).divide(new BigDecimal(DSiteCoreConstants.CIEN_CADENA));
-			importeAdelanto = importePresupuestoObra.multiply(porcentajeAdelanto);
+			if (ValidateUtil.isNotEmpty(pagosContrataDTO.getImporteAdelanto()))
+				importeAdelanto = pagosContrataDTO.getImporteAdelanto();
+			else	
+				importeAdelanto = importePresupuestoObra.multiply(porcentajeAdelanto);
 			pagosContrataEntity.setImporteAdelanto(importeAdelanto);
 			pagosContrataEntity.setPorcentajeAdelanto(porcentajeAdelanto);
 		}
-		//.setScale(4, RoundingMode.HALF_UP)
 		createUpdatePagosContrata(pagosContrataDTO, pagosContrataEntity);
 	}
 

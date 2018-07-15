@@ -1,40 +1,25 @@
-package com.dsite.domain.model.entities;
+package com.dsite.dto.model;
 
-import java.io.Serializable;
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-/**
- * The persistent class for the resumenRendicionCajaChica database table.
- * 
- */
-@Entity
-@Table(name = "resumenRendicionCajaChica")
-@NamedQuery(name = "ResumenRendicionCajaChica.findAll", query = "SELECT r FROM ResumenRendicionCajaChica r")
-public class ResumenRendicionCajaChica implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class ResumenRendicionCajaChicaDTO {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idResumenRendicionCajaChica;
 
+	private int idEmpleadoSustentador;
+	
 	private String codigoRendicion;
 
-	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaCreacion;
 
-	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaDescuento;
 
-	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaImpresion;
 
-	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaModificacion;
 
-	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaReembolso;
 
 	private BigDecimal importeAbonoCaja;
@@ -55,26 +40,13 @@ public class ResumenRendicionCajaChica implements Serializable {
 
 	private String usuarioModificacion;
 
-	// bi-directional many-to-one association to RendicionCajaChica
-	@OneToMany(mappedBy = "resumenRendicionCajaChica")
-	private List<RendicionCajaChica> rendicionCajaChicas;
+	private List<RendicionCajaChicaDTO> rendicionCajaChicas;
 
-	// bi-directional many-to-one association to TablaGeneral
-	@ManyToOne
-	@JoinColumn(name = "idTGEstadoRendicion")
-	private TablaGeneral tablaGeneralEstadoRendicion;
+	private String idTGEstadoRendicion;
 
-	// bi-directional many-to-one association to Usuario
-	@ManyToOne
-	@JoinColumn(name = "idUsuarioImpresion")
-	private Usuario usuarioImpresion;
+	private Integer idUsuarioImpresion;
 
-	// bi-directional many-to-one association to Empleado
-	@ManyToOne
-	@JoinColumn(name = "idEmpleadoSustentador")
-	private Empleado empleadoSustentador;
-
-	public ResumenRendicionCajaChica() {
+	public ResumenRendicionCajaChicaDTO() {
 	}
 
 	public int getIdResumenRendicionCajaChica() {
@@ -205,49 +177,35 @@ public class ResumenRendicionCajaChica implements Serializable {
 		this.usuarioModificacion = usuarioModificacion;
 	}
 
-	public List<RendicionCajaChica> getRendicionCajaChicas() {
+	public List<RendicionCajaChicaDTO> getRendicionCajaChicas() {
 		return this.rendicionCajaChicas;
 	}
 
-	public void setRendicionCajaChicas(List<RendicionCajaChica> rendicionCajaChicas) {
+	public void setRendicionCajaChicas(List<RendicionCajaChicaDTO> rendicionCajaChicas) {
 		this.rendicionCajaChicas = rendicionCajaChicas;
 	}
 
-	public RendicionCajaChica addRendicionCajaChica(RendicionCajaChica rendicionCajaChica) {
-		getRendicionCajaChicas().add(rendicionCajaChica);
-		rendicionCajaChica.setResumenRendicionCajaChica(this);
-
-		return rendicionCajaChica;
+	public String getIdTGEstadoRendicion() {
+		return idTGEstadoRendicion;
 	}
 
-	public RendicionCajaChica removeRendicionCajaChica(RendicionCajaChica rendicionCajaChica) {
-		getRendicionCajaChicas().remove(rendicionCajaChica);
-		rendicionCajaChica.setResumenRendicionCajaChica(null);
-
-		return rendicionCajaChica;
+	public void setIdTGEstadoRendicion(String idTGEstadoRendicion) {
+		this.idTGEstadoRendicion = idTGEstadoRendicion;
 	}
 
-	public TablaGeneral getTablaGeneralEstadoRendicion() {
-		return this.tablaGeneralEstadoRendicion;
+	public Integer getIdUsuarioImpresion() {
+		return idUsuarioImpresion;
 	}
 
-	public void setTablaGeneralEstadoRendicion(TablaGeneral tablaGeneralEstadoRendicion) {
-		this.tablaGeneralEstadoRendicion = tablaGeneralEstadoRendicion;
+	public void setIdUsuarioImpresion(Integer idUsuarioImpresion) {
+		this.idUsuarioImpresion = idUsuarioImpresion;
 	}
 
-	public Usuario getUsuarioImpresion() {
-		return this.usuarioImpresion;
+	public int getIdEmpleadoSustentador() {
+		return idEmpleadoSustentador;
 	}
 
-	public void setUsuarioImpresion(Usuario usuarioImpresion) {
-		this.usuarioImpresion = usuarioImpresion;
-	}
-
-	public Empleado getEmpleadoSustentador() {
-		return empleadoSustentador;
-	}
-
-	public void setEmpleadoSustentador(Empleado empleadoSustentador) {
-		this.empleadoSustentador = empleadoSustentador;
+	public void setIdEmpleadoSustentador(int idEmpleadoSustentador) {
+		this.idEmpleadoSustentador = idEmpleadoSustentador;
 	}
 }

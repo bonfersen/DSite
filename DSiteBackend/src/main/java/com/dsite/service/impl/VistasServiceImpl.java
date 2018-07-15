@@ -30,6 +30,8 @@ import com.dsite.domain.model.views.VwBudget;
 import com.dsite.domain.model.views.VwConcursoContrata;
 import com.dsite.domain.model.views.VwControlDocumentario;
 import com.dsite.domain.model.views.VwCrm;
+import com.dsite.domain.model.views.VwDepositosCaja;
+import com.dsite.domain.model.views.VwDepositosViatico;
 import com.dsite.domain.model.views.VwDetalleRendicionCajaChica;
 import com.dsite.domain.model.views.VwDocumentosAdjuntos;
 import com.dsite.domain.model.views.VwLiquidacionContrata;
@@ -40,7 +42,11 @@ import com.dsite.domain.model.views.VwListaContratasAsignada;
 import com.dsite.domain.model.views.VwListaPagosContrata;
 import com.dsite.domain.model.views.VwOfertaCustomerService;
 import com.dsite.domain.model.views.VwPagoContrata;
+import com.dsite.domain.model.views.VwPanelContratas;
 import com.dsite.domain.model.views.VwRendicionCajaChica;
+import com.dsite.domain.model.views.VwReporteEconomico;
+import com.dsite.domain.model.views.VwReporteEconomicoDetalleContrata;
+import com.dsite.domain.model.views.VwResumenRendicionCajaChica;
 import com.dsite.domain.model.views.VwSeguimientoActaContrata;
 import com.dsite.domain.model.views.VwUbigeo;
 import com.dsite.dto.model.views.VwAdelantoContrataFilter;
@@ -64,6 +70,8 @@ import com.dsite.dto.model.views.VwBudgetFilter;
 import com.dsite.dto.model.views.VwConcursoContrataFilter;
 import com.dsite.dto.model.views.VwControlDocumentarioFilter;
 import com.dsite.dto.model.views.VwCrmFilter;
+import com.dsite.dto.model.views.VwDepositosCajaFilter;
+import com.dsite.dto.model.views.VwDepositosViaticoFilter;
 import com.dsite.dto.model.views.VwDetalleRendicionCajaChicaFilter;
 import com.dsite.dto.model.views.VwDocumentosAdjuntosFilter;
 import com.dsite.dto.model.views.VwLiquidacionContrataFilter;
@@ -74,7 +82,11 @@ import com.dsite.dto.model.views.VwListaContratasAsignadaFilter;
 import com.dsite.dto.model.views.VwListaPagosContrataFilter;
 import com.dsite.dto.model.views.VwOfertaCustomerServiceFilter;
 import com.dsite.dto.model.views.VwPagoContrataFilter;
+import com.dsite.dto.model.views.VwPanelContratasFilter;
 import com.dsite.dto.model.views.VwRendicionCajaChicaFilter;
+import com.dsite.dto.model.views.VwReporteEconomicoDetalleContrataFilter;
+import com.dsite.dto.model.views.VwReporteEconomicoFilter;
+import com.dsite.dto.model.views.VwResumenRendicionCajaChicaFilter;
 import com.dsite.dto.model.views.VwSeguimientoActaContrataFilter;
 import com.dsite.dto.model.views.VwUbigeoFilter;
 import com.dsite.service.intf.VistasService;
@@ -294,6 +306,41 @@ public class VistasServiceImpl implements VistasService {
 	@Override
 	public List<VwDocumentosAdjuntos> findDocumentosAdjuntos(VwDocumentosAdjuntosFilter vwDocumentosAdjuntosFilter) {
 		List<VwDocumentosAdjuntos> vwList = vistasRepository.findDocumentosAdjuntos(vwDocumentosAdjuntosFilter);
+		return vwList;
+	}
+
+	@Override
+	public List<VwReporteEconomico> findReporteEconomico(VwReporteEconomicoFilter vwReporteEconomicoFilter) {
+		List<VwReporteEconomico> vwList = vistasRepository.findReporteEconomico(vwReporteEconomicoFilter);
+		return vwList;
+	}
+	
+	public List<VwReporteEconomicoDetalleContrata> findReporteEconomicoDetalleContrata(VwReporteEconomicoDetalleContrataFilter vwReporteEconomicoDetalleContrataFilter) {
+		List<VwReporteEconomicoDetalleContrata> vwList = vistasRepository.findReporteEconomicoDetalleContrata(vwReporteEconomicoDetalleContrataFilter);
+		return vwList;
+	}
+
+	@Override
+	public List<VwPanelContratas> findPanelContratas(VwPanelContratasFilter vwPanelContratasFilter) {
+		List<VwPanelContratas> vwList = vistasRepository.findPanelContratas(vwPanelContratasFilter);
+		return vwList;
+	}
+
+	@Override
+	public List<VwDepositosViatico> findDepositosViatico(VwDepositosViaticoFilter vwDepositosViaticoFilter) {
+		List<VwDepositosViatico> vwList = vistasRepository.findDepositosViatico(vwDepositosViaticoFilter);
+		return vwList;
+	}
+
+	@Override
+	public List<VwDepositosCaja> findDepositosCaja(VwDepositosCajaFilter vwDepositosCajaFilter) {
+		List<VwDepositosCaja> vwList = vistasRepository.findDepositosCaja(vwDepositosCajaFilter);
+		return vwList;
+	}
+
+	@Override
+	public List<VwResumenRendicionCajaChica> findResumenRendicionCajaChica(VwResumenRendicionCajaChicaFilter vwResumenRendicionCajaChicaFilter) {
+		List<VwResumenRendicionCajaChica> vwList = vistasRepository.findResumenRendicionCajaChica(vwResumenRendicionCajaChicaFilter);
 		return vwList;
 	}
 }

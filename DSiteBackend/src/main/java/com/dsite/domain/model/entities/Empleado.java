@@ -80,13 +80,17 @@ public class Empleado implements Serializable {
 	private Usuario usuario;
 
 	// bi-directional many-to-one association to Obra
-	@OneToMany(mappedBy = "empleado", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "empleado", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@Access(value = AccessType.FIELD)
 	private List<Obra> obras;
 
 	// bi-directional many-to-one association to Empleadoareaobra
 	@OneToMany(mappedBy = "empleado")
 	private List<EmpleadoAreaObra> empleadoAreaObras;
+
+	// bi-directional many-to-one association to ResumenRendicionCajaChica
+	@OneToMany(mappedBy = "empleadoSustentador")
+	private List<ResumenRendicionCajaChica> resumenRendicionCajaChicas;
 
 	public Empleado() {
 	}
@@ -275,5 +279,27 @@ public class Empleado implements Serializable {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+	
+	public List<ResumenRendicionCajaChica> getResumenRendicionCajaChicas() {
+		return this.resumenRendicionCajaChicas;
+	}
+
+	public void setResumenRendicionCajaChicas(List<ResumenRendicionCajaChica> resumenRendicionCajaChicas) {
+		this.resumenRendicionCajaChicas = resumenRendicionCajaChicas;
+	}
+
+	public ResumenRendicionCajaChica addResumenRendicionCajaChica(ResumenRendicionCajaChica resumenRendicionCajaChica) {
+		getResumenRendicionCajaChicas().add(resumenRendicionCajaChica);
+		resumenRendicionCajaChica.setEmpleadoSustentador(this);
+
+		return resumenRendicionCajaChica;
+	}
+
+	public ResumenRendicionCajaChica removeResumenRendicionCajaChica(ResumenRendicionCajaChica resumenRendicionCajaChica) {
+		getResumenRendicionCajaChicas().remove(resumenRendicionCajaChica);
+		resumenRendicionCajaChica.setEmpleadoSustentador(null);
+
+		return resumenRendicionCajaChica;
 	}
 }

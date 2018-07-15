@@ -30,6 +30,8 @@ public class VwBandejaRendicionCajaChica implements Serializable {
     private String empleadoBeneficiario;
     private String tipoCaja;
     private String estadoCajaChica;
+    private Integer idCajaChicaObra;
+    private Integer idObra;
     
 	public String getNombreReal() {
 		return nombreReal;
@@ -168,5 +170,17 @@ public class VwBandejaRendicionCajaChica implements Serializable {
 	}
 	public void setEstadoCajaChica(String estadoCajaChica) {
 		this.estadoCajaChica = estadoCajaChica;
+	}
+	public Integer getIdCajaChicaObra() {
+		return idCajaChicaObra;
+	}
+	public void setIdCajaChicaObra(Integer idCajaChicaObra) {
+		this.idCajaChicaObra = idCajaChicaObra;
+	}
+	public Integer getIdObra() {
+		return idObra;
+	}
+	public void setIdObra(Integer idObra) {
+		this.idObra = idObra;
 	}
 }
