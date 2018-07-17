@@ -19,11 +19,13 @@ import com.dsite.domain.model.entities.Empleado;
 import com.dsite.domain.model.entities.Obra;
 import com.dsite.domain.model.entities.PresupuestoObra;
 import com.dsite.domain.model.entities.TablaGeneral;
+import com.dsite.domain.model.entities.Usuario;
 import com.dsite.domain.model.repository.jpa.DistritoJPARepository;
 import com.dsite.domain.model.repository.jpa.EmpleadoJPARepository;
 import com.dsite.domain.model.repository.jpa.ObraJPARepository;
 import com.dsite.domain.model.repository.jpa.PresupuestoObraJPARepository;
 import com.dsite.domain.model.repository.jpa.TablaGeneralJPARepository;
+import com.dsite.domain.model.repository.jpa.UsuarioJPARepository;
 import com.dsite.dto.model.JsonResult;
 import com.dsite.dto.model.ObraDTO;
 import com.dsite.service.intf.ObraService;
@@ -47,6 +49,9 @@ public class ObraServiceImpl implements ObraService {
 	@Autowired
 	PresupuestoObraJPARepository presupuestoObraJPARepository;
 
+	@Autowired
+	UsuarioJPARepository usuarioJPARepository;
+	
 	@Autowired
 	Mapper mapper;
 
@@ -147,9 +152,73 @@ public class ObraServiceImpl implements ObraService {
 		if (ValidateUtil.isNotEmpty(obraDTO.getIdObra()))
 			obraEntidad = obraJPARepository.findOne(obraDTO.getIdObra());
 		obraDTO.setFechaCreacion(obraEntidad.getFechaCreacion());
+		obraDTO.setUsuarioCreacion(obraEntidad.getUsuarioCreacion());
 		obraDTO.setCodigoDSite(obraEntidad.getCodigoDSite());
 		obraDTO.setCodigoCellusat(obraEntidad.getCodigoCellusat());
-				
+		/*
+		 * Validar DTO
+		 */
+		if (ValidateUtil.isEmpty(obraDTO.getCantidadContratasAsignadas()))
+			obraDTO.setCantidadContratasAsignadas(obraEntidad.getCantidadContratasAsignadas());
+		if (ValidateUtil.isEmpty(obraDTO.getCetificado()))
+			obraDTO.setCetificado(obraEntidad.getCetificado());
+		if (ValidateUtil.isEmpty(obraDTO.getCetificadoComplementaria()))
+			obraDTO.setCetificadoComplementaria(obraEntidad.getCetificadoComplementaria());
+		if (ValidateUtil.isEmpty(obraDTO.getComentario()))
+			obraDTO.setComentario(obraEntidad.getComentario());
+		if (ValidateUtil.isEmpty(obraDTO.getCoordenadaX()))
+			obraDTO.setCoordenadaX(obraEntidad.getCoordenadaX());
+		if (ValidateUtil.isEmpty(obraDTO.getCoordenadaY()))
+			obraDTO.setCoordenadaY(obraEntidad.getCoordenadaY());
+		if (ValidateUtil.isEmpty(obraDTO.getDireccion()))
+			obraDTO.setDireccion(obraEntidad.getDireccion());
+		if (ValidateUtil.isEmpty(obraDTO.getEbc()))
+			obraDTO.setEbc(obraEntidad.getEbc());
+		if (ValidateUtil.isEmpty(obraDTO.getFacturaDSite()))
+			obraDTO.setFacturaDSite(obraEntidad.getFacturaDSite());
+		if (ValidateUtil.isEmpty(obraDTO.getFacturaDSiteComplementaria()))
+			obraDTO.setFacturaDSiteComplementaria(obraEntidad.getFacturaDSiteComplementaria());
+		if (ValidateUtil.isEmpty(obraDTO.getFechaAnulacion()))
+			obraDTO.setFechaAnulacion(obraEntidad.getFechaAnulacion());
+		if (ValidateUtil.isEmpty(obraDTO.getFechaCierreObra()))
+			obraDTO.setFechaCierreObra(obraEntidad.getFechaCierreObra());
+		if (ValidateUtil.isEmpty(obraDTO.getFechaEnEjecucion()))
+			obraDTO.setFechaEnEjecucion(obraEntidad.getFechaEnEjecucion());
+		if (ValidateUtil.isEmpty(obraDTO.getFechaFinalizacion()))
+			obraDTO.setFechaFinalizacion(obraEntidad.getFechaFinalizacion());
+		if (ValidateUtil.isEmpty(obraDTO.getFechaFinalizacionObra()))
+			obraDTO.setFechaFinalizacionObra(obraEntidad.getFechaFinalizacionObra());
+		if (ValidateUtil.isEmpty(obraDTO.getFechaInicioObra()))
+			obraDTO.setFechaInicioObra(obraEntidad.getFechaInicioObra());
+		if (ValidateUtil.isEmpty(obraDTO.getFechaParalizacion()))
+			obraDTO.setFechaParalizacion(obraEntidad.getFechaParalizacion());
+		if (ValidateUtil.isEmpty(obraDTO.getFechaReactivacion()))
+			obraDTO.setFechaReactivacion(obraEntidad.getFechaReactivacion());
+		if (ValidateUtil.isEmpty(obraDTO.getImporteOrdenCompra()))
+			obraDTO.setImporteOrdenCompra(obraEntidad.getImporteOrdenCompra());
+		if (ValidateUtil.isEmpty(obraDTO.getImporteOrdenCompraComplementaria()))
+			obraDTO.setImporteOrdenCompraComplementaria(obraEntidad.getImporteOrdenCompraComplementaria());
+		if (ValidateUtil.isEmpty(obraDTO.getImporteTotalContratas()))
+			obraDTO.setImporteTotalContratas(obraEntidad.getImporteTotalContratas());
+		if (ValidateUtil.isEmpty(obraDTO.getNombreReal()))
+			obraDTO.setNombreReal(obraEntidad.getNombreReal());
+		if (ValidateUtil.isEmpty(obraDTO.getNotaCredito()))
+			obraDTO.setNotaCredito(obraEntidad.getNotaCredito());
+		if (ValidateUtil.isEmpty(obraDTO.getNumeroOrdenCompra()))
+			obraDTO.setNumeroOrdenCompra(obraEntidad.getNumeroOrdenCompra());
+		if (ValidateUtil.isEmpty(obraDTO.getNumeroOrdenCompraComplementaria()))
+			obraDTO.setNumeroOrdenCompraComplementaria(obraEntidad.getNumeroOrdenCompraComplementaria());
+		if (ValidateUtil.isEmpty(obraDTO.getOtAutogenerada()))
+			obraDTO.setOtAutogenerada(obraEntidad.getOtAutogenerada());
+		if (ValidateUtil.isEmpty(obraDTO.getPorcentajeRentabilidad()))
+			obraDTO.setPorcentajeRentabilidad(obraEntidad.getPorcentajeRentabilidad());
+		if (ValidateUtil.isEmpty(obraDTO.getTipoTrabajo()))
+			obraDTO.setTipoTrabajo(obraEntidad.getTipoTrabajo());
+		if (ValidateUtil.isEmpty(obraDTO.getImporteTotalPresupuestadoContrata()))
+			obraDTO.setImporteTotalPresupuestadoContrata(obraEntidad.getImporteTotalPresupuestadoContrata());		
+		if (ValidateUtil.isEmpty(obraDTO.getImporteTotalPagosContrata()))
+			obraDTO.setImporteTotalPagosContrata(obraEntidad.getImporteTotalPagosContrata());		
+		
 		// Ingresar datos a la entidad
 		mapper.map(obraDTO, obraEntidad);
 		obraEntidad.setFechaModificacion(new Date());
@@ -202,6 +271,30 @@ public class ObraServiceImpl implements ObraService {
 			Empleado empleado = empleadoJpaRepository.findOne(obraDTO.getIdEmpleadoResponsableObra());
 			obraEntidad.setEmpleado(empleado);
 		}
+		if (ValidateUtil.isNotEmpty(obraDTO.getIdUsuarioCierreObra())) {
+			Usuario usuario = usuarioJPARepository.findOne(obraDTO.getIdUsuarioCierreObra());
+			obraEntidad.setUsuarioCierreObra(usuario);
+		}
+		if (ValidateUtil.isNotEmpty(obraDTO.getIdUsuarioEnEjecucion())) {
+			Usuario usuario = usuarioJPARepository.findOne(obraDTO.getIdUsuarioEnEjecucion());
+			obraEntidad.setUsuarioEnEjecucion(usuario);
+		}
+		if (ValidateUtil.isNotEmpty(obraDTO.getIdUsuarioAnulacion())) {
+			Usuario usuario = usuarioJPARepository.findOne(obraDTO.getIdUsuarioAnulacion());
+			obraEntidad.setUsuarioAnulacion(usuario);
+		}
+		if (ValidateUtil.isNotEmpty(obraDTO.getIdUsuarioParalizacion())) {
+			Usuario usuario = usuarioJPARepository.findOne(obraDTO.getIdUsuarioParalizacion());
+			obraEntidad.setUsuarioParalizacion(usuario);
+		}
+		if (ValidateUtil.isNotEmpty(obraDTO.getIdUsuarioReactivacion())) {
+			Usuario usuario = usuarioJPARepository.findOne(obraDTO.getIdUsuarioReactivacion());
+			obraEntidad.setUsuarioReactivacion(usuario);
+		}
+		if (ValidateUtil.isNotEmpty(obraDTO.getIdUsuarioFinalizacion())) {
+			Usuario usuario = usuarioJPARepository.findOne(obraDTO.getIdUsuarioFinalizacion());
+			obraEntidad.setUsuarioFinalizacion(usuario);
+		}		
 		obraJPARepository.save(obraEntidad);
 		obraJPARepository.flush();		
 	}

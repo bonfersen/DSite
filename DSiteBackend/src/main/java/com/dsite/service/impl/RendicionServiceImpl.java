@@ -1,5 +1,6 @@
 package com.dsite.service.impl;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import org.dozer.Mapper;
@@ -95,7 +96,53 @@ public class RendicionServiceImpl implements RendicionService {
 			rendicionEntity.setTablaGeneralTipoGasto(tablaGeneral);
 		}
 		if (ValidateUtil.isNotEmpty(rendicionDTO.getIdResumenRendicionCajaChica())) {
+			BigDecimal importeRendidoCaja = BigDecimal.ZERO;
+			BigDecimal importeRendidoViatico = BigDecimal.ZERO;
+			BigDecimal importeReembolsoCaja = BigDecimal.ZERO;
+			BigDecimal importeDescuentoCaja = BigDecimal.ZERO;
+			BigDecimal importeDescuentoViatico = BigDecimal.ZERO;
+
 			ResumenRendicionCajaChica resumenRendicionCajaChica = resumenRendicionCajaChicaJPARepository.findOne(rendicionDTO.getIdResumenRendicionCajaChica());
+
+			if (ValidateUtil.isNotEmpty(resumenRendicionCajaChica.getImporteRendidoCaja()))
+				importeRendidoCaja = importeRendidoCaja.add(resumenRendicionCajaChica.getImporteRendidoCaja());
+			if (ValidateUtil.isNotEmpty(resumenRendicionCajaChica.getImporteRendidoViatico()))
+				importeRendidoViatico = importeRendidoCaja.add(resumenRendicionCajaChica.getImporteRendidoViatico());
+			if (ValidateUtil.isNotEmpty(resumenRendicionCajaChica.getImporteAbonoCaja())) {
+				BigDecimal varCaja = resumenRendicionCajaChica.getImporteAbonoCaja().subtract(importeRendidoCaja);
+				if (varCaja.compareTo(BigDecimal.ZERO) > 0)
+					importeDescuentoCaja = varCaja;
+				else
+					importeReembolsoCaja = varCaja.abs();
+				resumenRendicionCajaChica.setImporteDescuentoCaja(importeDescuentoCaja);
+				resumenRendicionCajaChica.setImporteReembolsoCaja(importeReembolsoCaja);
+			}
+			if (ValidateUtil.isNotEmpty(resumenRendicionCajaChica.getImporteAbonoViatico())) {
+				BigDecimal varViatico = resumenRendicionCajaChica.getImporteAbonoViatico().subtract(importeRendidoViatico);
+				if (varViatico.compareTo(BigDecimal.ZERO) > 0)
+					importeDescuentoViatico = varViatico;
+				else
+					importeDescuentoViatico = BigDecimal.ZERO;
+				resumenRendicionCajaChica.setImporteDescuentoViatico(importeDescuentoViatico);
+			}
+
+			BigDecimal importeDescuentoVar = importeDescuentoCaja.add(importeDescuentoViatico);
+			BigDecimal importeReembolsoVar = importeReembolsoCaja.subtract(importeDescuentoVar);
+			if (importeReembolsoVar.compareTo(BigDecimal.ZERO) > 0) {
+				TablaGeneral tablaGeneral = tablaGeneralJPARepository.findOne(DSiteCoreConstants.ESTADO_RENDICION_PENDIENTE_DESCUENTO);
+				resumenRendicionCajaChica.setTablaGeneralEstadoRendicion(tablaGeneral);
+			}
+			else if (importeReembolsoVar.compareTo(BigDecimal.ZERO) < 0) {
+				TablaGeneral tablaGeneral = tablaGeneralJPARepository.findOne(DSiteCoreConstants.ESTADO_RENDICION_PENDIENTE_REEMBOLSO);
+				resumenRendicionCajaChica.setTablaGeneralEstadoRendicion(tablaGeneral);
+			}
+			else if (importeReembolsoVar.compareTo(BigDecimal.ZERO) == 0) {
+				TablaGeneral tablaGeneral = tablaGeneralJPARepository.findOne(DSiteCoreConstants.ESTADO_RENDICION_COMPLETADO);
+				resumenRendicionCajaChica.setTablaGeneralEstadoRendicion(tablaGeneral);
+			}
+			resumenRendicionCajaChicaJPARepository.save(resumenRendicionCajaChica);
+			resumenRendicionCajaChicaJPARepository.flush();
+			
 			rendicionEntity.setResumenRendicionCajaChica(resumenRendicionCajaChica);
 		}
 		rendicionJPARepository.save(rendicionEntity);

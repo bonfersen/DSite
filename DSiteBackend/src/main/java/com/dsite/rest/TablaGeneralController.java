@@ -24,11 +24,20 @@ public class TablaGeneralController {
 	TablaGeneralService tablaGeneralService;
 	
 	@RequestMapping(value = "/findTGCategoria/{categoria}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<TablaGeneralDTO>> listAllGerencias(@PathVariable String categoria) {
+    public ResponseEntity<List<TablaGeneralDTO>> findTGCategoria(@PathVariable String categoria) {
         List<TablaGeneralDTO> tablaGeneralDTO = tablaGeneralService.findByCategoria(categoria);
         if (ValidateUtil.isEmpty(tablaGeneralDTO)) {
             return new ResponseEntity<List<TablaGeneralDTO>>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<List<TablaGeneralDTO>>(tablaGeneralDTO, HttpStatus.OK);
+    }
+	
+	@RequestMapping(value = "/findTGCategoriaCodigoPadre/{categoria}/{idTGPadre}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<TablaGeneralDTO>> findByCategoriaAndCodigoPadre(@PathVariable String categoria, @PathVariable String idTGPadre) {
+        List<TablaGeneralDTO> tablaGeneralDTOs = tablaGeneralService.findByCategoriaAndCodigoPadre(categoria, idTGPadre);
+        if (tablaGeneralDTOs.size() == 0) {
+            return new ResponseEntity<List<TablaGeneralDTO>>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<List<TablaGeneralDTO>>(tablaGeneralDTOs, HttpStatus.OK);
     }
 }

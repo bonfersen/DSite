@@ -1,5 +1,6 @@
 package com.dsite.service.impl;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -57,11 +58,28 @@ public class RendicionCajaChicaServiceImpl implements RendicionCajaChicaService 
 	public JsonResult asignarRendicion(RendicionesAsignadasDTO rendicionesAsignadasDTO) {
 		JsonResult jsonResult = new JsonResult();
 		List<RendicionCajaChicaDTO> lstRendicionCajaChicaDTO = rendicionesAsignadasDTO.getRendiciones();
+		BigDecimal importeAbonoCaja = BigDecimal.ZERO;
+		BigDecimal importeAbonoViatico = BigDecimal.ZERO;
 		
+		/*
+		 * Abonos totales de caja chica/viatico y creacion de resumen rendicion
+		 */
+		for (RendicionCajaChicaDTO rendicionCajaChicaDTO : lstRendicionCajaChicaDTO) {
+			CajaChicaObraDTO cajaChicaObraDTO = cajaChicaObraService.findById(rendicionCajaChicaDTO.getIdCajaChicaObra());
+			if (ValidateUtil.isNotEmpty(rendicionCajaChicaDTO.getRendirCaja()) && rendicionCajaChicaDTO.getRendirCaja().compareTo(DSiteCoreConstants.UNO) == 0)
+				importeAbonoCaja = importeAbonoCaja.add(cajaChicaObraDTO.getImporteCaja());
+			if (ValidateUtil.isNotEmpty(rendicionCajaChicaDTO.getRendirViatico()) && rendicionCajaChicaDTO.getRendirViatico().compareTo(DSiteCoreConstants.UNO) == 0)
+				importeAbonoViatico = importeAbonoViatico.add(cajaChicaObraDTO.getImporteViatico());
+		}
 		ResumenRendicionCajaChicaDTO resumenRendicionCajaChicaDTO = new ResumenRendicionCajaChicaDTO();
 		resumenRendicionCajaChicaDTO.setIdEmpleadoSustentador(rendicionesAsignadasDTO.getIdEmpleadoSustentador());
+		resumenRendicionCajaChicaDTO.setImporteAbonoCaja(importeAbonoCaja);
+		resumenRendicionCajaChicaDTO.setImporteAbonoViatico(importeAbonoViatico);
 		ResumenRendicionCajaChica resumenRendicionCajaChica = resumenRendicionCajaChicaService.createResumenRendicionCajaChica(resumenRendicionCajaChicaDTO);
 		
+		/*
+		 * Actualizacion caja chica y creacion de rendicion
+		 */
 		for (RendicionCajaChicaDTO rendicionCajaChicaDTO : lstRendicionCajaChicaDTO) {
 			CajaChicaObraDTO cajaChicaObraDTO = cajaChicaObraService.findById(rendicionCajaChicaDTO.getIdCajaChicaObra());
 			if (ValidateUtil.isNotEmpty(rendicionCajaChicaDTO.getRendirCaja()) && rendicionCajaChicaDTO.getRendirCaja().compareTo(DSiteCoreConstants.UNO) == 0)

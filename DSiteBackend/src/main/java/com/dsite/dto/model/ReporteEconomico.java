@@ -1,5 +1,7 @@
 package com.dsite.dto.model;
 
+import java.util.List;
+
 import com.dsite.domain.model.views.VwReporteEconomico;
 import com.dsite.domain.model.views.VwReporteEconomicoDetalleContrata;
 
@@ -7,7 +9,7 @@ public class ReporteEconomico {
 
 	VwReporteEconomico reporteEconomico;
 
-	VwReporteEconomicoDetalleContrata detalleReporteEconomico;
+	List<VwReporteEconomicoDetalleContrata> detalleReporteEconomico;
 
 	public VwReporteEconomico getReporteEconomico() {
 		return reporteEconomico;
@@ -17,11 +19,11 @@ public class ReporteEconomico {
 		this.reporteEconomico = reporteEconomico;
 	}
 
-	public VwReporteEconomicoDetalleContrata getDetalleReporteEconomico() {
+	public List<VwReporteEconomicoDetalleContrata> getDetalleReporteEconomico() {
 		return detalleReporteEconomico;
 	}
 
-	public void setDetalleReporteEconomico(VwReporteEconomicoDetalleContrata detalleReporteEconomico) {
+	public void setDetalleReporteEconomico(List<VwReporteEconomicoDetalleContrata> detalleReporteEconomico) {
 		this.detalleReporteEconomico = detalleReporteEconomico;
 	}
 }

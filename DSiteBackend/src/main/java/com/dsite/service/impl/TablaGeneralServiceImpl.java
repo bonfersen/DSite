@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.dsite.domain.model.entities.TablaGeneral;
 import com.dsite.domain.model.repository.jpa.TablaGeneralJPARepository;
-import com.dsite.dto.model.ProvinciaDTO;
 import com.dsite.dto.model.TablaGeneralDTO;
 import com.dsite.service.intf.TablaGeneralService;
 
@@ -43,5 +42,16 @@ public class TablaGeneralServiceImpl implements TablaGeneralService {
 		mapper.map(entities, itemDTO);
 		
 		return itemDTO;
+	}
+	
+	@Override
+	public List<TablaGeneralDTO> findByCategoriaAndCodigoPadre(String categoria, String idTablaGeneralPadre) {
+		List<TablaGeneral> entities;
+		List<TablaGeneralDTO> itemsDTO;
+		
+		entities = tablaGeneralJpaRepository.findByCategoriaAndCodigoPadre(categoria, idTablaGeneralPadre);		
+		itemsDTO = entities.stream().map(m -> mapper.map(m, TablaGeneralDTO.class)).collect(toList());
+		
+		return itemsDTO;
 	}
 }

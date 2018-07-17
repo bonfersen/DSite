@@ -1,6 +1,5 @@
 package com.dsite.constants;
 import java.math.BigDecimal;
-import java.sql.DriverManager;
 
 public class DSiteCoreConstants {
 
@@ -61,11 +60,22 @@ public class DSiteCoreConstants {
 	 * ESTADO_RENDICION
 	 */
 	public final static String ESTADO_RENDICION_POR_RENDIR = "ESRE001";
-	public final static String ESTADO_RENDICION_PENDIENTE = "ESRE002";
+	public final static String ESTADO_RENDICION_PENDIENTE_REEMBOLSO = "ESRE002";
 	public final static String ESTADO_RENDICION_REEMBOLSADO = "ESRE003";
-	public final static String ESTADO_RENDICION_DESCUENTO= "ESRE004";
+	public final static String ESTADO_RENDICION_PENDIENTE_DESCUENTO= "ESRE004";
 	public final static String ESTADO_RENDICION_DESCONTADO = "ESRE005";
 	public final static String ESTADO_RENDICION_COMPLETADO = "ESRE006";
+	
+	/**
+	 * CATEGORIA_CONTRATA
+	 */
+	public final static String CATEGORIA_CONTRATA_GRANDE = "CACO001";
+	public final static String CATEGORIA_CONTRATA_MEDIANO = "CACO002";
+	public final static String CATEGORIA_CONTRATA_PEQUENO = "CACO003";
+	
+	public final static String CATEGORIA_CONTRATA_GRANDE_DESCRIPCION = "Grande";
+	public final static String CATEGORIA_CONTRATA_MEDIANO_DESCRIPCION = "Mediano";
+	public final static String CATEGORIA_CONTRATA_PEQUENO_DESCRIPCION = "Peque\u00f1o";
 	
 	/**
 	 * Cadenas numericas y decimales

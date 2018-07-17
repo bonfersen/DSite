@@ -18,4 +18,7 @@ public interface TablaGeneralJPARepository extends CrudRepository<TablaGeneral, 
 	
 	@Query("SELECT t FROM TablaGeneral t WHERE t.categoria = :categoria and  t.idTablaGeneral = :idTablaGeneral")
     TablaGeneral findByCategoriaAndCodigo(@Param("categoria") String categoria,  @Param("idTablaGeneral") String idTablaGeneral);
+	
+	@Query("SELECT t FROM TablaGeneral t WHERE t.categoria = :categoria and  t.tablaGeneralPadre.idTablaGeneral = :idTablaGeneralPadre")
+    List<TablaGeneral> findByCategoriaAndCodigoPadre(@Param("categoria") String categoria,  @Param("idTablaGeneralPadre") String idTablaGeneralPadre);
 }

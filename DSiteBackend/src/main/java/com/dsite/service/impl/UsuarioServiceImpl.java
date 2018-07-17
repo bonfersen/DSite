@@ -52,6 +52,8 @@ public class UsuarioServiceImpl implements UsuarioService {
         EmpleadoDTO empleadoDTO = new EmpleadoDTO();
         mapper.map(empleadoEntity, empleadoDTO);
         
+        empleadoDTO.setIdUsuario(empleadoEntity.getUsuario().getIdUsuario());
+        
         List<EmpleadoAreaObraDTO> lstEmpleadoAreaObraDTO = new ArrayList<EmpleadoAreaObraDTO>();
         for (EmpleadoAreaObra empleadoAreaObra : empleadoEntity.getEmpleadoAreaObras()) {
         	EmpleadoAreaObraDTO empleadoAreaObraDTO = new EmpleadoAreaObraDTO();
