@@ -31,6 +31,7 @@ import com.dsite.domain.model.views.VwBandejaReembolsoDescuentoCajaChica;
 import com.dsite.domain.model.views.VwBandejaRendicionCajaChica;
 import com.dsite.domain.model.views.VwBandejaSolicitudAdelantoContrata;
 import com.dsite.domain.model.views.VwBandejaSolicitudCajaChica;
+import com.dsite.domain.model.views.VwBandejaSolicitudRendicion;
 import com.dsite.domain.model.views.VwBudget;
 import com.dsite.domain.model.views.VwConcursoContrata;
 import com.dsite.domain.model.views.VwControlDocumentario;
@@ -68,6 +69,7 @@ import com.dsite.dto.model.views.VwBandejaRechazoCajaChicaFilter;
 import com.dsite.dto.model.views.VwBandejaReembolsoDescuentoCajaChicaFilter;
 import com.dsite.dto.model.views.VwBandejaRendicionCajaChicaFilter;
 import com.dsite.dto.model.views.VwBandejaSolicitudCajaChicaFilter;
+import com.dsite.dto.model.views.VwBandejaSolicitudRendicionFilter;
 import com.dsite.dto.model.views.VwBudgetFilter;
 import com.dsite.dto.model.views.VwConcursoContrataFilter;
 import com.dsite.dto.model.views.VwControlDocumentarioFilter;
@@ -665,6 +667,17 @@ public class VistasController {
 	public @ResponseBody ResponseEntity<List<VwResumenRendicionCajaChica>> findResumenRendicionCajaChica(@RequestBody VwResumenRendicionCajaChicaFilter filter) {
 		List<VwResumenRendicionCajaChica> result;
 		result = vistasService.findResumenRendicionCajaChica(filter);
+		if (result == null)
+			result = new ArrayList<>();
+
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/findBandejaSolicitudRendicion", method = RequestMethod.POST)
+	public @ResponseBody ResponseEntity<List<VwBandejaSolicitudRendicion>> findBandejaSolicitudRendicion() {
+		List<VwBandejaSolicitudRendicion> result;
+		VwBandejaSolicitudRendicionFilter filter = null;
+		result = vistasService.findBandejaSolicitudRendicion(filter);
 		if (result == null)
 			result = new ArrayList<>();
 

@@ -55,6 +55,7 @@ public class RendicionCajaChicaServiceImpl implements RendicionCajaChicaService 
 		return dto;
 	}
 	
+	@Transactional
 	public JsonResult asignarRendicion(RendicionesAsignadasDTO rendicionesAsignadasDTO) {
 		JsonResult jsonResult = new JsonResult();
 		List<RendicionCajaChicaDTO> lstRendicionCajaChicaDTO = rendicionesAsignadasDTO.getRendiciones();
@@ -81,15 +82,15 @@ public class RendicionCajaChicaServiceImpl implements RendicionCajaChicaService 
 		 * Actualizacion caja chica y creacion de rendicion
 		 */
 		for (RendicionCajaChicaDTO rendicionCajaChicaDTO : lstRendicionCajaChicaDTO) {
-			CajaChicaObraDTO cajaChicaObraDTO = cajaChicaObraService.findById(rendicionCajaChicaDTO.getIdCajaChicaObra());
+			CajaChicaObra cajaChicaObra = cajaChicaObraJPARepository.findOne(rendicionCajaChicaDTO.getIdCajaChicaObra());
 			if (ValidateUtil.isNotEmpty(rendicionCajaChicaDTO.getRendirCaja()) && rendicionCajaChicaDTO.getRendirCaja().compareTo(DSiteCoreConstants.UNO) == 0)
-				cajaChicaObraDTO.setRendirCaja(rendicionCajaChicaDTO.getRendirCaja());
+				cajaChicaObra.setRendirCaja(rendicionCajaChicaDTO.getRendirCaja());
 			if (ValidateUtil.isNotEmpty(rendicionCajaChicaDTO.getRendirViatico()) && rendicionCajaChicaDTO.getRendirViatico().compareTo(DSiteCoreConstants.UNO) == 0)
-				cajaChicaObraDTO.setRendirViatico(rendicionCajaChicaDTO.getRendirViatico());
-			cajaChicaObraService.updateCajaChicaObra(cajaChicaObraDTO);
+				cajaChicaObra.setRendirViatico(rendicionCajaChicaDTO.getRendirViatico());
+			cajaChicaObraService.updateCajaChicaObraEntity(cajaChicaObra);
 			
 			rendicionCajaChicaDTO.setIdResumenRendicionCajaChica(resumenRendicionCajaChica.getIdResumenRendicionCajaChica());
-			createRendicionCajaChica(rendicionCajaChicaDTO);
+			this.createRendicionCajaChica(rendicionCajaChicaDTO);
 		}
 		
 		jsonResult.setCodigo(resumenRendicionCajaChica.getCodigoRendicion());

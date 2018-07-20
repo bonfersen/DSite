@@ -3,9 +3,15 @@ package com.dsite.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.ParameterMode;
+import javax.persistence.PersistenceContext;
+import javax.persistence.StoredProcedureQuery;
+
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dsite.constants.DSiteCoreConstants;
 import com.dsite.domain.model.entities.CierreEconomico;
@@ -27,12 +33,15 @@ public class CierreEconomicoServiceImpl implements CierreEconomicoService {
 
 	@Autowired
 	CierreEconomicoJPARepository cierreEconomicoJPARepository;
-	
+
 	@Autowired
 	TablaGeneralJPARepository tablaGeneralJPARepository;
-	
+
 	@Autowired
 	UsuarioJPARepository usuarioJPARepository;
+	
+	@PersistenceContext
+	private EntityManager entityManager;
 
 	@Autowired
 	Mapper mapper;
@@ -48,20 +57,39 @@ public class CierreEconomicoServiceImpl implements CierreEconomicoService {
 			return null;
 	}
 
-	@Override
-	public void createCierreEconomico(CierreEconomicoDTO cierreEconomicoDTO) {
+	@Transactional
+	public CierreEconomico createCierreEconomico(CierreEconomicoDTO cierreEconomicoDTO) {
 		CierreEconomico cierreEconomicoEntidad = new CierreEconomico();
 		mapper.map(cierreEconomicoDTO, cierreEconomicoEntidad);
 
+		// Invocar procedure para generar el codigo de obra
+		StoredProcedureQuery query = entityManager.createStoredProcedureQuery("getCodigoCierreEconomico");
+		query.registerStoredProcedureParameter(1, String.class, ParameterMode.OUT);
+		// Execute query
+		query.execute();
+		// Get output parameters
+		String codigoCierre = (String) query.getOutputParameterValue(1);
+		// Establecer codigos
+		cierreEconomicoEntidad.setCodigoCierre(codigoCierre);
+
 		// Ingresar datos a la entidad
 		cierreEconomicoEntidad.setFechaCreacion(new Date());
+		cierreEconomicoEntidad.setFechaAsignacion(new Date());
 		if (ValidateUtil.isEmpty(cierreEconomicoDTO.getUsuarioCreacion()))
 			cierreEconomicoEntidad.setUsuarioCreacion(DSiteCoreConstants.USUARIO_ADMIN);
-
+		Usuario usuario = new Usuario();
+		usuario.setIdUsuario(1);
+		if (ValidateUtil.isEmpty(cierreEconomicoDTO.getIdUsuarioAsignacion()))
+			cierreEconomicoEntidad.setUsuarioAsignacion(usuario);
+		TablaGeneral tablaGeneralEstadoCierreEconomico = tablaGeneralJPARepository.findOne(DSiteCoreConstants.ESTADO_CIERRE_ECONOMICO_PENDIENTE);
+		cierreEconomicoEntidad.setTablaGeneralEstadoCierreEconomico(tablaGeneralEstadoCierreEconomico);
+		
 		createUpdateCierreEconomico(cierreEconomicoDTO, cierreEconomicoEntidad);
+		
+		return cierreEconomicoEntidad;
 	}
 
-	@Override
+	@Transactional
 	public void updateCierreEconomico(CierreEconomicoDTO cierreEconomicoDTO) {
 		CierreEconomico cierreEconomicoEntidad = new CierreEconomico();
 		if (ValidateUtil.isNotEmpty(cierreEconomicoDTO.getIdCierreEconomico()))
@@ -78,12 +106,12 @@ public class CierreEconomicoServiceImpl implements CierreEconomicoService {
 
 		// Ingresar datos a la entidad
 		mapper.map(cierreEconomicoDTO, cierreEconomicoEntidad);
-				
+
 		createUpdateCierreEconomico(cierreEconomicoDTO, cierreEconomicoEntidad);
 	}
 
 	private void createUpdateCierreEconomico(CierreEconomicoDTO cierreEconomicoDTO, CierreEconomico cierreEconomicoEntidad) {
-		
+
 		if (ValidateUtil.isNotEmpty(cierreEconomicoDTO.getIdTGEstadoCierreEconomico())) {
 			TablaGeneral tablaGeneral = tablaGeneralJPARepository.findOne(cierreEconomicoDTO.getIdTGEstadoCierreEconomico());
 			cierreEconomicoEntidad.setTablaGeneralEstadoCierreEconomico(tablaGeneral);

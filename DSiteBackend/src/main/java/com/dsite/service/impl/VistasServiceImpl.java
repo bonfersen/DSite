@@ -26,6 +26,7 @@ import com.dsite.domain.model.views.VwBandejaReembolsoDescuentoCajaChica;
 import com.dsite.domain.model.views.VwBandejaRendicionCajaChica;
 import com.dsite.domain.model.views.VwBandejaSolicitudAdelantoContrata;
 import com.dsite.domain.model.views.VwBandejaSolicitudCajaChica;
+import com.dsite.domain.model.views.VwBandejaSolicitudRendicion;
 import com.dsite.domain.model.views.VwBudget;
 import com.dsite.domain.model.views.VwConcursoContrata;
 import com.dsite.domain.model.views.VwControlDocumentario;
@@ -66,6 +67,7 @@ import com.dsite.dto.model.views.VwBandejaReembolsoDescuentoCajaChicaFilter;
 import com.dsite.dto.model.views.VwBandejaRendicionCajaChicaFilter;
 import com.dsite.dto.model.views.VwBandejaSolicitudAdelantoContrataFilter;
 import com.dsite.dto.model.views.VwBandejaSolicitudCajaChicaFilter;
+import com.dsite.dto.model.views.VwBandejaSolicitudRendicionFilter;
 import com.dsite.dto.model.views.VwBudgetFilter;
 import com.dsite.dto.model.views.VwConcursoContrataFilter;
 import com.dsite.dto.model.views.VwControlDocumentarioFilter;
@@ -341,6 +343,12 @@ public class VistasServiceImpl implements VistasService {
 	@Override
 	public List<VwResumenRendicionCajaChica> findResumenRendicionCajaChica(VwResumenRendicionCajaChicaFilter vwResumenRendicionCajaChicaFilter) {
 		List<VwResumenRendicionCajaChica> vwList = vistasRepository.findResumenRendicionCajaChica(vwResumenRendicionCajaChicaFilter);
+		return vwList;
+	}
+
+	@Override
+	public List<VwBandejaSolicitudRendicion> findBandejaSolicitudRendicion(VwBandejaSolicitudRendicionFilter filter) {
+		List<VwBandejaSolicitudRendicion> vwList = vistasRepository.findBandejaSolicitudRendicion(filter);
 		return vwList;
 	}
 }

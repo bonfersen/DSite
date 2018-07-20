@@ -5,6 +5,7 @@ import java.util.List;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dsite.domain.model.entities.CierreEconomico;
 import com.dsite.domain.model.entities.CierreEconomicoObra;
@@ -13,8 +14,11 @@ import com.dsite.domain.model.repository.jdbc.CierreEconomicoObraJDBCRepository;
 import com.dsite.domain.model.repository.jpa.CierreEconomicoJPARepository;
 import com.dsite.domain.model.repository.jpa.CierreEconomicoObraJPARepository;
 import com.dsite.domain.model.repository.jpa.ObraJPARepository;
+import com.dsite.dto.model.CierreEconomicoDTO;
 import com.dsite.dto.model.CierreEconomicoObraDTO;
+import com.dsite.dto.model.CierresAsignadasDTO;
 import com.dsite.service.intf.CierreEconomicoObraService;
+import com.dsite.service.intf.CierreEconomicoService;
 import com.dsite.util.ValidateUtil;
 
 @Service
@@ -22,15 +26,18 @@ public class CierreEconomicoObraServiceImpl implements CierreEconomicoObraServic
 
 	@Autowired
 	CierreEconomicoObraJDBCRepository cierreEconomicoObraJDBCRepository;
-
+	
 	@Autowired
 	CierreEconomicoObraJPARepository cierreEconomicoObraJPARepository;
 	
 	@Autowired
 	CierreEconomicoJPARepository cierreEconomicoJPARepository;
-	
+
 	@Autowired
 	ObraJPARepository obraJPARepository;
+	
+	@Autowired
+	CierreEconomicoService cierreEconomicoService;
 
 	@Autowired
 	Mapper mapper;
@@ -46,7 +53,20 @@ public class CierreEconomicoObraServiceImpl implements CierreEconomicoObraServic
 			return null;
 	}
 
-	@Override
+	@Transactional
+	public void asignarCierreEconomico(CierresAsignadasDTO cierresAsignadasDTO) {
+		List<CierreEconomicoObraDTO> obras = cierresAsignadasDTO.getObras();
+		
+		CierreEconomicoDTO cierreEconomicoDTO = new CierreEconomicoDTO(); 
+		CierreEconomico cierreEconomico = cierreEconomicoService.createCierreEconomico(cierreEconomicoDTO);
+		
+		for (CierreEconomicoObraDTO cierreEconomicoObraDTO : obras) {			
+			cierreEconomicoObraDTO.setIdCierreEconomico(cierreEconomico.getIdCierreEconomico());
+			this.createCierreEconomicoObra(cierreEconomicoObraDTO);
+		}
+	}
+
+	@Transactional
 	public void createCierreEconomicoObra(CierreEconomicoObraDTO cierreEconomicoObraDTO) {
 		CierreEconomicoObra cierreEconomicoObraEntidad = new CierreEconomicoObra();
 		mapper.map(cierreEconomicoObraDTO, cierreEconomicoObraEntidad);
@@ -54,7 +74,7 @@ public class CierreEconomicoObraServiceImpl implements CierreEconomicoObraServic
 		createUpdateCierreEconomico(cierreEconomicoObraDTO, cierreEconomicoObraEntidad);
 	}
 
-	@Override
+	@Transactional
 	public void updateCierreEconomicoObra(CierreEconomicoObraDTO cierreEconomicoObraDTO) {
 		CierreEconomicoObra cierreEconomicoObraEntidad = new CierreEconomicoObra();
 		if (ValidateUtil.isNotEmpty(cierreEconomicoObraDTO.getIdCierreEconomico()))

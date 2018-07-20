@@ -48,4 +48,15 @@ public class RendicionController {
 			return new ResponseEntity<Void>(headers, HttpStatus.OK);
 		}
 	}
+	
+	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
+	public ResponseEntity<Void> deleteRendicion(@PathVariable Integer id) {
+		System.out.println("Eliminando Rendicion " + id);
+
+		rendicionService.deleteRendicionById(id);
+		// Delvover el id generado con ucBuilder, exponiendo una URL
+		HttpHeaders headers = new HttpHeaders();
+		headers.setOrigin("dsite");
+		return new ResponseEntity<Void>(headers, HttpStatus.OK);
+	}
 }

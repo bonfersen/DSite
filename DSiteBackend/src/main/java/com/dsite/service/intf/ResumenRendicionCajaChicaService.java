@@ -1,6 +1,7 @@
 package com.dsite.service.intf;
 
 import com.dsite.domain.model.entities.ResumenRendicionCajaChica;
+import com.dsite.dto.model.RendicionDTO;
 import com.dsite.dto.model.ResumenRendicionCajaChicaDTO;
 
 public interface ResumenRendicionCajaChicaService {
@@ -11,4 +12,5 @@ public interface ResumenRendicionCajaChicaService {
 
 	void updateResumenRendicionCajaChica(ResumenRendicionCajaChicaDTO resumenRendicionCajaChicaDTO);
 
+	void updateImporteResumenRendicionCajaChica(RendicionDTO rendicionDTO, ResumenRendicionCajaChica resumenRendicionCajaChica);
 }

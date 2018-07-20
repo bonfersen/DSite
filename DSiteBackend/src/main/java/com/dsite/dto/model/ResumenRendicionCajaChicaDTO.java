@@ -9,7 +9,7 @@ public class ResumenRendicionCajaChicaDTO {
 	private int idResumenRendicionCajaChica;
 
 	private int idEmpleadoSustentador;
-	
+
 	private String codigoRendicion;
 
 	private Date fechaCreacion;
@@ -45,6 +45,18 @@ public class ResumenRendicionCajaChicaDTO {
 	private String idTGEstadoRendicion;
 
 	private Integer idUsuarioImpresion;
+
+	private Integer idUsuarioAprobacion;
+
+	private Date fechaAprobacion;
+
+	private Integer idUsuarioRechazo;
+
+	private Date fechaRechazo;
+
+	private String motivoRechazo;
+
+	private String idTGEstado;
 
 	public ResumenRendicionCajaChicaDTO() {
 	}
@@ -207,5 +219,53 @@ public class ResumenRendicionCajaChicaDTO {
 
 	public void setIdEmpleadoSustentador(int idEmpleadoSustentador) {
 		this.idEmpleadoSustentador = idEmpleadoSustentador;
+	}
+
+	public Integer getIdUsuarioAprobacion() {
+		return idUsuarioAprobacion;
+	}
+
+	public void setIdUsuarioAprobacion(Integer idUsuarioAprobacion) {
+		this.idUsuarioAprobacion = idUsuarioAprobacion;
+	}
+
+	public Date getFechaAprobacion() {
+		return fechaAprobacion;
+	}
+
+	public void setFechaAprobacion(Date fechaAprobacion) {
+		this.fechaAprobacion = fechaAprobacion;
+	}
+
+	public Integer getIdUsuarioRechazo() {
+		return idUsuarioRechazo;
+	}
+
+	public void setIdUsuarioRechazo(Integer idUsuarioRechazo) {
+		this.idUsuarioRechazo = idUsuarioRechazo;
+	}
+
+	public Date getFechaRechazo() {
+		return fechaRechazo;
+	}
+
+	public void setFechaRechazo(Date fechaRechazo) {
+		this.fechaRechazo = fechaRechazo;
+	}
+
+	public String getMotivoRechazo() {
+		return motivoRechazo;
+	}
+
+	public void setMotivoRechazo(String motivoRechazo) {
+		this.motivoRechazo = motivoRechazo;
+	}
+
+	public String getIdTGEstado() {
+		return idTGEstado;
+	}
+
+	public void setIdTGEstado(String idTGEstado) {
+		this.idTGEstado = idTGEstado;
 	}
 }

@@ -5,19 +5,18 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-
 /**
  * The persistent class for the tablaGeneral database table.
  * 
  */
 @Entity
 @Table(name = "tablaGeneral")
-@NamedQuery(name="TablaGeneral.findAll", query="SELECT t FROM TablaGeneral t")
+@NamedQuery(name = "TablaGeneral.findAll", query = "SELECT t FROM TablaGeneral t")
 public class TablaGeneral implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private String idTablaGeneral;
 
 	private String activo;
@@ -36,145 +35,148 @@ public class TablaGeneral implements Serializable {
 
 	private String usuarioModificacion;
 
-	//bi-directional many-to-one association to ActasContrata
-	@OneToMany(mappedBy="tablaGeneralActas")
+	// bi-directional many-to-one association to ActasContrata
+	@OneToMany(mappedBy = "tablaGeneralActas")
 	private List<ActasContrata> actasContratas;
 
-	//bi-directional many-to-one association to ActasContrata
-	@OneToMany(mappedBy="tablaGeneralEstadoActa")
+	// bi-directional many-to-one association to ActasContrata
+	@OneToMany(mappedBy = "tablaGeneralEstadoActa")
 	private List<ActasContrata> actasContratasTGEstadoActa;
 
-	//bi-directional many-to-one association to ActasContrata
-	@OneToMany(mappedBy="tablaGeneralMotivoRechazo")
+	// bi-directional many-to-one association to ActasContrata
+	@OneToMany(mappedBy = "tablaGeneralMotivoRechazo")
 	private List<ActasContrata> actasContratasTGMotivoRechazo;
 
-	//bi-directional many-to-one association to CajaChicaObra
-	@OneToMany(mappedBy="tablaGeneralTipoCaja")
+	// bi-directional many-to-one association to CajaChicaObra
+	@OneToMany(mappedBy = "tablaGeneralTipoCaja")
 	private List<CajaChicaObra> cajaChicaObrasTGTipoCaja;
 
-	//bi-directional many-to-one association to CajaChicaObra
-	@OneToMany(mappedBy="tablaGeneralEstadoCajaChica")
+	// bi-directional many-to-one association to CajaChicaObra
+	@OneToMany(mappedBy = "tablaGeneralEstadoCajaChica")
 	private List<CajaChicaObra> cajaChicaObrasTGEstadoCajaChica;
 
-	//bi-directional many-to-one association to Cargo
-	@OneToMany(mappedBy="tablaGeneralTipoTrabajador")
+	// bi-directional many-to-one association to Cargo
+	@OneToMany(mappedBy = "tablaGeneralTipoTrabajador")
 	private List<Cargo> cargosTGTipoTrabajador;
 
-	//bi-directional many-to-one association to CierreEconomico
-	@OneToMany(mappedBy="tablaGeneralEstadoCierreEconomico")
+	// bi-directional many-to-one association to CierreEconomico
+	@OneToMany(mappedBy = "tablaGeneralEstadoCierreEconomico")
 	private List<CierreEconomico> cierreEconomicosTGEstadoCierreEconomico;
 
-	//bi-directional many-to-one association to ConcursoContrata
-	@OneToMany(mappedBy="tablaGeneralArea")
+	// bi-directional many-to-one association to ConcursoContrata
+	@OneToMany(mappedBy = "tablaGeneralArea")
 	private List<ConcursoContrata> concursoContratasTGArea;
 
-	//bi-directional many-to-one association to Contrata
-	@OneToMany(mappedBy="tablaGeneralCategoria")
+	// bi-directional many-to-one association to Contrata
+	@OneToMany(mappedBy = "tablaGeneralCategoria")
 	private List<Contrata> contratasTGCategoria;
 
-	//bi-directional many-to-one association to ContratasObra
-	@OneToMany(mappedBy="tablaGeneralTipoMoneda")
+	// bi-directional many-to-one association to ContratasObra
+	@OneToMany(mappedBy = "tablaGeneralTipoMoneda")
 	private List<ContratasObra> contratasObrasTGTipoMoneda;
 
-	//bi-directional many-to-one association to ContratasObra
-	@OneToMany(mappedBy="tablaGeneralEstadoCierreEconomico")
+	// bi-directional many-to-one association to ContratasObra
+	@OneToMany(mappedBy = "tablaGeneralEstadoCierreEconomico")
 	private List<ContratasObra> contratasObrasTGEstadoCierreEconomico;
 
-	//bi-directional many-to-one association to ContratasObra
-	@OneToMany(mappedBy="tablaGeneralEstadoLiquidacion")
+	// bi-directional many-to-one association to ContratasObra
+	@OneToMany(mappedBy = "tablaGeneralEstadoLiquidacion")
 	private List<ContratasObra> contratasObrasTGEstadoLiquidacion;
 
-	//bi-directional many-to-one association to DocumentosAdjunto
-	@OneToMany(mappedBy="tablaGeneralNombreTabla")
+	// bi-directional many-to-one association to DocumentosAdjunto
+	@OneToMany(mappedBy = "tablaGeneralNombreTabla")
 	private List<DocumentosAdjunto> documentosAdjuntosTGNombreTabla;
 
-	//bi-directional many-to-one association to Empleado
-	@OneToMany(mappedBy="tablaGeneralTipoDocumento")
+	// bi-directional many-to-one association to Empleado
+	@OneToMany(mappedBy = "tablaGeneralTipoDocumento")
 	private List<Empleado> empleadosTGTipoDocumento;
 
-	//bi-directional many-to-one association to Obra
-	@OneToMany(mappedBy="tablaGeneralArea")
+	// bi-directional many-to-one association to Obra
+	@OneToMany(mappedBy = "tablaGeneralArea")
 	private List<Obra> obrasTGArea;
 
-	//bi-directional many-to-one association to Obra
-	@OneToMany(mappedBy="tablaGeneralAreaSoporte")
+	// bi-directional many-to-one association to Obra
+	@OneToMany(mappedBy = "tablaGeneralAreaSoporte")
 	private List<Obra> obrasTGAreaSoporte;
 
-	//bi-directional many-to-one association to Obra
-	@OneToMany(mappedBy="tablaGeneralProyecto")
+	// bi-directional many-to-one association to Obra
+	@OneToMany(mappedBy = "tablaGeneralProyecto")
 	private List<Obra> obrasTGProyecto;
 
-	//bi-directional many-to-one association to Obra
-	@OneToMany(mappedBy="tablaGeneralTipoGasto")
+	// bi-directional many-to-one association to Obra
+	@OneToMany(mappedBy = "tablaGeneralTipoGasto")
 	private List<Obra> obrasTGTipoGasto;
 
-	//bi-directional many-to-one association to Obra
-	@OneToMany(mappedBy="tablaGeneralEstadoObra")
+	// bi-directional many-to-one association to Obra
+	@OneToMany(mappedBy = "tablaGeneralEstadoObra")
 	private List<Obra> obrasTGEstadoObra;
 
-	//bi-directional many-to-one association to Obra
-	@OneToMany(mappedBy="tablaGeneralGerenteProyecto")
+	// bi-directional many-to-one association to Obra
+	@OneToMany(mappedBy = "tablaGeneralGerenteProyecto")
 	private List<Obra> obrasTGGerenteProyecto;
 
-	//bi-directional many-to-one association to Obra
-	@OneToMany(mappedBy="tablaGeneralGestorProyecto")
+	// bi-directional many-to-one association to Obra
+	@OneToMany(mappedBy = "tablaGeneralGestorProyecto")
 	private List<Obra> obrasTGGestorProyecto;
 
-	//bi-directional many-to-one association to OfertaLiquidacionObra
-	@OneToMany(mappedBy="tablaGeneralTipoEnvio")
+	// bi-directional many-to-one association to OfertaLiquidacionObra
+	@OneToMany(mappedBy = "tablaGeneralTipoEnvio")
 	private List<OfertaLiquidacionObra> ofertaLiquidacionObrasTGTipoEnvio;
 
-	//bi-directional many-to-one association to PagosContrata
-	@OneToMany(mappedBy="tablaGeneralTipoSolicitud")
+	// bi-directional many-to-one association to PagosContrata
+	@OneToMany(mappedBy = "tablaGeneralTipoSolicitud")
 	private List<PagosContrata> pagosContratasTGTipoSolicitud;
 
-	//bi-directional many-to-one association to PagosContrata
-	@OneToMany(mappedBy="tablaGeneralEstadoPagoContrata")
+	// bi-directional many-to-one association to PagosContrata
+	@OneToMany(mappedBy = "tablaGeneralEstadoPagoContrata")
 	private List<PagosContrata> pagosContratasTGEstadoPagoContrata;
 
-	//bi-directional many-to-one association to PresupuestoObra
-	@OneToMany(mappedBy="tablaGeneralTipoMoneda")
+	// bi-directional many-to-one association to PresupuestoObra
+	@OneToMany(mappedBy = "tablaGeneralTipoMoneda")
 	private List<PresupuestoObra> presupuestoObrasTGTipoMoneda;
 
-	//bi-directional many-to-one association to PresupuestoObra
-	@OneToMany(mappedBy="tablaGeneralActaCampo")
+	// bi-directional many-to-one association to PresupuestoObra
+	@OneToMany(mappedBy = "tablaGeneralActaCampo")
 	private List<PresupuestoObra> presupuestoObrasTGActaCampo;
 
-	//bi-directional many-to-one association to PresupuestoObra
-	@OneToMany(mappedBy="tablaGeneralActaFinal")
+	// bi-directional many-to-one association to PresupuestoObra
+	@OneToMany(mappedBy = "tablaGeneralActaFinal")
 	private List<PresupuestoObra> presupuestoObrasTGActaFinal;
 
-	//bi-directional many-to-one association to PresupuestoObra
-	@OneToMany(mappedBy="tablaGeneralEstadoFinanzas")
+	// bi-directional many-to-one association to PresupuestoObra
+	@OneToMany(mappedBy = "tablaGeneralEstadoFinanzas")
 	private List<PresupuestoObra> presupuestoObrasTGEstadoFinanzas;
 
-	//bi-directional many-to-one association to Rendicion
-	@OneToMany(mappedBy="tablaGeneralTipoRendicion")
+	// bi-directional many-to-one association to Rendicion
+	@OneToMany(mappedBy = "tablaGeneralTipoRendicion")
 	private List<Rendicion> rendicionesTGTipoRendicion;
 
-	//bi-directional many-to-one association to Rendicion
-	@OneToMany(mappedBy="tablaGeneralTipoComprobante")
+	// bi-directional many-to-one association to Rendicion
+	@OneToMany(mappedBy = "tablaGeneralTipoComprobante")
 	private List<Rendicion> rendicionesTGTipoComprobante;
 
-	//bi-directional many-to-one association to Rendicion
-	@OneToMany(mappedBy="tablaGeneralTipoGasto")
+	// bi-directional many-to-one association to Rendicion
+	@OneToMany(mappedBy = "tablaGeneralTipoGasto")
 	private List<Rendicion> rendicionesTGTipoGasto;
 
-	//bi-directional many-to-one association to ResumenRendicionCajaChica
-	@OneToMany(mappedBy="tablaGeneralEstadoRendicion")
+	// bi-directional many-to-one association to ResumenRendicionCajaChica
+	@OneToMany(mappedBy = "tablaGeneralEstadoRendicion")
 	private List<ResumenRendicionCajaChica> resumenRendicionCajaChicasTGEstadoRendicion;
 
-	//bi-directional many-to-one association to TablaGeneral
+	@OneToMany(mappedBy = "tablaGeneralEstado")
+	private List<ResumenRendicionCajaChica> resumenRendicionCajaChicasTGEstado;
+
+	// bi-directional many-to-one association to TablaGeneral
 	@ManyToOne
-	@JoinColumn(name="idTGPadre")
+	@JoinColumn(name = "idTGPadre")
 	private TablaGeneral tablaGeneralPadre;
 
-	//bi-directional many-to-one association to TablaGeneral
-	@OneToMany(mappedBy="tablaGeneralPadre")
+	// bi-directional many-to-one association to TablaGeneral
+	@OneToMany(mappedBy = "tablaGeneralPadre")
 	private List<TablaGeneral> tablaGeneralTGPadre;
 
-	//bi-directional many-to-one association to TipoDocumentoAdjunto
-	@OneToMany(mappedBy="tablaGeneralGrupo")
+	// bi-directional many-to-one association to TipoDocumentoAdjunto
+	@OneToMany(mappedBy = "tablaGeneralGrupo")
 	private List<TipoDocumentoAdjunto> tipoDocumentoAdjuntosTGGrupo;
 
 	public TablaGeneral() {
@@ -1000,4 +1002,11 @@ public class TablaGeneral implements Serializable {
 		return tipoDocumentoAdjuntosTGGrupo;
 	}
 
+	public List<ResumenRendicionCajaChica> getResumenRendicionCajaChicasTGEstado() {
+		return resumenRendicionCajaChicasTGEstado;
+	}
+
+	public void setResumenRendicionCajaChicasTGEstado(List<ResumenRendicionCajaChica> resumenRendicionCajaChicasTGEstado) {
+		this.resumenRendicionCajaChicasTGEstado = resumenRendicionCajaChicasTGEstado;
+	}
 }

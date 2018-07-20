@@ -73,6 +73,26 @@ public class ResumenRendicionCajaChica implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "idEmpleadoSustentador")
 	private Empleado empleadoSustentador;
+	
+	@ManyToOne
+	@JoinColumn(name = "idUsuarioAprobacion")
+	private Usuario usuarioAprobacion;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date fechaAprobacion;
+	
+	@ManyToOne
+	@JoinColumn(name = "idUsuarioRechazo")
+	private Usuario usuarioRechazo;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date fechaRechazo;
+	
+	private String motivoRechazo;
+	
+	@ManyToOne
+	@JoinColumn(name = "idTGEstado")
+	private TablaGeneral tablaGeneralEstado;
 
 	public ResumenRendicionCajaChica() {
 	}
@@ -249,5 +269,53 @@ public class ResumenRendicionCajaChica implements Serializable {
 
 	public void setEmpleadoSustentador(Empleado empleadoSustentador) {
 		this.empleadoSustentador = empleadoSustentador;
+	}
+
+	public Usuario getUsuarioAprobacion() {
+		return usuarioAprobacion;
+	}
+
+	public void setUsuarioAprobacion(Usuario usuarioAprobacion) {
+		this.usuarioAprobacion = usuarioAprobacion;
+	}
+
+	public Date getFechaAprobacion() {
+		return fechaAprobacion;
+	}
+
+	public void setFechaAprobacion(Date fechaAprobacion) {
+		this.fechaAprobacion = fechaAprobacion;
+	}
+
+	public Usuario getUsuarioRechazo() {
+		return usuarioRechazo;
+	}
+
+	public void setUsuarioRechazo(Usuario usuarioRechazo) {
+		this.usuarioRechazo = usuarioRechazo;
+	}
+
+	public Date getFechaRechazo() {
+		return fechaRechazo;
+	}
+
+	public void setFechaRechazo(Date fechaRechazo) {
+		this.fechaRechazo = fechaRechazo;
+	}
+
+	public String getMotivoRechazo() {
+		return motivoRechazo;
+	}
+
+	public void setMotivoRechazo(String motivoRechazo) {
+		this.motivoRechazo = motivoRechazo;
+	}
+
+	public TablaGeneral getTablaGeneralEstado() {
+		return tablaGeneralEstado;
+	}
+
+	public void setTablaGeneralEstado(TablaGeneral tablaGeneralEstado) {
+		this.tablaGeneralEstado = tablaGeneralEstado;
 	}
 }

@@ -4,19 +4,18 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 
-
 /**
  * The persistent class for the usuario database table.
  * 
  */
 @Entity
 @Table(name = "usuario")
-@NamedQuery(name="Usuario.findAll", query="SELECT u FROM Usuario u")
+@NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
 public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idUsuario;
 
 	private String activo;
@@ -25,117 +24,124 @@ public class Usuario implements Serializable {
 
 	private String password;
 
-	//bi-directional many-to-one association to ActasContrata
-	@OneToMany(mappedBy="usuarioRechaza")
+	// bi-directional many-to-one association to ActasContrata
+	@OneToMany(mappedBy = "usuarioRechaza")
 	private List<ActasContrata> actasContratasUsuarioRechaza;
 
-	//bi-directional many-to-one association to ActasContrata
-	@OneToMany(mappedBy="usuarioAprueba")
+	// bi-directional many-to-one association to ActasContrata
+	@OneToMany(mappedBy = "usuarioAprueba")
 	private List<ActasContrata> actasContratasUsuarioAprueba;
 
-	//bi-directional many-to-one association to ActasContrata
-	@OneToMany(mappedBy="usuarioAdjunta")
+	// bi-directional many-to-one association to ActasContrata
+	@OneToMany(mappedBy = "usuarioAdjunta")
 	private List<ActasContrata> actasContratasUsuarioAdjunta;
 
-	//bi-directional many-to-one association to CajaChicaObra
-	@OneToMany(mappedBy="usuarioSolicitud")
+	// bi-directional many-to-one association to CajaChicaObra
+	@OneToMany(mappedBy = "usuarioSolicitud")
 	private List<CajaChicaObra> cajaChicaObrasUsuarioSolicitud;
 
-	//bi-directional many-to-one association to CajaChicaObra
-	@OneToMany(mappedBy="usuarioAprobacion")
+	// bi-directional many-to-one association to CajaChicaObra
+	@OneToMany(mappedBy = "usuarioAprobacion")
 	private List<CajaChicaObra> cajaChicaObrasUsuarioAprobacion;
 
-	//bi-directional many-to-one association to CajaChicaObra
-	@OneToMany(mappedBy="usuarioPago")
+	// bi-directional many-to-one association to CajaChicaObra
+	@OneToMany(mappedBy = "usuarioPago")
 	private List<CajaChicaObra> cajaChicaObrasUsuarioPago;
 
-	//bi-directional many-to-one association to CajaChicaObra
-	@OneToMany(mappedBy="usuarioRechazo")
+	// bi-directional many-to-one association to CajaChicaObra
+	@OneToMany(mappedBy = "usuarioRechazo")
 	private List<CajaChicaObra> cajaChicaObrasUsuarioRechazo;
 
-	//bi-directional many-to-one association to CajaChicaObra
-	@OneToMany(mappedBy="usuarioModificacion")
+	// bi-directional many-to-one association to CajaChicaObra
+	@OneToMany(mappedBy = "usuarioModificacion")
 	private List<CajaChicaObra> cajaChicaObrasUsuarioModificacion;
 
-	//bi-directional many-to-one association to CierreEconomico
-	@OneToMany(mappedBy="usuarioAsignacion")
+	// bi-directional many-to-one association to CierreEconomico
+	@OneToMany(mappedBy = "usuarioAsignacion")
 	private List<CierreEconomico> cierreEconomicosUsuarioAsignacion;
 
-	//bi-directional many-to-one association to ContratasObra
-	@OneToMany(mappedBy="usuarioCEPendiente")
+	// bi-directional many-to-one association to ContratasObra
+	@OneToMany(mappedBy = "usuarioCEPendiente")
 	private List<ContratasObra> contratasObrasUsuarioCEPendiente;
 
-	//bi-directional many-to-one association to ContratasObra
-	@OneToMany(mappedBy="usuarioCEParcial")
+	// bi-directional many-to-one association to ContratasObra
+	@OneToMany(mappedBy = "usuarioCEParcial")
 	private List<ContratasObra> contratasObrasUsuarioCEParcial;
 
-	//bi-directional many-to-one association to ContratasObra
-	@OneToMany(mappedBy="usuarioCECompletado")
+	// bi-directional many-to-one association to ContratasObra
+	@OneToMany(mappedBy = "usuarioCECompletado")
 	private List<ContratasObra> contratasObrasUsuarioCECompletado;
 
-	//bi-directional many-to-one association to Obra
-	@OneToMany(mappedBy="usuarioCierreObra")
+	// bi-directional many-to-one association to Obra
+	@OneToMany(mappedBy = "usuarioCierreObra")
 	private List<Obra> obrasUsuarioCierreObra;
 
-	//bi-directional many-to-one association to Obra
-	@OneToMany(mappedBy="usuarioEnEjecucion")
+	// bi-directional many-to-one association to Obra
+	@OneToMany(mappedBy = "usuarioEnEjecucion")
 	private List<Obra> obrasUsuarioEnEjecucion;
 
-	//bi-directional many-to-one association to Obra
-	@OneToMany(mappedBy="usuarioAnulacion")
+	// bi-directional many-to-one association to Obra
+	@OneToMany(mappedBy = "usuarioAnulacion")
 	private List<Obra> obrasUsuarioAnulacion;
 
-	//bi-directional many-to-one association to Obra
-	@OneToMany(mappedBy="usuarioParalizacion")
+	// bi-directional many-to-one association to Obra
+	@OneToMany(mappedBy = "usuarioParalizacion")
 	private List<Obra> obrasUsuarioParalizacion;
 
-	//bi-directional many-to-one association to Obra
-	@OneToMany(mappedBy="usuarioReactivacion")
+	// bi-directional many-to-one association to Obra
+	@OneToMany(mappedBy = "usuarioReactivacion")
 	private List<Obra> obrasUsuarioReactivacion;
 
-	//bi-directional many-to-one association to Obra
-	@OneToMany(mappedBy="usuarioFinalizacion")
+	// bi-directional many-to-one association to Obra
+	@OneToMany(mappedBy = "usuarioFinalizacion")
 	private List<Obra> obrasUsuarioFinalizacion;
 
-	//bi-directional many-to-one association to PagosContrata
-	@OneToMany(mappedBy="usuarioSolicitado")
+	// bi-directional many-to-one association to PagosContrata
+	@OneToMany(mappedBy = "usuarioSolicitado")
 	private List<PagosContrata> pagosContratasUsuarioSolicitado;
 
-	//bi-directional many-to-one association to PagosContrata
-	@OneToMany(mappedBy="usuarioAprobado")
+	// bi-directional many-to-one association to PagosContrata
+	@OneToMany(mappedBy = "usuarioAprobado")
 	private List<PagosContrata> pagosContratasUsuarioAprobado;
 
-	//bi-directional many-to-one association to PagosContrata
-	@OneToMany(mappedBy="usuarioRechazo")
+	// bi-directional many-to-one association to PagosContrata
+	@OneToMany(mappedBy = "usuarioRechazo")
 	private List<PagosContrata> pagosContratasUsuarioRechazo;
 
-	//bi-directional many-to-one association to PresupuestoObra
-	@OneToMany(mappedBy="usuarioEnvioPresupuestoOferta")
+	// bi-directional many-to-one association to PresupuestoObra
+	@OneToMany(mappedBy = "usuarioEnvioPresupuestoOferta")
 	private List<PresupuestoObra> presupuestoObrasUsuarioEnvioPresupuestoOferta;
 
-	//bi-directional many-to-one association to PresupuestoObra
-	@OneToMany(mappedBy="usuarioEnvioPresupuestoLiquidacion")
+	// bi-directional many-to-one association to PresupuestoObra
+	@OneToMany(mappedBy = "usuarioEnvioPresupuestoLiquidacion")
 	private List<PresupuestoObra> presupuestoObrasUsuarioEnvioPresupuestoLiquidacion;
 
-	//bi-directional many-to-one association to PresupuestoObra
-	@OneToMany(mappedBy="usuarioEnvioActaCampo")
+	// bi-directional many-to-one association to PresupuestoObra
+	@OneToMany(mappedBy = "usuarioEnvioActaCampo")
 	private List<PresupuestoObra> presupuestoObrasUsuarioEnvioActaCampo;
 
-	//bi-directional many-to-one association to PresupuestoObra
-	@OneToMany(mappedBy="usuarioEnvioActaFinal")
+	// bi-directional many-to-one association to PresupuestoObra
+	@OneToMany(mappedBy = "usuarioEnvioActaFinal")
 	private List<PresupuestoObra> presupuestoObrasUsuarioEnvioActaFinal;
 
-	//bi-directional many-to-one association to PresupuestoObra
-	@OneToMany(mappedBy="usuarioOfertado")
+	// bi-directional many-to-one association to PresupuestoObra
+	@OneToMany(mappedBy = "usuarioOfertado")
 	private List<PresupuestoObra> presupuestoObrasUsuarioOfertado;
 
-	//bi-directional many-to-one association to PresupuestoObra
-	@OneToMany(mappedBy="usuarioLiquidacion")
+	// bi-directional many-to-one association to PresupuestoObra
+	@OneToMany(mappedBy = "usuarioLiquidacion")
 	private List<PresupuestoObra> presupuestoObrasUsuarioLiquidacion;
 
-	//bi-directional many-to-one association to ResumenRendicionCajaChica
-	@OneToMany(mappedBy="usuarioImpresion")
+	// bi-directional many-to-one association to ResumenRendicionCajaChica
+	@OneToMany(mappedBy = "usuarioImpresion")
 	private List<ResumenRendicionCajaChica> resumenRendicionCajaChicasUsuarioImpresion;
+
+	// bi-directional many-to-one association to ResumenRendicionCajaChica
+	@OneToMany(mappedBy = "usuarioRechazo")
+	private List<ResumenRendicionCajaChica> resumenRendicionCajaChicasUsuarioRechazo;
+
+	@OneToMany(mappedBy = "usuarioAprobacion")
+	private List<ResumenRendicionCajaChica> resumenRendicionCajaChicasUsuarioAprobacion;
 
 	public Usuario() {
 	}
@@ -788,4 +794,19 @@ public class Usuario implements Serializable {
 		return resumenRendicionCajaChicasUsuarioImpresion;
 	}
 
+	public List<ResumenRendicionCajaChica> getResumenRendicionCajaChicasUsuarioRechazo() {
+		return resumenRendicionCajaChicasUsuarioRechazo;
+	}
+
+	public void setResumenRendicionCajaChicasUsuarioRechazo(List<ResumenRendicionCajaChica> resumenRendicionCajaChicasUsuarioRechazo) {
+		this.resumenRendicionCajaChicasUsuarioRechazo = resumenRendicionCajaChicasUsuarioRechazo;
+	}
+
+	public List<ResumenRendicionCajaChica> getResumenRendicionCajaChicasUsuarioAprobacion() {
+		return resumenRendicionCajaChicasUsuarioAprobacion;
+	}
+
+	public void setResumenRendicionCajaChicasUsuarioAprobacion(List<ResumenRendicionCajaChica> resumenRendicionCajaChicasUsuarioAprobacion) {
+		this.resumenRendicionCajaChicasUsuarioAprobacion = resumenRendicionCajaChicasUsuarioAprobacion;
+	}
 }

@@ -1,7 +1,6 @@
 package com.dsite.service.intf;
 
-import java.util.List;
-
+import com.dsite.domain.model.entities.CajaChicaObra;
 import com.dsite.dto.model.CajaChicaObraDTO;
 
 public interface CajaChicaObraService {
@@ -14,7 +13,5 @@ public interface CajaChicaObraService {
 	
 	void deleteCajaChicaObraById(int id);
 
-	List<CajaChicaObraDTO> findAllCajaChicaObra(); 
-	
-	public boolean isCajaChicaObraExist(CajaChicaObraDTO CajaChica);
+	void updateCajaChicaObraEntity(CajaChicaObra cajaChicaObra);
 }

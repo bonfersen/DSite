@@ -1,7 +1,6 @@
 package com.dsite.service.impl;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.ParameterMode;
@@ -192,6 +191,12 @@ public class CajaChicaObraServiceImpl implements CajaChicaObraService {
 		cajaChicaObraJPARepository.save(cajaChicaObraEntity);
 		cajaChicaObraJPARepository.flush();
 	}
+	
+	@Transactional
+	public void updateCajaChicaObraEntity(CajaChicaObra cajaChicaObra) {
+		cajaChicaObraJPARepository.save(cajaChicaObra);
+		cajaChicaObraJPARepository.flush();
+	}
 
 	@Transactional
 	public void deleteCajaChicaObraById(int id) {
@@ -203,17 +208,4 @@ public class CajaChicaObraServiceImpl implements CajaChicaObraService {
 		// Execute query
 		query.execute();
 	}
-
-	@Override
-	public List<CajaChicaObraDTO> findAllCajaChicaObra() {
-		// XXX Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean isCajaChicaObraExist(CajaChicaObraDTO CajaChicaDTO) {
-		// XXX Auto-generated method stub
-		return false;
-	}
-
 }

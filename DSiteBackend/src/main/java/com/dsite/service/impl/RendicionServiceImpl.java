@@ -3,9 +3,15 @@ package com.dsite.service.impl;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.persistence.EntityManager;
+import javax.persistence.ParameterMode;
+import javax.persistence.PersistenceContext;
+import javax.persistence.StoredProcedureQuery;
+
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dsite.constants.DSiteCoreConstants;
 import com.dsite.domain.model.entities.Rendicion;
@@ -16,6 +22,7 @@ import com.dsite.domain.model.repository.jpa.ResumenRendicionCajaChicaJPAReposit
 import com.dsite.domain.model.repository.jpa.TablaGeneralJPARepository;
 import com.dsite.dto.model.RendicionDTO;
 import com.dsite.service.intf.RendicionService;
+import com.dsite.service.intf.ResumenRendicionCajaChicaService;
 import com.dsite.util.ValidateUtil;
 
 @Service
@@ -32,6 +39,12 @@ public class RendicionServiceImpl implements RendicionService {
 
 	@Autowired
 	ResumenRendicionCajaChicaJPARepository resumenRendicionCajaChicaJPARepository;
+
+	@Autowired
+	ResumenRendicionCajaChicaService resumenRendicionCajaChicaService;
+
+	@PersistenceContext
+	private EntityManager entityManager;
 
 	@Override
 	public RendicionDTO findById(int id) {
@@ -96,56 +109,35 @@ public class RendicionServiceImpl implements RendicionService {
 			rendicionEntity.setTablaGeneralTipoGasto(tablaGeneral);
 		}
 		if (ValidateUtil.isNotEmpty(rendicionDTO.getIdResumenRendicionCajaChica())) {
-			BigDecimal importeRendidoCaja = BigDecimal.ZERO;
-			BigDecimal importeRendidoViatico = BigDecimal.ZERO;
-			BigDecimal importeReembolsoCaja = BigDecimal.ZERO;
-			BigDecimal importeDescuentoCaja = BigDecimal.ZERO;
-			BigDecimal importeDescuentoViatico = BigDecimal.ZERO;
-
 			ResumenRendicionCajaChica resumenRendicionCajaChica = resumenRendicionCajaChicaJPARepository.findOne(rendicionDTO.getIdResumenRendicionCajaChica());
-
-			if (ValidateUtil.isNotEmpty(resumenRendicionCajaChica.getImporteRendidoCaja()))
-				importeRendidoCaja = importeRendidoCaja.add(resumenRendicionCajaChica.getImporteRendidoCaja());
-			if (ValidateUtil.isNotEmpty(resumenRendicionCajaChica.getImporteRendidoViatico()))
-				importeRendidoViatico = importeRendidoCaja.add(resumenRendicionCajaChica.getImporteRendidoViatico());
-			if (ValidateUtil.isNotEmpty(resumenRendicionCajaChica.getImporteAbonoCaja())) {
-				BigDecimal varCaja = resumenRendicionCajaChica.getImporteAbonoCaja().subtract(importeRendidoCaja);
-				if (varCaja.compareTo(BigDecimal.ZERO) > 0)
-					importeDescuentoCaja = varCaja;
-				else
-					importeReembolsoCaja = varCaja.abs();
-				resumenRendicionCajaChica.setImporteDescuentoCaja(importeDescuentoCaja);
-				resumenRendicionCajaChica.setImporteReembolsoCaja(importeReembolsoCaja);
-			}
-			if (ValidateUtil.isNotEmpty(resumenRendicionCajaChica.getImporteAbonoViatico())) {
-				BigDecimal varViatico = resumenRendicionCajaChica.getImporteAbonoViatico().subtract(importeRendidoViatico);
-				if (varViatico.compareTo(BigDecimal.ZERO) > 0)
-					importeDescuentoViatico = varViatico;
-				else
-					importeDescuentoViatico = BigDecimal.ZERO;
-				resumenRendicionCajaChica.setImporteDescuentoViatico(importeDescuentoViatico);
-			}
-
-			BigDecimal importeDescuentoVar = importeDescuentoCaja.add(importeDescuentoViatico);
-			BigDecimal importeReembolsoVar = importeReembolsoCaja.subtract(importeDescuentoVar);
-			if (importeReembolsoVar.compareTo(BigDecimal.ZERO) > 0) {
-				TablaGeneral tablaGeneral = tablaGeneralJPARepository.findOne(DSiteCoreConstants.ESTADO_RENDICION_PENDIENTE_DESCUENTO);
-				resumenRendicionCajaChica.setTablaGeneralEstadoRendicion(tablaGeneral);
-			}
-			else if (importeReembolsoVar.compareTo(BigDecimal.ZERO) < 0) {
-				TablaGeneral tablaGeneral = tablaGeneralJPARepository.findOne(DSiteCoreConstants.ESTADO_RENDICION_PENDIENTE_REEMBOLSO);
-				resumenRendicionCajaChica.setTablaGeneralEstadoRendicion(tablaGeneral);
-			}
-			else if (importeReembolsoVar.compareTo(BigDecimal.ZERO) == 0) {
-				TablaGeneral tablaGeneral = tablaGeneralJPARepository.findOne(DSiteCoreConstants.ESTADO_RENDICION_COMPLETADO);
-				resumenRendicionCajaChica.setTablaGeneralEstadoRendicion(tablaGeneral);
-			}
-			resumenRendicionCajaChicaJPARepository.save(resumenRendicionCajaChica);
-			resumenRendicionCajaChicaJPARepository.flush();
-			
+			resumenRendicionCajaChicaService.updateImporteResumenRendicionCajaChica(rendicionDTO, resumenRendicionCajaChica);
 			rendicionEntity.setResumenRendicionCajaChica(resumenRendicionCajaChica);
 		}
 		rendicionJPARepository.save(rendicionEntity);
 		rendicionJPARepository.flush();
+	}
+
+	@Transactional
+	public void deleteRendicionById(Integer id) {
+		Rendicion rendicion = rendicionJPARepository.findOne(id);
+		
+		if (ValidateUtil.isNotEmpty(rendicion)) {
+			ResumenRendicionCajaChica resumenRendicionCajaChica = rendicion.getResumenRendicionCajaChica();			
+			RendicionDTO rendicionDTO = new RendicionDTO();
+			BigDecimal importeRendidoCajaViatico = rendicion.getImporteRendidoCajaViatico().negate();
+			
+			rendicionDTO.setIdTGTipoRendicion(rendicion.getTablaGeneralTipoRendicion().getIdTablaGeneral());
+			rendicionDTO.setImporteRendidoCajaViatico(importeRendidoCajaViatico);
+
+			resumenRendicionCajaChicaService.updateImporteResumenRendicionCajaChica(rendicionDTO, resumenRendicionCajaChica);
+
+			// Invocar procedure para generar el codigo de obra
+			StoredProcedureQuery query = entityManager.createStoredProcedureQuery("deleteRendicion");
+			query.registerStoredProcedureParameter("idRendicion", Integer.class, ParameterMode.IN);
+			// set input parameter
+			query.setParameter("idRendicion", rendicion.getIdRendicion());
+			// Execute query
+			query.execute();
+		}
 	}
 }

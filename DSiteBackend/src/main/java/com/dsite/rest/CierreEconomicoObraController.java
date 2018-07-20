@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.dsite.dto.model.CierreEconomicoObraDTO;
+import com.dsite.dto.model.CierresAsignadasDTO;
+import com.dsite.dto.model.JsonResult;
+import com.dsite.dto.model.RendicionesAsignadasDTO;
 import com.dsite.service.intf.CierreEconomicoObraService;
 import com.dsite.util.ValidateUtil;
 
@@ -30,6 +33,17 @@ public class CierreEconomicoObraController {
 			return new ResponseEntity<CierreEconomicoObraDTO>(HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<CierreEconomicoObraDTO>(dto, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/asignarCierreEconomico/", method = RequestMethod.POST)
+	public ResponseEntity<Void> asignarCierreEconomico(@RequestBody CierresAsignadasDTO cierresAsignadasDTO) {
+		HttpHeaders headers = new HttpHeaders();
+		
+		if (ValidateUtil.isNotEmpty(cierresAsignadasDTO)) {
+			cierreEconomicoObraService.asignarCierreEconomico(cierresAsignadasDTO);			
+			return new ResponseEntity<Void>(headers, HttpStatus.OK);
+		}
+		return new ResponseEntity<Void>(headers, HttpStatus.NO_CONTENT);
 	}
 	
 	@RequestMapping(value = "/save/", method = RequestMethod.POST)

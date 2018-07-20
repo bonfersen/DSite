@@ -9,4 +9,6 @@ public interface RendicionService {
 	void createRendicion(RendicionDTO rendicionDTO);
 
 	void updateRendicion(RendicionDTO rendicionDTO);
+
+	void deleteRendicionById(Integer id);
 }

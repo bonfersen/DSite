@@ -24,6 +24,7 @@ import com.dsite.domain.model.views.VwBandejaReembolsoDescuentoCajaChica;
 import com.dsite.domain.model.views.VwBandejaRendicionCajaChica;
 import com.dsite.domain.model.views.VwBandejaSolicitudAdelantoContrata;
 import com.dsite.domain.model.views.VwBandejaSolicitudCajaChica;
+import com.dsite.domain.model.views.VwBandejaSolicitudRendicion;
 import com.dsite.domain.model.views.VwBudget;
 import com.dsite.domain.model.views.VwConcursoContrata;
 import com.dsite.domain.model.views.VwControlDocumentario;
@@ -64,6 +65,7 @@ import com.dsite.dto.model.views.VwBandejaReembolsoDescuentoCajaChicaFilter;
 import com.dsite.dto.model.views.VwBandejaRendicionCajaChicaFilter;
 import com.dsite.dto.model.views.VwBandejaSolicitudAdelantoContrataFilter;
 import com.dsite.dto.model.views.VwBandejaSolicitudCajaChicaFilter;
+import com.dsite.dto.model.views.VwBandejaSolicitudRendicionFilter;
 import com.dsite.dto.model.views.VwBudgetFilter;
 import com.dsite.dto.model.views.VwConcursoContrataFilter;
 import com.dsite.dto.model.views.VwControlDocumentarioFilter;
@@ -686,7 +688,7 @@ public class VistasJDBCRepository implements VistasRepository {
 		sql.append(" v.nombreReal, v.idTGProyecto, v.idTGArea, v.codigoDSite, v.proyecto, v.area, v.idEmpleadoSustentador, v.idTGTipoCaja, ");
 		sql.append(" v.idEmpleadoBeneficiario, v.importeCaja, v.rendirCaja, v.importeViatico, v.rendirViatico, v.importeTotal, v.detalle, ");
 		sql.append(" v.idTGEstadoCajaChica, v.fechaAprobacion, v.motivoRechazo, v.fechaPago, v.empleadoSustentador, v.empleadoBeneficiario, ");
-		sql.append(" v.tipoCaja, v.estadoCajaChica, v.idCajaChicaObra, v.idObra ");
+		sql.append(" v.tipoCaja, v.estadoCajaChica, v.idCajaChicaObra, v.idObra, v.codigoRendicionCaja, v.codigoRendicionViatico  ");
 		sql.append(" FROM vwBandejaRendicionCajaChica v ");
 		sql.append(" WHERE 1=1");
 		if (ValidateUtil.isNotEmpty(vwBandejaRendicionCajaChicaFilter.getIdEmpleadoSustentador()))
@@ -996,6 +998,23 @@ public class VistasJDBCRepository implements VistasRepository {
 		sql.append(" WHERE 1=1");
 		if (ValidateUtil.isNotEmpty(vwResumenRendicionCajaChicaFilter.getCodigoRendicion()))
 			sql.append(params.filter(" AND v.codigoRendicion = :codigoRendicion ", vwResumenRendicionCajaChicaFilter.getCodigoRendicion()));
+		return sql.toString();
+	}
+
+	@Override
+	public List<VwBandejaSolicitudRendicion> findBandejaSolicitudRendicion(VwBandejaSolicitudRendicionFilter vwBandejaSolicitudRendicionFilter) {
+		WhereParams params = new WhereParams();
+		String sql = findBandejaSolicitudRendicionQuery(vwBandejaSolicitudRendicionFilter, params);
+
+		return jdbcTemplate.query(sql.toString(), params.getParams(), new BeanPropertyRowMapper<VwBandejaSolicitudRendicion>(VwBandejaSolicitudRendicion.class));
+	}
+
+	private String findBandejaSolicitudRendicionQuery(VwBandejaSolicitudRendicionFilter vwBandejaSolicitudRendicionFilter, WhereParams params) {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT ");
+		sql.append(" v.idResumenRendicionCajaChica, v.codigoRendicion, v.idEmpleadoSustentador, v.empleadoSustentador, v.importeRendido, v.fechaCreacion ");
+		sql.append(" FROM vwBandejaSolicitudRendicion v ");
+		sql.append(" WHERE 1=1");
 		return sql.toString();
 	}
 }
