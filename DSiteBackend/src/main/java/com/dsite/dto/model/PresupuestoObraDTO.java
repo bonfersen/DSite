@@ -57,6 +57,10 @@ public class PresupuestoObraDTO {
 	private int idUsuarioOfertado;
 
 	private int idUsuarioLiquidacion;
+	
+	private BigDecimal importeVariacionOferta;
+	
+	private BigDecimal importeVariacionLiquidacion;
 
 	public int getIdPresupuestoObra() {
 		return idPresupuestoObra;
@@ -264,5 +268,21 @@ public class PresupuestoObraDTO {
 
 	public void setOfertaLiquidacionObrasDTO(List<OfertaLiquidacionObraDTO> ofertaLiquidacionObrasDTO) {
 		this.ofertaLiquidacionObrasDTO = ofertaLiquidacionObrasDTO;
+	}
+
+	public BigDecimal getImporteVariacionOferta() {
+		return importeVariacionOferta;
+	}
+
+	public void setImporteVariacionOferta(BigDecimal importeVariacionOferta) {
+		this.importeVariacionOferta = importeVariacionOferta;
+	}
+
+	public BigDecimal getImporteVariacionLiquidacion() {
+		return importeVariacionLiquidacion;
+	}
+
+	public void setImporteVariacionLiquidacion(BigDecimal importeVariacionLiquidacion) {
+		this.importeVariacionLiquidacion = importeVariacionLiquidacion;
 	}
 }

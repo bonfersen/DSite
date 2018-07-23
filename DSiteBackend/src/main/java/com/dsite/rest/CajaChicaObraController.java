@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.dsite.dto.model.CajaChicaObraDTO;
+import com.dsite.dto.model.NotificacionDTO;
 import com.dsite.service.intf.CajaChicaObraService;
 import com.dsite.util.ValidateUtil;
 
@@ -50,13 +51,9 @@ public class CajaChicaObraController {
 	}
 
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Void> deleteCajaChicaObra(@PathVariable Integer id) {
-		System.out.println("Eliminando cajaChicaObra " + id);
-
-		cajaChicaObraService.deleteCajaChicaObraById(id);
-		// Delvover el id generado con ucBuilder, exponiendo una URL
-		HttpHeaders headers = new HttpHeaders();
-		headers.setOrigin("dsite");
-		return new ResponseEntity<Void>(headers, HttpStatus.OK);
+	public ResponseEntity<NotificacionDTO> deleteCajaChicaObra(@PathVariable Integer id) {
+		NotificacionDTO notificacion = null;
+		notificacion = cajaChicaObraService.deleteCajaChicaObraById(id);
+		return new ResponseEntity<NotificacionDTO>(notificacion, HttpStatus.OK);
 	}
 }

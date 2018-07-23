@@ -56,6 +56,8 @@ public class VwCrm implements Serializable {
     private String estadoObra;
     private String estadoActaCampo;
     private String estadoActaFinal;
+    private BigDecimal importeVariacionOferta;
+    private BigDecimal importeVariacionLiquidacion;
     
 	public String getCodigoDSite() {
 		return codigoDSite;
@@ -351,4 +353,16 @@ public class VwCrm implements Serializable {
 	public void setEstadoActaFinal(String estadoActaFinal) {
 		this.estadoActaFinal = estadoActaFinal;
 	}
+	public BigDecimal getImporteVariacionOferta() {
+		return importeVariacionOferta;
+	}
+	public void setImporteVariacionOferta(BigDecimal importeVariacionOferta) {
+		this.importeVariacionOferta = importeVariacionOferta;
+	}
+	public BigDecimal getImporteVariacionLiquidacion() {
+		return importeVariacionLiquidacion;
+	}
+	public void setImporteVariacionLiquidacion(BigDecimal importeVariacionLiquidacion) {
+		this.importeVariacionLiquidacion = importeVariacionLiquidacion;
+	}	
 }

@@ -6,7 +6,7 @@ import java.util.List;
 
 public class ContratasObraDTO {
 
-	private int idContratasObra;
+	private Integer idContratasObra;
 
 	private String comentarioCierreEconomico;
 
@@ -50,9 +50,9 @@ public class ContratasObraDTO {
 
 	private List<ActasContrataDTO> actasContratasDTO;
 
-	private int idContrata;
+	private Integer idContrata;
 
-	private int idObra;
+	private Integer idObra;
 
 	private String idTGTipoMoneda;
 
@@ -60,19 +60,19 @@ public class ContratasObraDTO {
 
 	private String idTGEstadoLiquidacion;
 
-	private int idUsuarioCEPendiente;
+	private Integer idUsuarioCEPendiente;
 
-	private int idUsuarioCEParcial;
+	private Integer idUsuarioCEParcial;
 
-	private int idUsuarioCECompletado;
+	private Integer idUsuarioCECompletado;
 	
 	private List<PagosContrataDTO> pagosContratasDTO;
 
-	public int getIdContratasObra() {
+	public Integer getIdContratasObra() {
 		return idContratasObra;
 	}
 
-	public void setIdContratasObra(int idContratasObra) {
+	public void setIdContratasObra(Integer idContratasObra) {
 		this.idContratasObra = idContratasObra;
 	}
 
@@ -236,19 +236,27 @@ public class ContratasObraDTO {
 		this.usuarioModificacion = usuarioModificacion;
 	}
 
-	public int getIdContrata() {
+	public List<ActasContrataDTO> getActasContratasDTO() {
+		return actasContratasDTO;
+	}
+
+	public void setActasContratasDTO(List<ActasContrataDTO> actasContratasDTO) {
+		this.actasContratasDTO = actasContratasDTO;
+	}
+
+	public Integer getIdContrata() {
 		return idContrata;
 	}
 
-	public void setIdContrata(int idContrata) {
+	public void setIdContrata(Integer idContrata) {
 		this.idContrata = idContrata;
 	}
 
-	public int getIdObra() {
+	public Integer getIdObra() {
 		return idObra;
 	}
 
-	public void setIdObra(int idObra) {
+	public void setIdObra(Integer idObra) {
 		this.idObra = idObra;
 	}
 
@@ -276,36 +284,28 @@ public class ContratasObraDTO {
 		this.idTGEstadoLiquidacion = idTGEstadoLiquidacion;
 	}
 
-	public int getIdUsuarioCEPendiente() {
+	public Integer getIdUsuarioCEPendiente() {
 		return idUsuarioCEPendiente;
 	}
 
-	public void setIdUsuarioCEPendiente(int idUsuarioCEPendiente) {
+	public void setIdUsuarioCEPendiente(Integer idUsuarioCEPendiente) {
 		this.idUsuarioCEPendiente = idUsuarioCEPendiente;
 	}
 
-	public int getIdUsuarioCEParcial() {
+	public Integer getIdUsuarioCEParcial() {
 		return idUsuarioCEParcial;
 	}
 
-	public void setIdUsuarioCEParcial(int idUsuarioCEParcial) {
+	public void setIdUsuarioCEParcial(Integer idUsuarioCEParcial) {
 		this.idUsuarioCEParcial = idUsuarioCEParcial;
 	}
 
-	public int getIdUsuarioCECompletado() {
+	public Integer getIdUsuarioCECompletado() {
 		return idUsuarioCECompletado;
 	}
 
-	public void setIdUsuarioCECompletado(int idUsuarioCECompletado) {
+	public void setIdUsuarioCECompletado(Integer idUsuarioCECompletado) {
 		this.idUsuarioCECompletado = idUsuarioCECompletado;
-	}
-
-	public List<ActasContrataDTO> getActasContratasDTO() {
-		return actasContratasDTO;
-	}
-
-	public void setActasContratasDTO(List<ActasContrataDTO> actasContratasDTO) {
-		this.actasContratasDTO = actasContratasDTO;
 	}
 
 	public List<PagosContrataDTO> getPagosContratasDTO() {
@@ -314,5 +314,5 @@ public class ContratasObraDTO {
 
 	public void setPagosContratasDTO(List<PagosContrataDTO> pagosContratasDTO) {
 		this.pagosContratasDTO = pagosContratasDTO;
-	}	
+	}
 }

@@ -51,7 +51,7 @@ public class ObraServiceImpl implements ObraService {
 
 	@Autowired
 	UsuarioJPARepository usuarioJPARepository;
-	
+
 	@Autowired
 	Mapper mapper;
 
@@ -110,7 +110,7 @@ public class ObraServiceImpl implements ObraService {
 		Obra obraEntidad = new Obra();
 		JsonResult jsonResult = new JsonResult();
 		mapper.map(obraDTO, obraEntidad);
-		
+
 		// Invocar procedure para generar el codigo de obra
 		StoredProcedureQuery query = entityManager.createStoredProcedureQuery("getCodigoDSite");
 		query.registerStoredProcedureParameter(1, String.class, ParameterMode.OUT);
@@ -138,9 +138,9 @@ public class ObraServiceImpl implements ObraService {
 		TablaGeneral tablaGeneralEF = tablaGeneralJpaRepository.findOne(DSiteCoreConstants.ESTADO_FINANZA_PENDIENTE);
 		presupuestoObra.setTablaGeneralEstadoFinanzas(tablaGeneralEF);
 		presupuestoObra.setUsuarioCreacion(DSiteCoreConstants.USUARIO_ADMIN);
-		
+
 		presupuestoObraJPARepository.save(presupuestoObra);
-		
+
 		jsonResult.setCodigo(codigoDSite);
 		return jsonResult;
 	}
@@ -215,10 +215,10 @@ public class ObraServiceImpl implements ObraService {
 		if (ValidateUtil.isEmpty(obraDTO.getTipoTrabajo()))
 			obraDTO.setTipoTrabajo(obraEntidad.getTipoTrabajo());
 		if (ValidateUtil.isEmpty(obraDTO.getImporteTotalPresupuestadoContrata()))
-			obraDTO.setImporteTotalPresupuestadoContrata(obraEntidad.getImporteTotalPresupuestadoContrata());		
+			obraDTO.setImporteTotalPresupuestadoContrata(obraEntidad.getImporteTotalPresupuestadoContrata());
 		if (ValidateUtil.isEmpty(obraDTO.getImporteTotalPagosContrata()))
-			obraDTO.setImporteTotalPagosContrata(obraEntidad.getImporteTotalPagosContrata());		
-		
+			obraDTO.setImporteTotalPagosContrata(obraEntidad.getImporteTotalPagosContrata());
+
 		// Ingresar datos a la entidad
 		mapper.map(obraDTO, obraEntidad);
 		obraEntidad.setFechaModificacion(new Date());
@@ -226,13 +226,13 @@ public class ObraServiceImpl implements ObraService {
 			obraEntidad.setUsuarioModificacion(DSiteCoreConstants.USUARIO_ADMIN);
 
 		createUpdateObra(obraDTO, obraEntidad);
-		
+
 		jsonResult.setCodigo(obraEntidad.getCodigoDSite());
 		return jsonResult;
 	}
 
 	private void createUpdateObra(ObraDTO obraDTO, Obra obraEntidad) {
-		
+
 		if (ValidateUtil.isNotEmpty(obraDTO.getIdTGArea())) {
 			TablaGeneral tablaGeneral = tablaGeneralJpaRepository.findOne(obraDTO.getIdTGArea());
 			obraEntidad.setTablaGeneralArea(tablaGeneral);
@@ -266,6 +266,23 @@ public class ObraServiceImpl implements ObraService {
 			TablaGeneral tablaGeneral = tablaGeneralJpaRepository.findOne(obraDTO.getIdTGEstadoObra());
 			obraEntidad.setTablaGeneralEstadoObra(tablaGeneral);
 		}
+		else
+		{
+			TablaGeneral tablaGeneral = obraEntidad.getTablaGeneralEstadoObra();
+			switch (tablaGeneral.getIdTablaGeneral()) {
+			case DSiteCoreConstants.ESTADO_OBRA_CREADO:
+				if (ValidateUtil.isEmpty(obraDTO.getFechaInicioObra()))
+					tablaGeneral = tablaGeneralJpaRepository.findOne(DSiteCoreConstants.ESTADO_OBRA_CREADO);
+				else
+					tablaGeneral = tablaGeneralJpaRepository.findOne(DSiteCoreConstants.ESTADO_OBRA_EJECUCION);
+				break;
+			default:
+				tablaGeneral = tablaGeneralJpaRepository.findOne(tablaGeneral.getIdTablaGeneral());
+				break;
+			}
+
+			obraEntidad.setTablaGeneralEstadoObra(tablaGeneral);
+		}
 		// Responsable Obra
 		if (ValidateUtil.isNotEmpty(obraDTO.getIdEmpleadoResponsableObra())) {
 			Empleado empleado = empleadoJpaRepository.findOne(obraDTO.getIdEmpleadoResponsableObra());
@@ -294,9 +311,9 @@ public class ObraServiceImpl implements ObraService {
 		if (ValidateUtil.isNotEmpty(obraDTO.getIdUsuarioFinalizacion())) {
 			Usuario usuario = usuarioJPARepository.findOne(obraDTO.getIdUsuarioFinalizacion());
 			obraEntidad.setUsuarioFinalizacion(usuario);
-		}		
+		}
 		obraJPARepository.save(obraEntidad);
-		obraJPARepository.flush();		
+		obraJPARepository.flush();
 	}
 
 	@Override

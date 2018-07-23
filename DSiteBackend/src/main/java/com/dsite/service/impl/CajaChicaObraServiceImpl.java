@@ -24,6 +24,7 @@ import com.dsite.domain.model.repository.jpa.ObraJPARepository;
 import com.dsite.domain.model.repository.jpa.TablaGeneralJPARepository;
 import com.dsite.domain.model.repository.jpa.UsuarioJPARepository;
 import com.dsite.dto.model.CajaChicaObraDTO;
+import com.dsite.dto.model.NotificacionDTO;
 import com.dsite.service.intf.CajaChicaObraService;
 import com.dsite.util.ValidateUtil;
 
@@ -148,18 +149,18 @@ public class CajaChicaObraServiceImpl implements CajaChicaObraService {
 		if (ValidateUtil.isNotEmpty(cajaChicaObraDTO.getIdTGEstadoCajaChica())) {
 			TablaGeneral tablaGeneral = tablaGeneralJpaRepository.findOne(cajaChicaObraDTO.getIdTGEstadoCajaChica());
 			cajaChicaObraEntity.setTablaGeneralEstadoCajaChica(tablaGeneral);
-			
+
 			switch (tablaGeneral.getIdTablaGeneral()) {
 			case DSiteCoreConstants.ESTADO_CAJA_CHICA_APROBADO:
-				
+
 				cajaChicaObraDTO.setFechaAprobacion(new Date());
 				break;
 			case DSiteCoreConstants.ESTADO_CAJA_CHICA_RECHAZADO:
-				
+
 				cajaChicaObraDTO.setFechaRechazo(new Date());
 				break;
-			case DSiteCoreConstants.ESTADO_CAJA_CHICA_DEPOSITADO://getIdUsuarioPago
-				
+			case DSiteCoreConstants.ESTADO_CAJA_CHICA_DEPOSITADO:// getIdUsuarioPago
+
 				cajaChicaObraDTO.setFechaPago(new Date());
 				break;
 			case DSiteCoreConstants.ESTADO_CAJA_CHICA_ASIGNADO:
@@ -191,21 +192,35 @@ public class CajaChicaObraServiceImpl implements CajaChicaObraService {
 		cajaChicaObraJPARepository.save(cajaChicaObraEntity);
 		cajaChicaObraJPARepository.flush();
 	}
-	
+
 	@Transactional
 	public void updateCajaChicaObraEntity(CajaChicaObra cajaChicaObra) {
 		cajaChicaObraJPARepository.save(cajaChicaObra);
 		cajaChicaObraJPARepository.flush();
 	}
 
-	@Transactional
-	public void deleteCajaChicaObraById(int id) {
-		// Invocar procedure para generar el codigo de obra
-		StoredProcedureQuery query = entityManager.createStoredProcedureQuery("deleteCajaChicaObra");
-		query.registerStoredProcedureParameter("idCajaChicaObra", Integer.class, ParameterMode.IN);
-		// set input parameter
-		query.setParameter("idCajaChicaObra", id);
-		// Execute query
-		query.execute();
+	public NotificacionDTO deleteCajaChicaObraById(int id) {
+		NotificacionDTO notificacionDTO = new NotificacionDTO();
+		try {
+			// Invocar procedure para generar el codigo de obra
+			StoredProcedureQuery query = entityManager.createStoredProcedureQuery("deleteCajaChicaObra");
+			query.registerStoredProcedureParameter("idCajaChicaObra", Integer.class, ParameterMode.IN);
+			// set input parameter
+			query.setParameter("idCajaChicaObra", id);
+			// Execute query
+			query.execute();
+			
+			notificacionDTO.setCodigo(null);
+			notificacionDTO.setSeverity("success");
+			notificacionDTO.setSummary("DSite success");
+			notificacionDTO.setDetail("Se elimino la cajaChicaObra: " + id);
+		}
+		catch (Exception e) {
+			notificacionDTO.setCodigo(null);
+			notificacionDTO.setSeverity("warning");
+			notificacionDTO.setSummary("DSite warning");
+			notificacionDTO.setDetail(e.getCause().getCause().getMessage());
+		}
+		return notificacionDTO;
 	}
 }

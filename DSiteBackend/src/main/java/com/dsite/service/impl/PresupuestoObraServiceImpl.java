@@ -89,8 +89,6 @@ public class PresupuestoObraServiceImpl implements PresupuestoObraService {
 			presupuestoObraDTO.setImportePresupuestoLiquidacion(presupuestoObraEntidad.getImportePresupuestoLiquidacion());
 		if (ValidateUtil.isEmpty(presupuestoObraDTO.getImportePresupuestoOferta()))
 			presupuestoObraDTO.setImportePresupuestoOferta(presupuestoObraEntidad.getImportePresupuestoOferta());
-		if (ValidateUtil.isEmpty(presupuestoObraDTO.getObservacionFinanzas()))
-			presupuestoObraDTO.setObservacionFinanzas(presupuestoObraEntidad.getObservacionFinanzas());
 
 		// Ingresar datos a la entidad
 		mapper.map(presupuestoObraDTO, presupuestoObraEntidad);

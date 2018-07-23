@@ -2,8 +2,6 @@ package com.dsite.domain.model.repository.jdbc;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -15,8 +13,6 @@ import com.dsite.util.ValidateUtil;
 
 @Repository
 public class CierreEconomicoJDBCRepository implements CierreEconomicoRepository {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(CierreEconomicoJDBCRepository.class);
 
 	private final NamedParameterJdbcTemplate jdbcTemplate;
 	

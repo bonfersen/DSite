@@ -18,6 +18,17 @@ public class DSiteCoreConstants {
 	/**
 	 * ESTADO_CAJA_CHICA
 	 */
+	public final static String ESTADO_OBRA_CREADO = "ESOB001";
+	public final static String ESTADO_OBRA_EJECUCION = "ESOB002";
+	public final static String ESTADO_OBRA_ANULADO = "ESOB003";
+	public final static String ESTADO_OBRA_PARALIZADO = "ESOB004";
+	public final static String ESTADO_OBRA_REACTIVADO = "ESOB005";
+	public final static String ESTADO_OBRA_FINALIZADO = "ESOB006";
+	public final static String ESTADO_OBRA_CERRADO = "ESOB007";
+	
+	/**
+	 * ESTADO_CAJA_CHICA
+	 */
 	public final static String ESTADO_CAJA_CHICA_SOLICITADO = "ECCH001";
 	public final static String ESTADO_CAJA_CHICA_APROBADO = "ECCH002";
 	public final static String ESTADO_CAJA_CHICA_RECHAZADO = "ECCH003";
@@ -89,7 +100,7 @@ public class DSiteCoreConstants {
 
 	public final static String CATEGORIA_CONTRATA_GRANDE_DESCRIPCION = "Grande";
 	public final static String CATEGORIA_CONTRATA_MEDIANO_DESCRIPCION = "Mediano";
-	public final static String CATEGORIA_CONTRATA_PEQUENO_DESCRIPCION = "Peque\u00f1o";
+	public final static String CATEGORIA_CONTRATA_PEQUENO_DESCRIPCION = "Pequeño";
 	
 	/**
 	 * CLASIFICACION_CAJA_CHICA
@@ -104,6 +115,14 @@ public class DSiteCoreConstants {
 	public static final String CIEN_CADENA = "100";
 	public static final String CERO_DECIMAL_CADENA = "0.00";
 
+	/**
+	 * ESTADO_LIQUIDACION_CONTRATA
+	 */
+	public static final String ESTADO_LIQUIDACION_CONTRATA_GENERADO = "ELCO001";
+	public static final String ESTADO_LIQUIDACION_CONTRATA_PENDIENTE = "ELCO002";
+	public static final String ESTADO_LIQUIDACION_CONTRATA_SOLICITADO = "ELCO003";
+	public static final String ESTADO_LIQUIDACION_CONTRATA_LIQUIDADO = "ELCO004";
+	
 	/**
 	 * Valores enteros
 	 */

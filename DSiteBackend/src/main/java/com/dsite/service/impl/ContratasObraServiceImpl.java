@@ -14,19 +14,26 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dsite.constants.DSiteCoreConstants;
+import com.dsite.domain.model.entities.CierreEconomico;
 import com.dsite.domain.model.entities.Contrata;
 import com.dsite.domain.model.entities.ContratasObra;
 import com.dsite.domain.model.entities.Obra;
 import com.dsite.domain.model.entities.TablaGeneral;
 import com.dsite.domain.model.entities.Usuario;
+import com.dsite.domain.model.repository.jdbc.ContratasObraJDBCRepository;
+import com.dsite.domain.model.repository.jpa.CierreEconomicoJPARepository;
+import com.dsite.domain.model.repository.jpa.CierreEconomicoObraJPARepository;
 import com.dsite.domain.model.repository.jpa.ContrataJPARepository;
 import com.dsite.domain.model.repository.jpa.ContratasObraJPARepository;
 import com.dsite.domain.model.repository.jpa.ObraJPARepository;
 import com.dsite.domain.model.repository.jpa.TablaGeneralJPARepository;
 import com.dsite.domain.model.repository.jpa.UsuarioJPARepository;
 import com.dsite.dto.model.ActasContrataDTO;
+import com.dsite.dto.model.CierreEconomicoObraDTO;
 import com.dsite.dto.model.ContratasObraDTO;
+import com.dsite.dto.model.NotificacionDTO;
 import com.dsite.service.intf.ActasContrataService;
+import com.dsite.service.intf.CierreEconomicoObraService;
 import com.dsite.service.intf.ContratasObraService;
 import com.dsite.util.ValidateUtil;
 
@@ -37,6 +44,9 @@ public class ContratasObraServiceImpl implements ContratasObraService {
 	ContratasObraJPARepository contratasObraJPARepository;
 
 	@Autowired
+	ContratasObraJDBCRepository contratasObraJDBCRepository;
+
+	@Autowired
 	ActasContrataService actasContrataService;
 
 	@Autowired
@@ -44,12 +54,21 @@ public class ContratasObraServiceImpl implements ContratasObraService {
 
 	@Autowired
 	ContrataJPARepository contrataJPARepository;
-	
+
 	@Autowired
 	UsuarioJPARepository usuarioJPARepository;
 
 	@Autowired
 	TablaGeneralJPARepository tablaGeneralJpaRepository;
+
+	@Autowired
+	CierreEconomicoObraJPARepository cierreEconomicoObraJPARepository;
+
+	@Autowired
+	CierreEconomicoJPARepository cierreEconomicoJPARepository;
+
+	@Autowired
+	CierreEconomicoObraService cierreEconomicoObraService;
 
 	@Autowired
 	Mapper mapper;
@@ -58,9 +77,11 @@ public class ContratasObraServiceImpl implements ContratasObraService {
 	private EntityManager entityManager;
 
 	@Override
-	public ContratasObraDTO findById(int id) {
-		// XXX Auto-generated method stub
-		return null;
+	public List<ContratasObraDTO> findByIdObra(int idObra) {
+		ContratasObraDTO dto = new ContratasObraDTO();
+		dto.setIdObra(idObra);
+		List<ContratasObraDTO> lstDTO = contratasObraJDBCRepository.findContratasObraByCriteria(dto);
+		return lstDTO;
 	}
 
 	@Transactional
@@ -70,10 +91,17 @@ public class ContratasObraServiceImpl implements ContratasObraService {
 
 		// Ingresar datos a la entidad
 		contratasObraEntity.setFechaCreacion(new Date());
+		TablaGeneral tablaGeneralEstadoCierreEconomico = new TablaGeneral();
+		tablaGeneralEstadoCierreEconomico.setIdTablaGeneral(DSiteCoreConstants.ESTADO_CIERRE_ECONOMICO_PENDIENTE);
+		contratasObraEntity.setTablaGeneralEstadoCierreEconomico(tablaGeneralEstadoCierreEconomico);
+		// Estado liquidacion de contrataObra en generado		
+		TablaGeneral tablaGeneralEstadoLiquidacion = new TablaGeneral();
+		tablaGeneralEstadoLiquidacion.setIdTablaGeneral(DSiteCoreConstants.ESTADO_LIQUIDACION_CONTRATA_GENERADO);
+		contratasObraEntity.setTablaGeneralEstadoLiquidacion(tablaGeneralEstadoLiquidacion);
 		if (ValidateUtil.isEmpty(contratasObraDTO.getUsuarioCreacion()))
 			contratasObraEntity.setUsuarioCreacion(DSiteCoreConstants.USUARIO_ADMIN);
 		createUpdateContratasObra(contratasObraDTO, contratasObraEntity);
-
+		
 		/*
 		 * Ingresar datos a la Acta Contrata
 		 */
@@ -94,7 +122,7 @@ public class ContratasObraServiceImpl implements ContratasObraService {
 		contratasObraDTO.setUsuarioCreacion(contratasObraEntity.getUsuarioCreacion());
 		/*
 		 * Validar DTO
-		 */		
+		 */
 		if (ValidateUtil.isEmpty(contratasObraDTO.getComentarioCierreEconomico()))
 			contratasObraDTO.setComentarioCierreEconomico(contratasObraEntity.getComentarioCierreEconomico());
 		if (ValidateUtil.isEmpty(contratasObraDTO.getComentarioDescuentoOperativo()))
@@ -133,7 +161,7 @@ public class ContratasObraServiceImpl implements ContratasObraService {
 		contratasObraEntity.setFechaModificacion(new Date());
 		if (ValidateUtil.isEmpty(contratasObraDTO.getUsuarioModificacion()))
 			contratasObraEntity.setUsuarioModificacion(DSiteCoreConstants.USUARIO_ADMIN);
-		
+
 		createUpdateContratasObra(contratasObraDTO, contratasObraEntity);
 	}
 
@@ -155,6 +183,46 @@ public class ContratasObraServiceImpl implements ContratasObraService {
 		}
 		if (ValidateUtil.isNotEmpty(contratasObraDTO.getIdTGEstadoCierreEconomico())) {
 			TablaGeneral tablaGeneral = tablaGeneralJpaRepository.findOne(contratasObraDTO.getIdTGEstadoCierreEconomico());
+			List<CierreEconomicoObraDTO> lstCierreEconomicoObraDTO = null;
+
+			switch (contratasObraDTO.getIdTGEstadoCierreEconomico()) {
+			case DSiteCoreConstants.ESTADO_CIERRE_ECONOMICO_PARCIAL:
+				lstCierreEconomicoObraDTO = cierreEconomicoObraService.findByIdObra(contratasObraDTO.getIdObra());
+				for (CierreEconomicoObraDTO cierreEconomicoObraDTO : lstCierreEconomicoObraDTO) {
+					CierreEconomico cierreEconomico = cierreEconomicoJPARepository.findOne(cierreEconomicoObraDTO.getIdCierreEconomico());
+					TablaGeneral tablaGeneralEstadoCierreEconomico = new TablaGeneral();
+					tablaGeneralEstadoCierreEconomico.setIdTablaGeneral(DSiteCoreConstants.ESTADO_CIERRE_ECONOMICO_PARCIAL);
+					cierreEconomico.setTablaGeneralEstadoCierreEconomico(tablaGeneralEstadoCierreEconomico);
+
+					cierreEconomicoJPARepository.save(cierreEconomico);
+					cierreEconomicoJPARepository.flush();
+				}
+				break;
+			case DSiteCoreConstants.ESTADO_CIERRE_ECONOMICO_FINALIZADO:
+				boolean estado = true;
+				lstCierreEconomicoObraDTO = cierreEconomicoObraService.findByIdObra(contratasObraDTO.getIdObra());
+				for (CierreEconomicoObraDTO cierreEconomicoObraDTO : lstCierreEconomicoObraDTO) {
+					List<ContratasObraDTO> lstContratasObraDTO = this.findByIdObra(cierreEconomicoObraDTO.getIdObra());
+					for (ContratasObraDTO bean : lstContratasObraDTO) {
+						if (bean.getIdTGEstadoCierreEconomico().compareTo(DSiteCoreConstants.ESTADO_CIERRE_ECONOMICO_FINALIZADO) != 0) {
+							estado = false;
+							break;
+						}
+					}
+					if (estado) {
+						CierreEconomico cierreEconomico = cierreEconomicoJPARepository.findOne(cierreEconomicoObraDTO.getIdCierreEconomico());
+						TablaGeneral tablaGeneralEstadoCierreEconomico = new TablaGeneral();
+						tablaGeneralEstadoCierreEconomico.setIdTablaGeneral(DSiteCoreConstants.ESTADO_CIERRE_ECONOMICO_FINALIZADO);
+						cierreEconomico.setTablaGeneralEstadoCierreEconomico(tablaGeneralEstadoCierreEconomico);
+
+						cierreEconomicoJPARepository.save(cierreEconomico);
+						cierreEconomicoJPARepository.flush();
+					}
+				}
+				break;
+			default:
+				break;
+			}
 			contratasObraEntity.setTablaGeneralEstadoCierreEconomico(tablaGeneral);
 		}
 		if (ValidateUtil.isNotEmpty(contratasObraDTO.getIdTGEstadoLiquidacion())) {
@@ -173,26 +241,33 @@ public class ContratasObraServiceImpl implements ContratasObraService {
 			Usuario usuario = usuarioJPARepository.findOne(contratasObraDTO.getIdUsuarioCECompletado());
 			contratasObraEntity.setUsuarioCECompletado(usuario);
 		}
-		
+
 		contratasObraJPARepository.save(contratasObraEntity);
 		contratasObraJPARepository.flush();
 	}
 
-	@Override
-	public void deleteContratasObraById(int id) {
-		// Invocar procedure para generar el codigo de obra
-		StoredProcedureQuery query = entityManager.createStoredProcedureQuery("deleteContratasObra");
-		query.registerStoredProcedureParameter("idContratasObra", Integer.class, ParameterMode.IN);
-		// set input parameter
-		query.setParameter("idContratasObra", id);
-		// Execute query
-		query.execute();
-	}
+	public NotificacionDTO deleteContratasObraById(int id) {
+		NotificacionDTO notificacionDTO = new NotificacionDTO();
+		try {
+			// Invocar procedure para generar el codigo de obra
+			StoredProcedureQuery query = entityManager.createStoredProcedureQuery("deleteContratasObra");
+			query.registerStoredProcedureParameter("idContratasObra", Integer.class, ParameterMode.IN);
+			// set input parameter
+			query.setParameter("idContratasObra", id);
+			// Execute query
+			query.execute();
 
-	@Override
-	public List<ContratasObraDTO> findAllContratasObras() {
-		// XXX Auto-generated method stub
-		return null;
+			notificacionDTO.setCodigo(null);
+			notificacionDTO.setSeverity("success");
+			notificacionDTO.setSummary("DSite success");
+			notificacionDTO.setDetail("Se elimino la contrataObra: " + id);
+		}
+		catch (Exception e) {
+			notificacionDTO.setCodigo(null);
+			notificacionDTO.setSeverity("warning");
+			notificacionDTO.setSummary("DSite warning");
+			notificacionDTO.setDetail(e.getCause().getCause().getMessage());
+		}
+		return notificacionDTO;
 	}
-
 }

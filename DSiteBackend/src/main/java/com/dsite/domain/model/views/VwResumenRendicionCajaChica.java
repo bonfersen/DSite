@@ -16,6 +16,8 @@ public class VwResumenRendicionCajaChica implements Serializable {
 	private BigDecimal importeDescuentoViatico;
     private Integer idResumenRendicionCajaChica;
     private String codigoRendicion;
+    private String idTGEstado;
+    private String idTGEstadoRendicion;
     
 	public BigDecimal getImporteAbonoCaja() {
 		return importeAbonoCaja;
@@ -70,5 +72,17 @@ public class VwResumenRendicionCajaChica implements Serializable {
 	}
 	public void setCodigoRendicion(String codigoRendicion) {
 		this.codigoRendicion = codigoRendicion;
+	}
+	public String getIdTGEstado() {
+		return idTGEstado;
+	}
+	public void setIdTGEstado(String idTGEstado) {
+		this.idTGEstado = idTGEstado;
+	}
+	public String getIdTGEstadoRendicion() {
+		return idTGEstadoRendicion;
+	}
+	public void setIdTGEstadoRendicion(String idTGEstadoRendicion) {
+		this.idTGEstadoRendicion = idTGEstadoRendicion;
 	}
 }

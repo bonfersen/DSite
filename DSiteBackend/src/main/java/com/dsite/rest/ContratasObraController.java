@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.dsite.dto.model.ContratasObraDTO;
+import com.dsite.dto.model.NotificacionDTO;
 import com.dsite.service.intf.ContratasObraService;
 import com.dsite.util.ValidateUtil;
 
@@ -48,13 +49,9 @@ public class ContratasObraController {
 	}
 
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Void> deleteCajaChicaObra(@PathVariable Integer id) {
-		System.out.println("Eliminando ContratasObra " + id);
-
-		contrataObraService.deleteContratasObraById(id);
-		// Delvover el id generado con ucBuilder, exponiendo una URL
-		HttpHeaders headers = new HttpHeaders();
-		headers.setOrigin("dsite");
-		return new ResponseEntity<Void>(headers, HttpStatus.OK);
+	public ResponseEntity<NotificacionDTO> deleteContratasObraById(@PathVariable Integer id) {
+		NotificacionDTO notificacion = null;		
+		notificacion = contrataObraService.deleteContratasObraById(id);		
+		return new ResponseEntity<NotificacionDTO>(notificacion, HttpStatus.OK);
 	}
 }

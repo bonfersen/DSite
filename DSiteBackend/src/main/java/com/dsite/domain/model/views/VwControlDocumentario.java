@@ -13,7 +13,7 @@ public class VwControlDocumentario implements Serializable {
 	private String tipoTrabajo;
 	private BigDecimal porcentajeActasAprobadas;
 	private String nombreReal;
-	private String cierre;
+	private Integer cierre;
 	private String comentarioCierreEconomico;
 	private String codigoCierre;
 	private String estadoActaCampo;
@@ -28,6 +28,9 @@ public class VwControlDocumentario implements Serializable {
 	private String idMotivoRechazoActaFinal;
 	private String idMotivoRechazoRptFoto;
 	private String idMotivoRechazoSga;
+	private String idTGEstadoCierreEconomico;
+	private String estadoCierreEconomico;
+	private Integer idContratasObra;
 
 	public Integer getIdObra() {
 		return idObra;
@@ -83,14 +86,6 @@ public class VwControlDocumentario implements Serializable {
 
 	public void setNombreReal(String nombreReal) {
 		this.nombreReal = nombreReal;
-	}
-
-	public String getCierre() {
-		return cierre;
-	}
-
-	public void setCierre(String cierre) {
-		this.cierre = cierre;
 	}
 
 	public String getComentarioCierreEconomico() {
@@ -203,5 +198,37 @@ public class VwControlDocumentario implements Serializable {
 
 	public void setIdMotivoRechazoSga(String idMotivoRechazoSga) {
 		this.idMotivoRechazoSga = idMotivoRechazoSga;
+	}
+
+	public Integer getCierre() {
+		return cierre;
+	}
+
+	public void setCierre(Integer cierre) {
+		this.cierre = cierre;
+	}
+
+	public String getIdTGEstadoCierreEconomico() {
+		return idTGEstadoCierreEconomico;
+	}
+
+	public void setIdTGEstadoCierreEconomico(String idTGEstadoCierreEconomico) {
+		this.idTGEstadoCierreEconomico = idTGEstadoCierreEconomico;
+	}
+
+	public String getEstadoCierreEconomico() {
+		return estadoCierreEconomico;
+	}
+
+	public void setEstadoCierreEconomico(String estadoCierreEconomico) {
+		this.estadoCierreEconomico = estadoCierreEconomico;
+	}
+
+	public Integer getIdContratasObra() {
+		return idContratasObra;
+	}
+
+	public void setIdContratasObra(Integer idContratasObra) {
+		this.idContratasObra = idContratasObra;
 	}
 }

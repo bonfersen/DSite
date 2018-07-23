@@ -1,9 +1,11 @@
 package com.dsite.domain.model.views;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
+
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * The persistent class for the vwOfertaCustomerService database table.
@@ -29,6 +31,7 @@ public class VwOfertaCustomerService implements Serializable {
 	private String OTAutogenerada;
 	private String proyecto;
 	private int idOfertaLiquidacionObra;
+	private int idPresupuestoObra;
 
 	public VwOfertaCustomerService() {
 	}
@@ -171,4 +174,11 @@ public class VwOfertaCustomerService implements Serializable {
 		this.idOfertaLiquidacionObra = idOfertaLiquidacionObra;
 	}
 
+	public int getIdPresupuestoObra() {
+		return idPresupuestoObra;
+	}
+
+	public void setIdPresupuestoObra(int idPresupuestoObra) {
+		this.idPresupuestoObra = idPresupuestoObra;
+	}
 }

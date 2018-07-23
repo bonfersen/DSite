@@ -26,6 +26,7 @@ public class VwLiquidacionContrata implements Serializable {
     private BigDecimal porcentajeCostos;
     private BigDecimal importeTotalAdelanto;
     private BigDecimal porcentajePagado;
+    private String idTGEstadoLiquidacion;
     
 	public Integer getIdObra() {
 		return idObra;
@@ -146,5 +147,11 @@ public class VwLiquidacionContrata implements Serializable {
 	}
 	public void setPorcentajePagado(BigDecimal porcentajePagado) {
 		this.porcentajePagado = porcentajePagado;
+	}
+	public String getIdTGEstadoLiquidacion() {
+		return idTGEstadoLiquidacion;
+	}
+	public void setIdTGEstadoLiquidacion(String idTGEstadoLiquidacion) {
+		this.idTGEstadoLiquidacion = idTGEstadoLiquidacion;
 	}
 }

@@ -1,10 +1,21 @@
 package com.dsite.domain.model.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 /**
@@ -113,6 +124,10 @@ public class PresupuestoObra implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="idUsuarioLiquidacion")
 	private Usuario usuarioLiquidacion;
+	
+	private BigDecimal importeVariacionOferta;
+	
+	private BigDecimal importeVariacionLiquidacion;
 
 	public PresupuestoObra() {
 	}
@@ -339,4 +354,19 @@ public class PresupuestoObra implements Serializable {
 		this.usuarioLiquidacion = usuarioLiquidacion;
 	}
 
+	public BigDecimal getImporteVariacionOferta() {
+		return importeVariacionOferta;
+	}
+
+	public void setImporteVariacionOferta(BigDecimal importeVariacionOferta) {
+		this.importeVariacionOferta = importeVariacionOferta;
+	}
+
+	public BigDecimal getImporteVariacionLiquidacion() {
+		return importeVariacionLiquidacion;
+	}
+
+	public void setImporteVariacionLiquidacion(BigDecimal importeVariacionLiquidacion) {
+		this.importeVariacionLiquidacion = importeVariacionLiquidacion;
+	}
 }

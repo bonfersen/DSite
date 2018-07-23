@@ -265,7 +265,8 @@ public class VistasJDBCRepository implements VistasRepository {
 		sql.append(" v.idTGEstadoObra, v.estadoObra, v.fechaCreacion, v.nombreReal, v.numeroOrdenCompra, v.importeOferta, ");
 		sql.append(" v.fechaOferta, v.moneda, v.importeLiquidacion, v.fechaLiquidacion, v.importeVarMas, v.importeVarMenos, ");
 		sql.append(" v.actaFinal, v.fechaActaCampo, v.fechaActaFinal, v.correlativoLiquidacion, v.correlativoOferta, v.estadoFinanzas, ");
-		sql.append(" v.observacionFinanzas, v.idEnvioOferta, v.idEnvioLiquidacion, v.idEnvioActaCampo, v.idEnvioActaFinal, v.actaCampo ");
+		sql.append(" v.observacionFinanzas, v.idEnvioOferta, v.idEnvioLiquidacion, v.idEnvioActaCampo, v.idEnvioActaFinal, v.actaCampo, ");
+		sql.append(" v.idPresupuestoObra ");
 		sql.append(" FROM vwLiquidacionCustomerService v ");
 		sql.append(" WHERE 1=1");
 		if (ValidateUtil.isNotEmpty(vwLiquidacionCustomerServiceFilter.getCodigoDSite()))
@@ -344,7 +345,7 @@ public class VistasJDBCRepository implements VistasRepository {
 		sql.append(" SELECT ");
 		sql.append(" v.codigoDSite, v.idTGArea, v.area, v.idTGProyecto, v.proyecto, v.OTAutogenerada, v.gestorProyecto, ");
 		sql.append(" v.departamento, v.fechaCreacion, v.nombreReal, v.importeOferta, v.fechaOferta, v.moneda, ");
-		sql.append(" v.correlativoOferta, v.estadoFinanzas, v.observacionFinanzas, v.idOfertaLiquidacionObra ");
+		sql.append(" v.correlativoOferta, v.estadoFinanzas, v.observacionFinanzas, v.idOfertaLiquidacionObra, v.idPresupuestoObra ");
 		sql.append(" FROM vwOfertaCustomerService v ");
 		sql.append(" WHERE 1=1");
 		if (ValidateUtil.isNotEmpty(vwOfertaCustomerServiceFilter.getCodigoDSite()))
@@ -557,7 +558,7 @@ public class VistasJDBCRepository implements VistasRepository {
 		sql.append(" v.idObra, v.codigoDSite, v.idContratasObra, v.idContrata, v.contrata, v.tipoTrabajo, v.importePresupuestoObra, ");
 		sql.append(" v.importeLiquidadacionObra, v.importeAdicional, v.comentarioImporteAdicional, v.importeDescuentoOperativo, ");
 		sql.append(" v.comentarioDescuentoOperativo, v.importeFinal, v.importePendientePago, v.estadoPagoContrata, v.importeTotalContratas, ");
-		sql.append(" v.importeObra, v.porcentajeCostos, v.importeTotalAdelanto, v.porcentajePagado ");
+		sql.append(" v.importeObra, v.porcentajeCostos, v.importeTotalAdelanto, v.porcentajePagado, v.idTGEstadoLiquidacion ");
 		sql.append(" FROM vwLiquidacionContrata v ");
 		sql.append(" WHERE 1=1");
 		if (ValidateUtil.isNotEmpty(vwLiquidacionContrataFilter.getCodigoDSite()))
@@ -626,7 +627,7 @@ public class VistasJDBCRepository implements VistasRepository {
 		sql.append(" v.actaCampo, v.fechaActaCampo, v.idEnvioActaFinal, v.actaFinal, v.fechaActaFinal, v.estadoActaAdministracion, ");
 		sql.append(" v.importeOrdenCompra, v.cetificado, v.facturaDSite, v.importeOrdenCompraComplementaria, v.numeroOrdenCompraComplementaria, ");
 		sql.append(" v.cetificadoComplementaria, v.facturaDSiteComplementaria, v.notaCredito, v.idTGEstadoObra, v.estadoObra, ");
-		sql.append(" estadoActaCampo, estadoActaFinal ");
+		sql.append(" v.estadoActaCampo, v.estadoActaFinal, v.importeVariacionOferta, v.importeVariacionLiquidacion ");
 		sql.append(" FROM vwCrm v ");
 		sql.append(" WHERE 1=1");
 		if (ValidateUtil.isNotEmpty(vwCrmFilter.getCodigoDSite()))
@@ -857,7 +858,7 @@ public class VistasJDBCRepository implements VistasRepository {
 		sql.append(" v.idObra, v.codigoDSite, v.area, v.contrata, v.tipoTrabajo, v.porcentajeActasAprobadas, v.nombreReal, v.cierre, ");
 		sql.append(" v.comentarioCierreEconomico, v.codigoCierre, v.estadoActaCampo, v.estadoActaFinal, v.estadoRptFoto, v.estadoSga, ");
 		sql.append(" v.idActaCampo, v.idActaFinal, v.idRptFoto, v.idSga, v.idMotivoRechazoActaCampo, v.idMotivoRechazoActaFinal, ");
-		sql.append(" v.idMotivoRechazoRptFoto, v.idMotivoRechazoSga ");
+		sql.append(" v.idMotivoRechazoRptFoto, v.idMotivoRechazoSga, v.idTGEstadoCierreEconomico, v.estadoCierreEconomico, v.idContratasObra ");
 		sql.append(" FROM vwControlDocumentario v ");
 		sql.append(" WHERE 1=1");
 		if (ValidateUtil.isNotEmpty(vwControlDocumentarioFilter.getCodigoCierre()))
@@ -993,7 +994,7 @@ public class VistasJDBCRepository implements VistasRepository {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT ");
 		sql.append(" v.importeAbonoCaja, v.importeRendidoCaja, v.importeReembolsoCaja, v.importeDescuentoCaja, v.importeAbonoViatico, v.importeRendidoViatico, ");
-		sql.append(" v.importeDescuentoViatico, v.idResumenRendicionCajaChica, v.codigoRendicion ");
+		sql.append(" v.importeDescuentoViatico, v.idResumenRendicionCajaChica, v.codigoRendicion, v.idTGEstado, v.idTGEstadoRendicion ");
 		sql.append(" FROM vwResumenRendicionCajaChica v ");
 		sql.append(" WHERE 1=1");
 		if (ValidateUtil.isNotEmpty(vwResumenRendicionCajaChicaFilter.getCodigoRendicion()))

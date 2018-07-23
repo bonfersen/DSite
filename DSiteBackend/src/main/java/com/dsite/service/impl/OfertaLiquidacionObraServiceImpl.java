@@ -1,5 +1,6 @@
 package com.dsite.service.impl;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -108,10 +109,26 @@ public class OfertaLiquidacionObraServiceImpl implements OfertaLiquidacionObraSe
 				case DSiteCoreConstants.TIPO_ENVIO_CUSTOMER_SERVICE_OFERTA:
 					presupuestoObra.setFechaEnvioPresupuestoOferta(new Date());
 					presupuestoObra.setUsuarioEnvioPresupuestoOferta(null);
+					if (ValidateUtil.isNotEmpty(presupuestoObra.getImportePresupuestoOferta()) && ValidateUtil.isNotEmpty(ofertaLiquidacionObraDTO.getImporteOfertaLiquidacion())) {
+						BigDecimal importeVariacionOferta = presupuestoObra.getImportePresupuestoOferta().subtract(ofertaLiquidacionObraDTO.getImporteOfertaLiquidacion());
+						presupuestoObra.setImporteVariacionOferta(importeVariacionOferta);
+					}
+					else {
+						presupuestoObra.setImporteVariacionOferta(new BigDecimal("0"));
+					}
 					break;
 				case DSiteCoreConstants.TIPO_ENVIO_CUSTOMER_SERVICE_LIQUIDACION:
 					presupuestoObra.setFechaEnvioPresupuestoLiquidacion(new Date());
 					presupuestoObra.setUsuarioEnvioPresupuestoLiquidacion(null);
+					if (ValidateUtil.isNotEmpty(presupuestoObra.getImportePresupuestoLiquidacion())
+							&& ValidateUtil.isNotEmpty(ofertaLiquidacionObraDTO.getImporteOfertaLiquidacion())) {
+						BigDecimal importeVariacionLiquidacion = presupuestoObra.getImportePresupuestoLiquidacion()
+								.subtract(ofertaLiquidacionObraDTO.getImporteOfertaLiquidacion());
+						presupuestoObra.setImporteVariacionLiquidacion(importeVariacionLiquidacion);
+					}
+					else {
+						presupuestoObra.setImporteVariacionLiquidacion(new BigDecimal("0"));
+					}
 					break;
 				case DSiteCoreConstants.TIPO_ENVIO_CUSTOMER_SERVICE_ACTACAMPO:
 					presupuestoObra.setFechaEnvioActaCampo(new Date());
@@ -138,11 +155,15 @@ public class OfertaLiquidacionObraServiceImpl implements OfertaLiquidacionObraSe
 					// Actualiza el estado de finanzas
 					TablaGeneral tgEstadoFinanzasOfertado = tablaGeneralJpaRepository.findOne(DSiteCoreConstants.ESTADO_FINANZA_OFERTADO);
 					presupuestoObra.setTablaGeneralEstadoFinanzas(tgEstadoFinanzasOfertado);
+					BigDecimal importeVariacionOferta = presupuestoObra.getImportePresupuestoOferta().subtract(ofertaLiquidacionObraDTO.getImporteOfertaLiquidacion());
+					presupuestoObra.setImporteVariacionOferta(importeVariacionOferta);
 					break;
 				case DSiteCoreConstants.TIPO_ENVIO_CUSTOMER_SERVICE_LIQUIDACION:
 					// Update a la tabla presupuesto obra
 					TablaGeneral tgEstadoFinanzasLiquidado = tablaGeneralJpaRepository.findOne(DSiteCoreConstants.ESTADO_FINANZA_LIQUIDADO);
 					presupuestoObra.setTablaGeneralEstadoFinanzas(tgEstadoFinanzasLiquidado);
+					BigDecimal importeVariacionLiquidacion = presupuestoObra.getImportePresupuestoLiquidacion().subtract(ofertaLiquidacionObraDTO.getImporteOfertaLiquidacion());
+					presupuestoObra.setImporteVariacionLiquidacion(importeVariacionLiquidacion);
 					break;
 				}
 				presupuestoObraJPARepository.save(presupuestoObra);

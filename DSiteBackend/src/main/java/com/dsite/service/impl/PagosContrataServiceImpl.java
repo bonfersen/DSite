@@ -1,7 +1,6 @@
 package com.dsite.service.impl;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +17,7 @@ import com.dsite.domain.model.repository.jpa.ContratasObraJPARepository;
 import com.dsite.domain.model.repository.jpa.PagosContrataJPARepository;
 import com.dsite.domain.model.repository.jpa.TablaGeneralJPARepository;
 import com.dsite.domain.model.repository.jpa.UsuarioJPARepository;
+import com.dsite.dto.model.NotificacionDTO;
 import com.dsite.dto.model.PagosContrataDTO;
 import com.dsite.service.intf.PagosContrataService;
 import com.dsite.util.ValidateUtil;
@@ -27,10 +27,10 @@ public class PagosContrataServiceImpl implements PagosContrataService {
 
 	@Autowired
 	PagosContrataJPARepository pagosContrataJPARepository;
-	
+
 	@Autowired
 	ContratasObraJPARepository contratasObraJPARepository;
-	
+
 	@Autowired
 	UsuarioJPARepository usuarioJPARepository;
 
@@ -39,7 +39,7 @@ public class PagosContrataServiceImpl implements PagosContrataService {
 
 	@Autowired
 	Mapper mapper;
-	
+
 	@Override
 	public PagosContrataDTO findById(int id) {
 		PagosContrataDTO pagosContrataDTO = new PagosContrataDTO();
@@ -55,7 +55,8 @@ public class PagosContrataServiceImpl implements PagosContrataService {
 	}
 
 	@Override
-	public void createPagosContrata(PagosContrataDTO pagosContrataDTO) {
+	public NotificacionDTO createPagosContrata(PagosContrataDTO pagosContrataDTO) {
+		NotificacionDTO notificacionDTO = new NotificacionDTO();
 		PagosContrata pagosContrataEntity = new PagosContrata();
 		pagosContrataDTO.setIdTGEstadoPagoContrata(DSiteCoreConstants.ESTADO_PAGO_CONTRATA_SOLICITADO);
 		mapper.map(pagosContrataDTO, pagosContrataEntity);
@@ -65,31 +66,72 @@ public class PagosContrataServiceImpl implements PagosContrataService {
 		pagosContrataEntity.setFechaSolicitud(new Date());
 		if (ValidateUtil.isEmpty(pagosContrataDTO.getUsuarioCreacion()))
 			pagosContrataEntity.setUsuarioCreacion(DSiteCoreConstants.USUARIO_ADMIN);
-				
+
 		/*
-		 *  Grabar porcentajes de adelantos
+		 * Grabar porcentajes de adelantos
 		 */
 		BigDecimal porcentajeAdelanto = BigDecimal.ZERO;
 		BigDecimal importePresupuestoObra = BigDecimal.ZERO;
-		BigDecimal importeAdelanto = BigDecimal.ZERO;	
-		
+		BigDecimal importeAdelanto = BigDecimal.ZERO;
+
 		ContratasObra contratasObra = contratasObraJPARepository.findOne(pagosContrataDTO.getIdContratasObra());
 		if (ValidateUtil.isNotEmpty(contratasObra.getImportePresupuestoObra())) {
 			importePresupuestoObra = contratasObra.getImportePresupuestoObra();
-			porcentajeAdelanto = pagosContrataEntity.getPorcentajeAdelanto();			
-			//importeAdelanto = (importePresupuestoObra.multiply(porcentajeAdelanto)).divide(new BigDecimal(DSiteCoreConstants.CIEN_CADENA));
+			porcentajeAdelanto = pagosContrataEntity.getPorcentajeAdelanto();
+			/*
+			 * Si existe porcentaje viene de la pantalla adelantos contrata sino viene un monto pendiente de pago de la pantalla
+			 * liquidacion y pago
+			 */
 			if (ValidateUtil.isNotEmpty(pagosContrataDTO.getImporteAdelanto()))
 				importeAdelanto = pagosContrataDTO.getImporteAdelanto();
-			else	
+			else {
 				importeAdelanto = importePresupuestoObra.multiply(porcentajeAdelanto);
+
+				BigDecimal sumaAdelantoPagos = importeAdelanto;
+				// Validar la suma de contratas no supere el 80% del presupuesto obra
+				for (PagosContrata pagosContrata : contratasObra.getPagosContratas()) {
+					if (pagosContrata.getTablaGeneralEstadoPagoContrata().getIdTablaGeneral().compareTo(DSiteCoreConstants.ESTADO_PAGO_CONTRATA_RECHAZADO) != 0)
+						sumaAdelantoPagos = sumaAdelantoPagos.add(pagosContrata.getImporteAdelanto());
+				}
+				if (sumaAdelantoPagos.compareTo(BigDecimal.ZERO) > 0) {
+					Double presupuesto = contratasObra.getImportePresupuestoObra().doubleValue();
+					Double suma = sumaAdelantoPagos.doubleValue();
+					Double res = (suma * 100) / presupuesto;
+					Double porcentajePermitido = new Double("80");
+
+					if (res.compareTo(porcentajePermitido) > 0) {
+						notificacionDTO.setCodigo(null);
+						notificacionDTO.setSeverity("warning");
+						notificacionDTO.setSummary("DSite Error");
+						notificacionDTO.setDetail("El monto de adelantos excede el 80%");
+
+						return notificacionDTO;
+					}
+				}
+				// Se graba en estado generado a la contrata obra
+				TablaGeneral tablaGeneralEstadoLiquidacion = new TablaGeneral();
+				tablaGeneralEstadoLiquidacion.setIdTablaGeneral(DSiteCoreConstants.ESTADO_LIQUIDACION_CONTRATA_GENERADO);
+				contratasObra.setTablaGeneralEstadoLiquidacion(tablaGeneralEstadoLiquidacion);
+				contratasObraJPARepository.save(contratasObra);
+				contratasObraJPARepository.flush();
+			}
 			pagosContrataEntity.setImporteAdelanto(importeAdelanto);
 			pagosContrataEntity.setPorcentajeAdelanto(porcentajeAdelanto);
 		}
 		createUpdatePagosContrata(pagosContrataDTO, pagosContrataEntity);
+
+		notificacionDTO.setCodigo(null);
+		notificacionDTO.setSeverity("success");
+		notificacionDTO.setSummary("DSite success");
+		notificacionDTO.setDetail("Se registro el adelanto de pago correctamente");
+
+		return notificacionDTO;
 	}
 
 	@Override
-	public void updatePagosContrata(PagosContrataDTO pagosContrataDTO) {
+	public NotificacionDTO updatePagosContrata(PagosContrataDTO pagosContrataDTO) {
+		NotificacionDTO notificacionDTO = new NotificacionDTO();
+
 		PagosContrata pagosContrataEntity = new PagosContrata();
 		if (ValidateUtil.isNotEmpty(pagosContrataDTO.getIdPagosContrata()))
 			pagosContrataEntity = pagosContrataJPARepository.findOne(pagosContrataDTO.getIdPagosContrata());
@@ -118,7 +160,7 @@ public class PagosContrataServiceImpl implements PagosContrataService {
 			pagosContrataDTO.setOrdenServicio(pagosContrataEntity.getOrdenServicio());
 		if (ValidateUtil.isEmpty(pagosContrataDTO.getPorcentajeAdelanto()))
 			pagosContrataDTO.setPorcentajeAdelanto(pagosContrataEntity.getPorcentajeAdelanto());
-		
+
 		// Ingresar datos a la entidad
 		mapper.map(pagosContrataDTO, pagosContrataEntity);
 		pagosContrataEntity.setFechaModificacion(new Date());
@@ -126,8 +168,14 @@ public class PagosContrataServiceImpl implements PagosContrataService {
 			pagosContrataEntity.setUsuarioModificacion(DSiteCoreConstants.USUARIO_ADMIN);
 
 		createUpdatePagosContrata(pagosContrataDTO, pagosContrataEntity);
+
+		notificacionDTO.setCodigo(null);
+		notificacionDTO.setSeverity("success");
+		notificacionDTO.setSummary("DSite success");
+		notificacionDTO.setDetail("Se actualizo el adelanto de pago correctamente");
+		return notificacionDTO;
 	}
-	
+
 	private void createUpdatePagosContrata(PagosContrataDTO pagosContrataDTO, PagosContrata pagosContrataEntity) {
 		ContratasObra contratasObra = null;
 		if (ValidateUtil.isNotEmpty(pagosContrataDTO.getIdContratasObra())) {
@@ -137,32 +185,57 @@ public class PagosContrataServiceImpl implements PagosContrataService {
 		if (ValidateUtil.isNotEmpty(pagosContrataDTO.getIdTGTipoSolicitud())) {
 			TablaGeneral tablaGeneral = tablaGeneralJpaRepository.findOne(pagosContrataDTO.getIdTGTipoSolicitud());
 			pagosContrataEntity.setTablaGeneralTipoSolicitud(tablaGeneral);
-		}	
+		}
 		if (ValidateUtil.isNotEmpty(pagosContrataDTO.getIdTGEstadoPagoContrata())) {
 			TablaGeneral tablaGeneral = tablaGeneralJpaRepository.findOne(pagosContrataDTO.getIdTGEstadoPagoContrata());
 			pagosContrataEntity.setTablaGeneralEstadoPagoContrata(tablaGeneral);
+			TablaGeneral tablaGeneralEstadoLiquidacion = new TablaGeneral();
 
 			switch (tablaGeneral.getIdTablaGeneral()) {
 			case DSiteCoreConstants.ESTADO_PAGO_CONTRATA_APROBADO:
 				BigDecimal importeTotalAdelantoObra = BigDecimal.ZERO;
 				BigDecimal importeAdelanto = BigDecimal.ZERO;
-				//se suma los adelanto al total si estas se aprueban
-				if(ValidateUtil.isNotEmpty(contratasObra.getImporteTotalAdelanto()))
+				tablaGeneralEstadoLiquidacion.setIdTablaGeneral(DSiteCoreConstants.ESTADO_LIQUIDACION_CONTRATA_GENERADO);
+
+				// se suma los adelanto al total si estas se aprueban
+				if (ValidateUtil.isNotEmpty(contratasObra.getImporteTotalAdelanto()))
 					importeTotalAdelantoObra = contratasObra.getImporteTotalAdelanto();
 				importeAdelanto = pagosContrataEntity.getImporteAdelanto();
 				importeTotalAdelantoObra = importeTotalAdelantoObra.add(importeAdelanto);
 				contratasObra.setImporteTotalAdelanto(importeTotalAdelantoObra);
+				contratasObra.setTablaGeneralEstadoLiquidacion(tablaGeneralEstadoLiquidacion);
+
 				contratasObraJPARepository.save(contratasObra);
 				contratasObraJPARepository.flush();
-				
+
 				pagosContrataEntity.setFechaAprobacion(new Date());
 				break;
 			case DSiteCoreConstants.ESTADO_PAGO_CONTRATA_RECHAZADO:
 				pagosContrataEntity.setFechaRechazo(new Date());
 				break;
 			case DSiteCoreConstants.ESTADO_PAGO_CONTRATA_PAGADO:
+				/*
+				 * Si TODOS los adelantos de una contrata estan en estado pagado o rechazado se pasa a pendiente
+				 */
+				contratasObra = contratasObraJPARepository.findOne(pagosContrataEntity.getContratasObra().getIdContratasObra());
+				for (PagosContrata pagosContrata : contratasObra.getPagosContratas()) {
+					if (pagosContrata.getTablaGeneralEstadoPagoContrata().getIdTablaGeneral().compareTo(DSiteCoreConstants.ESTADO_PAGO_CONTRATA_PAGADO) == 0
+							|| pagosContrata.getTablaGeneralEstadoPagoContrata().getIdTablaGeneral().compareTo(DSiteCoreConstants.ESTADO_PAGO_CONTRATA_RECHAZADO) == 0) {
+						tablaGeneralEstadoLiquidacion.setIdTablaGeneral(DSiteCoreConstants.ESTADO_LIQUIDACION_CONTRATA_PENDIENTE);
+						contratasObra.setTablaGeneralEstadoLiquidacion(tablaGeneralEstadoLiquidacion);
+					}
+					else {
+						tablaGeneralEstadoLiquidacion.setIdTablaGeneral(DSiteCoreConstants.ESTADO_LIQUIDACION_CONTRATA_GENERADO);
+						contratasObra.setTablaGeneralEstadoLiquidacion(tablaGeneralEstadoLiquidacion);
+						break;
+					}
+				}
+
+				contratasObraJPARepository.save(contratasObra);
+				contratasObraJPARepository.flush();
+
 				pagosContrataEntity.setFechaPago(new Date());
-				break;	
+				break;
 			default:
 				break;
 			}
@@ -182,11 +255,4 @@ public class PagosContrataServiceImpl implements PagosContrataService {
 		pagosContrataJPARepository.save(pagosContrataEntity);
 		pagosContrataJPARepository.flush();
 	}
-
-	@Override
-	public void deletePagosContrataById(int id) {
-		// XXX Auto-generated method stub
-
-	}
-
 }

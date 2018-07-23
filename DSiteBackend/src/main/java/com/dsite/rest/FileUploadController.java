@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import com.dsite.dto.model.views.FileResult;
 import com.dsite.exception.StorageFileNotFoundException;
 import com.dsite.service.intf.StorageService;
 
@@ -60,15 +61,17 @@ public class FileUploadController {
 	 * @return
 	 */
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody String handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("idTabla") Integer idTabla,
+	public @ResponseBody FileResult handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("idTabla") Integer idTabla,
 			@RequestParam("idTGNombreTabla") String idTGNombreTabla, @RequestParam("idTipoDocumentoAdjunto") Integer idTipoDocumentoAdjunto) {
-		try {
+		FileResult result = new FileResult();
+		try {			
+			result.setFile(file.getOriginalFilename());
 			storageService.store(file, idTabla, idTGNombreTabla, idTipoDocumentoAdjunto);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		return file.getOriginalFilename();
+		return result;
 	}
 
 	@ExceptionHandler(StorageFileNotFoundException.class)

@@ -2,8 +2,6 @@ package com.dsite.domain.model.repository.jdbc;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -15,8 +13,6 @@ import com.dsite.util.ValidateUtil;
 
 @Repository
 public class CierreEconomicoObraJDBCRepository implements CierreEconomicoObraRepository {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(CierreEconomicoObraJDBCRepository.class);
 
 	private final NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -41,6 +37,8 @@ public class CierreEconomicoObraJDBCRepository implements CierreEconomicoObraRep
 		sql.append(" WHERE 1=1");
 		if (ValidateUtil.isNotEmpty(dto.getIdCierreEconomicoObra()))
 			sql.append(params.filter(" AND ceo.idCierreEconomicoObra = :idCierreEconomicoObra ", dto.getIdCierreEconomicoObra()));
+		if (ValidateUtil.isNotEmpty(dto.getIdObra()))
+			sql.append(params.filter(" AND ceo.idObra = :idObra ", dto.getIdObra()));
 		return sql.toString();
 	}
 

@@ -45,6 +45,7 @@ public class VwLiquidacionCustomerService implements Serializable {
 	private Integer idEnvioLiquidacion;
 	private Integer idEnvioActaCampo;
 	private Integer idEnvioActaFinal;
+	private Integer idPresupuestoObra;
 
 	public VwLiquidacionCustomerService() {
 	}
@@ -308,5 +309,13 @@ public class VwLiquidacionCustomerService implements Serializable {
 
 	public void setActaCampo(String actaCampo) {
 		this.actaCampo = actaCampo;
+	}
+
+	public Integer getIdPresupuestoObra() {
+		return idPresupuestoObra;
+	}
+
+	public void setIdPresupuestoObra(Integer idPresupuestoObra) {
+		this.idPresupuestoObra = idPresupuestoObra;
 	}
 }

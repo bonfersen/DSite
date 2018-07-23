@@ -1,7 +1,6 @@
 package com.dsite.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.dsite.dto.model.NotificacionDTO;
 import com.dsite.dto.model.PagosContrataDTO;
 import com.dsite.service.intf.PagosContrataService;
 import com.dsite.util.ValidateUtil;
@@ -33,19 +33,15 @@ public class PagosContrataController {
 	}
 
 	@RequestMapping(value = "/save/", method = RequestMethod.POST)
-	public ResponseEntity<Void> savePagosContrata(@RequestBody PagosContrataDTO dto, UriComponentsBuilder ucBuilder) {
-		
+	public ResponseEntity<NotificacionDTO> savePagosContrata(@RequestBody PagosContrataDTO dto, UriComponentsBuilder ucBuilder) {
+		NotificacionDTO notificacion = null;
 		if (ValidateUtil.isEmpty(dto.getIdPagosContrata())) {
-			pagosContrataService.createPagosContrata(dto);
+			notificacion = pagosContrataService.createPagosContrata(dto);
 			// Delvover el id generado con ucBuilder, exponiendo una URL
-			HttpHeaders headers = new HttpHeaders();
-			headers.setLocation(ucBuilder.path("/save/{id}").buildAndExpand(dto.getIdPagosContrata()).toUri());
-			return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+			return new ResponseEntity<NotificacionDTO>(notificacion, HttpStatus.OK);
 		} else {
-			pagosContrataService.updatePagosContrata(dto);
-			HttpHeaders headers = new HttpHeaders();
-			headers.setLocation(ucBuilder.path("/save/{id}").buildAndExpand(dto.getIdPagosContrata()).toUri());
-			return new ResponseEntity<Void>(headers, HttpStatus.OK);
+			notificacion = pagosContrataService.updatePagosContrata(dto);
+			return new ResponseEntity<NotificacionDTO>(notificacion, HttpStatus.OK);
 		}
 
 	}

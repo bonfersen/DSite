@@ -2,8 +2,6 @@ package com.dsite.domain.model.repository.jdbc;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -15,8 +13,6 @@ import com.dsite.util.ValidateUtil;
 
 @Repository
 public class EmpleadoJDBCRepository implements EmpleadoRepository {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(EmpleadoJDBCRepository.class);
 
 	private final NamedParameterJdbcTemplate jdbcTemplate;
 	
@@ -42,8 +38,8 @@ public class EmpleadoJDBCRepository implements EmpleadoRepository {
 		sql.append(" e.usuarioModificacion ");
 		sql.append(" FROM empleado e ");
 		sql.append(" WHERE 1=1");
-		if (ValidateUtil.isNotEmpty(dto.getResponsableObra()))
-			sql.append(params.filter(" AND e.responsableObra = :responsableObra ", dto.getResponsableObra()));
+		if (ValidateUtil.isNotEmpty(dto.getIdUsuario()))
+			sql.append(params.filter(" AND e.idUsuario = :idUsuario ", dto.getIdUsuario()));
 		return sql.toString();
 	}
 

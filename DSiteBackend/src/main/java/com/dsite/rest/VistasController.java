@@ -1,6 +1,7 @@
 package com.dsite.rest;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -442,15 +443,11 @@ public class VistasController {
 		List<VwReporteEconomico> vwReporteEconomico = vistasService.findReporteEconomico(filter);
 		VwReporteEconomicoDetalleContrataFilter vwReporteEconomicoDetalleContrataFilter = new VwReporteEconomicoDetalleContrataFilter();
 		vwReporteEconomicoDetalleContrataFilter.setCodigoDSite(filter.getCodigoDSite());
-		List<VwReporteEconomicoDetalleContrata> vwDetalleReporteEconomico = vistasService.findReporteEconomicoDetalleContrata(vwReporteEconomicoDetalleContrataFilter);
+		List<VwReporteEconomicoDetalleContrata> vwDetalleReporteEconomico = new ArrayList<VwReporteEconomicoDetalleContrata>();
+		vwDetalleReporteEconomico = vistasService.findReporteEconomicoDetalleContrata(vwReporteEconomicoDetalleContrataFilter);
 
-		if (vwReporteEconomico.size() > 0 && vwDetalleReporteEconomico.size() > 0) {
-			reporteEconomico.setReporteEconomico(vwReporteEconomico.get(0));
-			reporteEconomico.setDetalleReporteEconomico(vwDetalleReporteEconomico);
-		}
-		else {
-			reporteEconomico = null;
-		}
+		reporteEconomico.setReporteEconomico(vwReporteEconomico.get(0));
+		reporteEconomico.setDetalleReporteEconomico(vwDetalleReporteEconomico);
 
 		return new ResponseEntity<>(reporteEconomico, HttpStatus.OK);
 	}
@@ -483,10 +480,10 @@ public class VistasController {
 		BigDecimal totalProyectado = BigDecimal.ZERO;
 
 		for (VwPanelContratas vwPanelContratasEntity : vwPanelContratasDetallesEntity) {
-			count ++;
+			count++;
 			if (count == 1)
 				categoriaTemp = vwPanelContratasEntity.getCategoria();
-			
+
 			/*
 			 * Se generan los registros de detalle contrata
 			 */
@@ -501,7 +498,7 @@ public class VistasController {
 			vwPanelContratasBean.setImporteProyectado(vwPanelContratasEntity.getImporteProyectado());
 			vwPanelContratasBean.setImporteRestante(vwPanelContratasEntity.getImporteRestante());
 			vwPanelContratasBean.setPorcentaje(vwPanelContratasEntity.getPorcentaje());
-			
+
 			switch (vwPanelContratasEntity.getCategoria()) {
 			case DSiteCoreConstants.CATEGORIA_CONTRATA_GRANDE_DESCRIPCION:
 				vwPanelContratasBean.setCategoria("GRANDES");
@@ -516,7 +513,7 @@ public class VistasController {
 				break;
 			}
 			vwPanelContratasDetallesBean.add(vwPanelContratasBean);
-			
+
 			/*
 			 * Se van sumarizando los totales de categorias contrata
 			 */
@@ -534,7 +531,7 @@ public class VistasController {
 				categoriaTotalPendiente = categoriaTotalPendiente.add(vwPanelContratasEntity.getImportePendiente());
 			if (ValidateUtil.isNotEmpty(vwPanelContratasEntity.getImporteProyectado()))
 				categoriaTotalProyectado = categoriaTotalProyectado.add(vwPanelContratasEntity.getImporteProyectado());
-						
+
 			/*
 			 * Se generan los registros totales de categorias contrata
 			 */
@@ -563,7 +560,8 @@ public class VistasController {
 					if (categoriaAvanceTotal.compareTo(BigDecimal.ZERO) == 0)
 						categoriaPorcentajeAvanceTotal = BigDecimal.ZERO;
 					else
-						categoriaPorcentajeAvanceTotal = categoriaAvanceTotal.multiply(new BigDecimal(DSiteCoreConstants.CIEN_CADENA)).divide(categoriaTotalAdjudicacion);
+						categoriaPorcentajeAvanceTotal = categoriaAvanceTotal.multiply(new BigDecimal(DSiteCoreConstants.CIEN_CADENA)).divide(categoriaTotalAdjudicacion, 4,
+								RoundingMode.HALF_UP);
 				}
 				vwPanelContratasCategoriaTotalesBean.setPorcentaje(categoriaPorcentajeAvanceTotal);
 				vwPanelContratasCategoriaTotalesBean.setImporteRestante(categoriaTotalRestante);
@@ -571,7 +569,7 @@ public class VistasController {
 				vwPanelContratasCategoriaTotalesBean.setImporteCancelado(categoriaTotalCancelado);
 				vwPanelContratasCategoriaTotalesBean.setImportePendiente(categoriaTotalPendiente);
 				vwPanelContratasCategoriaTotalesBean.setImporteProyectado(categoriaTotalProyectado);
-				
+
 				vwPanelContratasDetallesBean.add(vwPanelContratasCategoriaTotalesBean);
 
 				if (ValidateUtil.isNotEmpty(categoriaTotalAdjudicacion))
@@ -597,10 +595,10 @@ public class VistasController {
 				categoriaTotalCancelado = BigDecimal.ZERO;
 				categoriaTotalPendiente = BigDecimal.ZERO;
 				categoriaTotalProyectado = BigDecimal.ZERO;
-			}			
-			
+			}
+
 			categoriaTemp = vwPanelContratasEntity.getCategoria();
-			
+
 		}
 
 		/*
@@ -615,7 +613,7 @@ public class VistasController {
 				if (avanceTotal.compareTo(BigDecimal.ZERO) == 0)
 					porcentajeAvanceTotal = BigDecimal.ZERO;
 				else
-					porcentajeAvanceTotal = avanceTotal.multiply(new BigDecimal(DSiteCoreConstants.CIEN_CADENA)).divide(totalAdjudicacion);
+					porcentajeAvanceTotal = avanceTotal.multiply(new BigDecimal(DSiteCoreConstants.CIEN_CADENA)).divide(totalAdjudicacion, 4, RoundingMode.HALF_UP);
 			vwPanelContratasTotalesBean.setPorcentaje(porcentajeAvanceTotal);
 			vwPanelContratasTotalesBean.setImporteRestante(totalRestante);
 			vwPanelContratasTotalesBean.setImporteLiquidado(totalLiquidado);
