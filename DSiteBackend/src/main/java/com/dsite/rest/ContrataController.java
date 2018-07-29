@@ -20,20 +20,9 @@ public class ContrataController {
 
 	@Autowired
 	private ContrataService contrataService;
-
-	/*
-	@RequestMapping(value = "/find/{id}", method = RequestMethod.GET)
-	public ResponseEntity<ContratasObraDTO> findById(@PathVariable Integer id) {
-		ContratasObraDTO ContratasObraDTO;
-		ContratasObraDTO = obraService.findById(id);
-		if (ValidateUtil.isEmpty(ContratasObraDTO)) {
-			return new ResponseEntity<ContratasObraDTO>(HttpStatus.NO_CONTENT);
-		}
-		return new ResponseEntity<ContratasObraDTO>(ContratasObraDTO, HttpStatus.OK);
-	}*/
 	
 	@RequestMapping(value = "/find/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<ContrataDTO>> listAllGerencias() {
+    public ResponseEntity<List<ContrataDTO>> listAllContratas() {
         List<ContrataDTO> contratasDTO = contrataService.findAllContratas();
         if (ValidateUtil.isEmpty(contratasDTO)) {
             return new ResponseEntity<List<ContrataDTO>>(HttpStatus.NO_CONTENT);

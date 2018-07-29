@@ -30,9 +30,9 @@ spring:
 # ===============================
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: 'jdbc:mysql://108.167.137.44:3306/nemesisd_dsite?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=America/Lima'
-    username: nemesisd_root
-    password: nemesisid
+    url: 'jdbc:mysql://13.68.130.135:3306/dsite?autoReconnect=true&useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=America/Lima'
+    username: huiracocha
+    password: w0k950Yx005BEBb
     tomcat:
       initial-size: 2 # number of initial connections
       max-idle: 1 # max number of idle connections.

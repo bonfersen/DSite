@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 public class VwPanelContratas implements Serializable {
 
 	private static final long serialVersionUID = 4513039430213296572L;
+	private String idTGCategoria;
 	private String categoria;
 	private String nombreCorto; 
 	private BigDecimal importeAbjudicado;
@@ -17,6 +18,12 @@ public class VwPanelContratas implements Serializable {
     private BigDecimal importePendiente;
     private BigDecimal importeProyectado;
     
+	public String getIdTGCategoria() {
+		return idTGCategoria;
+	}
+	public void setIdTGCategoria(String idTGCategoria) {
+		this.idTGCategoria = idTGCategoria;
+	}
 	public String getCategoria() {
 		return categoria;
 	}

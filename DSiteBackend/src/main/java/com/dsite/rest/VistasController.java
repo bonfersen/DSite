@@ -87,7 +87,6 @@ import com.dsite.dto.model.views.VwListaContratasAsignadaFilter;
 import com.dsite.dto.model.views.VwListaPagosContrataFilter;
 import com.dsite.dto.model.views.VwOfertaCustomerServiceFilter;
 import com.dsite.dto.model.views.VwPagoContrataFilter;
-import com.dsite.dto.model.views.VwPanelContratasFilter;
 import com.dsite.dto.model.views.VwRendicionCajaChicaFilter;
 import com.dsite.dto.model.views.VwReporteEconomicoDetalleContrataFilter;
 import com.dsite.dto.model.views.VwReporteEconomicoFilter;
@@ -287,11 +286,16 @@ public class VistasController {
 
 	@RequestMapping(value = "/findLiquidacionContrata", method = RequestMethod.POST)
 	public @ResponseBody ResponseEntity<List<VwLiquidacionContrata>> findLiquidacionContrata(@RequestBody VwLiquidacionContrataFilter vwLiquidacionContrataFilter) {
-		List<VwLiquidacionContrata> result;
-		result = vistasService.findLiquidacionContrata(vwLiquidacionContrataFilter);
-		if (result == null)
-			result = new ArrayList<>();
+		List<VwLiquidacionContrata> result = null;
+		try {
+			result = vistasService.findLiquidacionContrata(vwLiquidacionContrataFilter);
 
+			if (result == null)
+				result = new ArrayList<>();
+		}
+		catch (IllegalAccessException e) {
+			return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
@@ -455,13 +459,13 @@ public class VistasController {
 	@RequestMapping(value = "/findPanelContratas", method = RequestMethod.POST)
 	public @ResponseBody ResponseEntity<PanelContrata> findPanelContratas() {
 		PanelContrata panelContrata = new PanelContrata();
-		VwPanelContratasFilter vwPanelContratasFilter = null;
 		VwPanelContratas vwPanelContratasTotalesBean = new VwPanelContratas();
-		List<VwPanelContratas> vwPanelContratasDetallesEntity = vistasService.findPanelContratas(vwPanelContratasFilter);
 		List<VwPanelContratas> vwPanelContratasDetallesBean = new ArrayList<VwPanelContratas>();
-		int count = 0;
+		List<VwPanelContratas> vwPanelContratasDetallesEntity = vistasService.findPanelContratas(null);
 
-		String categoriaTemp = DSiteCoreConstants.VACIO;
+		int count = 0;
+		VwPanelContratas actualRow = new VwPanelContratas();
+		VwPanelContratas nextRow = new VwPanelContratas();
 		BigDecimal categoriaTotalAdjudicacion = BigDecimal.ZERO;
 		BigDecimal categoriaAvanceTotal = BigDecimal.ZERO;
 		BigDecimal categoriaPorcentajeAvanceTotal = BigDecimal.ZERO;
@@ -480,10 +484,11 @@ public class VistasController {
 		BigDecimal totalProyectado = BigDecimal.ZERO;
 
 		for (VwPanelContratas vwPanelContratasEntity : vwPanelContratasDetallesEntity) {
-			count++;
-			if (count == 1)
-				categoriaTemp = vwPanelContratasEntity.getCategoria();
-
+			actualRow = vwPanelContratasDetallesEntity.get(count);
+			if (count < vwPanelContratasDetallesEntity.size() - 1)
+				nextRow = vwPanelContratasDetallesEntity.get(count + 1);
+			else
+				nextRow = null;
 			/*
 			 * Se generan los registros de detalle contrata
 			 */
@@ -499,15 +504,15 @@ public class VistasController {
 			vwPanelContratasBean.setImporteRestante(vwPanelContratasEntity.getImporteRestante());
 			vwPanelContratasBean.setPorcentaje(vwPanelContratasEntity.getPorcentaje());
 
-			switch (vwPanelContratasEntity.getCategoria()) {
-			case DSiteCoreConstants.CATEGORIA_CONTRATA_GRANDE_DESCRIPCION:
+			switch (vwPanelContratasEntity.getIdTGCategoria()) {
+			case DSiteCoreConstants.CATEGORIA_CONTRATA_GRANDE:
 				vwPanelContratasBean.setCategoria("GRANDES");
 				break;
-			case DSiteCoreConstants.CATEGORIA_CONTRATA_MEDIANO_DESCRIPCION:
+			case DSiteCoreConstants.CATEGORIA_CONTRATA_MEDIANO:
 				vwPanelContratasBean.setCategoria("MEDIANAS");
 				break;
-			case DSiteCoreConstants.CATEGORIA_CONTRATA_PEQUENO_DESCRIPCION:
-				vwPanelContratasBean.setCategoria("PEQUENAS");
+			case DSiteCoreConstants.CATEGORIA_CONTRATA_PEQUENO:
+				vwPanelContratasBean.setCategoria("PEQUE" + DSiteCoreConstants.UNICODE_ENE_MAY_TILDE + "AS");
 				break;
 			default:
 				break;
@@ -535,21 +540,21 @@ public class VistasController {
 			/*
 			 * Se generan los registros totales de categorias contrata
 			 */
-			if (categoriaTemp.compareTo(vwPanelContratasEntity.getCategoria()) != 0 || count == vwPanelContratasDetallesEntity.size()) {
+
+			if (nextRow == null || actualRow.getIdTGCategoria().compareTo(nextRow.getIdTGCategoria()) != 0) {
 				VwPanelContratas vwPanelContratasCategoriaTotalesBean = new VwPanelContratas();
-				categoriaTemp = vwPanelContratasEntity.getCategoria();
-				switch (vwPanelContratasEntity.getCategoria()) {
-				case DSiteCoreConstants.CATEGORIA_CONTRATA_GRANDE_DESCRIPCION:
+				switch (vwPanelContratasEntity.getIdTGCategoria()) {
+				case DSiteCoreConstants.CATEGORIA_CONTRATA_GRANDE:
 					vwPanelContratasCategoriaTotalesBean.setCategoria("TOTAL GRANDES");
 					vwPanelContratasCategoriaTotalesBean.setNombreCorto("TOTAL GRANDES");
 					break;
-				case DSiteCoreConstants.CATEGORIA_CONTRATA_MEDIANO_DESCRIPCION:
+				case DSiteCoreConstants.CATEGORIA_CONTRATA_MEDIANO:
 					vwPanelContratasCategoriaTotalesBean.setCategoria("TOTAL MEDIANAS");
 					vwPanelContratasCategoriaTotalesBean.setNombreCorto("TOTAL MEDIANAS");
 					break;
-				case DSiteCoreConstants.CATEGORIA_CONTRATA_PEQUENO_DESCRIPCION:
-					vwPanelContratasCategoriaTotalesBean.setCategoria("TOTAL PEQUE\u00d1AS");
-					vwPanelContratasCategoriaTotalesBean.setNombreCorto("TOTAL PEQUE\u00d1AS");
+				case DSiteCoreConstants.CATEGORIA_CONTRATA_PEQUENO:
+					vwPanelContratasCategoriaTotalesBean.setCategoria("TOTAL PEQUE" + DSiteCoreConstants.UNICODE_ENE_MAY_TILDE + "AS");
+					vwPanelContratasCategoriaTotalesBean.setNombreCorto("TOTAL PEQUE" + DSiteCoreConstants.UNICODE_ENE_MAY_TILDE + "AS");
 					break;
 				default:
 					break;
@@ -596,9 +601,7 @@ public class VistasController {
 				categoriaTotalPendiente = BigDecimal.ZERO;
 				categoriaTotalProyectado = BigDecimal.ZERO;
 			}
-
-			categoriaTemp = vwPanelContratasEntity.getCategoria();
-
+			count++;
 		}
 
 		/*

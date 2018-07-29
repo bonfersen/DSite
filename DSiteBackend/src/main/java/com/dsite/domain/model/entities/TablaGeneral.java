@@ -179,6 +179,10 @@ public class TablaGeneral implements Serializable {
 	@OneToMany(mappedBy = "tablaGeneralGrupo")
 	private List<TipoDocumentoAdjunto> tipoDocumentoAdjuntosTGGrupo;
 
+	// bi-directional many-to-one association to TablaGeneral
+	@OneToMany(mappedBy = "tablaGeneralRol")
+	private List<TablaGeneral> tablaGeneralRol;
+
 	public TablaGeneral() {
 	}
 
@@ -1008,5 +1012,13 @@ public class TablaGeneral implements Serializable {
 
 	public void setResumenRendicionCajaChicasTGEstado(List<ResumenRendicionCajaChica> resumenRendicionCajaChicasTGEstado) {
 		this.resumenRendicionCajaChicasTGEstado = resumenRendicionCajaChicasTGEstado;
+	}
+
+	public List<TablaGeneral> getTablaGeneralRol() {
+		return tablaGeneralRol;
+	}
+
+	public void setTablaGeneralRol(List<TablaGeneral> tablaGeneralRol) {
+		this.tablaGeneralRol = tablaGeneralRol;
 	}
 }

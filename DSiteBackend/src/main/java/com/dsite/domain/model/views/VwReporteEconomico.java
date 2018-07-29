@@ -14,6 +14,7 @@ public class VwReporteEconomico implements Serializable {
 	private String gestor;
 	private String departamento;
 	private String asignacion;
+	private BigDecimal importeIngreso;
 	private BigDecimal importePresupuestoOferta;
 	private BigDecimal importeIngresoOferta;
 	private String ordenCompra;
@@ -77,6 +78,12 @@ public class VwReporteEconomico implements Serializable {
 	}
 	public void setAsignacion(String asignacion) {
 		this.asignacion = asignacion;
+	}
+	public BigDecimal getImporteIngreso() {
+		return importeIngreso;
+	}
+	public void setImporteIngreso(BigDecimal importeIngreso) {
+		this.importeIngreso = importeIngreso;
 	}
 	public BigDecimal getImportePresupuestoOferta() {
 		return importePresupuestoOferta;

@@ -152,16 +152,13 @@ public class CajaChicaObraServiceImpl implements CajaChicaObraService {
 
 			switch (tablaGeneral.getIdTablaGeneral()) {
 			case DSiteCoreConstants.ESTADO_CAJA_CHICA_APROBADO:
-
-				cajaChicaObraDTO.setFechaAprobacion(new Date());
+				cajaChicaObraEntity.setFechaAprobacion(new Date());
 				break;
 			case DSiteCoreConstants.ESTADO_CAJA_CHICA_RECHAZADO:
-
-				cajaChicaObraDTO.setFechaRechazo(new Date());
+				cajaChicaObraEntity.setFechaRechazo(new Date());
 				break;
 			case DSiteCoreConstants.ESTADO_CAJA_CHICA_DEPOSITADO:// getIdUsuarioPago
-
-				cajaChicaObraDTO.setFechaPago(new Date());
+				cajaChicaObraEntity.setFechaPago(new Date());
 				break;
 			case DSiteCoreConstants.ESTADO_CAJA_CHICA_ASIGNADO:
 				break;

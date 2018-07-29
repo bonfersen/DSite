@@ -545,14 +545,14 @@ public class VistasJDBCRepository implements VistasRepository {
 	}
 
 	@Override
-	public List<VwLiquidacionContrata> findLiquidacionContrata(VwLiquidacionContrataFilter vwLiquidacionContrataFilter) {
+	public List<VwLiquidacionContrata> findLiquidacionContrata(VwLiquidacionContrataFilter vwLiquidacionContrataFilter) throws IllegalAccessException {
 		WhereParams params = new WhereParams();
 		String sql = findLiquidacionContrataQuery(vwLiquidacionContrataFilter, params);
 
 		return jdbcTemplate.query(sql.toString(), params.getParams(), new BeanPropertyRowMapper<VwLiquidacionContrata>(VwLiquidacionContrata.class));
 	}
 
-	private String findLiquidacionContrataQuery(VwLiquidacionContrataFilter vwLiquidacionContrataFilter, WhereParams params) {
+	private String findLiquidacionContrataQuery(VwLiquidacionContrataFilter vwLiquidacionContrataFilter, WhereParams params) throws IllegalAccessException {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT ");
 		sql.append(" v.idObra, v.codigoDSite, v.idContratasObra, v.idContrata, v.contrata, v.tipoTrabajo, v.importePresupuestoObra, ");
@@ -561,12 +561,16 @@ public class VistasJDBCRepository implements VistasRepository {
 		sql.append(" v.importeObra, v.porcentajeCostos, v.importeTotalAdelanto, v.porcentajePagado, v.idTGEstadoLiquidacion ");
 		sql.append(" FROM vwLiquidacionContrata v ");
 		sql.append(" WHERE 1=1");
-		if (ValidateUtil.isNotEmpty(vwLiquidacionContrataFilter.getCodigoDSite()))
-			sql.append(params.filter(" AND v.codigoDSite = :codigoDSite ", vwLiquidacionContrataFilter.getCodigoDSite()));
-		if (ValidateUtil.isNotEmpty(vwLiquidacionContrataFilter.getTipoTrabajo()))
-			sql.append(params.filter(" AND v.tipoTrabajo = :tipoTrabajo ", vwLiquidacionContrataFilter.getTipoTrabajo()));
-		if (ValidateUtil.isNotEmpty(vwLiquidacionContrataFilter.getIdContrata()))
-			sql.append(params.filter(" AND v.idContrata = :idContrata ", vwLiquidacionContrataFilter.getIdContrata()));
+		if (vwLiquidacionContrataFilter.checkNull())
+			sql.append(" AND 1=0");
+		else {
+			if (ValidateUtil.isNotEmpty(vwLiquidacionContrataFilter.getCodigoDSite()))
+				sql.append(params.filter(" AND v.codigoDSite = :codigoDSite ", vwLiquidacionContrataFilter.getCodigoDSite()));
+			if (ValidateUtil.isNotEmpty(vwLiquidacionContrataFilter.getTipoTrabajo()))
+				sql.append(params.filter(" AND v.tipoTrabajo = :tipoTrabajo ", vwLiquidacionContrataFilter.getTipoTrabajo()));
+			if (ValidateUtil.isNotEmpty(vwLiquidacionContrataFilter.getIdContrata()))
+				sql.append(params.filter(" AND v.idContrata = :idContrata ", vwLiquidacionContrataFilter.getIdContrata()));
+		}
 		return sql.toString();
 	}
 
@@ -817,7 +821,7 @@ public class VistasJDBCRepository implements VistasRepository {
 	private String findBandejaAsignacionCierreEconomicoQuery(VwBandejaAsignacionCierreEconomicoFilter vwBandejaAsignacionCierreEconomicoFilter, WhereParams params) {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT ");
-		sql.append(" v.codigoDSite, v.idTGArea, v.area, v.nombreReal, v.tipoTrabajo, v.cantidadContratasAsignadas, v.idObra, v.fechaFinalizacion ");
+		sql.append(" v.codigoDSite, v.idTGArea, v.area, v.nombreReal, v.tipoTrabajo, v.cantidadContratasAsignadas, v.idObra, v.fechaFinalizacionObra ");
 		sql.append(" FROM vwBandejaAsignacionCierreEconomico v ");
 		sql.append(" WHERE 1=1");
 		if (ValidateUtil.isNotEmpty(vwBandejaAsignacionCierreEconomicoFilter.getIdTGArea()))
@@ -832,7 +836,7 @@ public class VistasJDBCRepository implements VistasRepository {
 
 		return jdbcTemplate.query(sql.toString(), params.getParams(), new BeanPropertyRowMapper<VwBandejaCierreEconomico>(VwBandejaCierreEconomico.class));
 	}
-	
+
 	private String findBandejaCierreEconomicoQuery(VwBandejaCierreEconomicoFilter vwBandejaCierreEconomicoFilter, WhereParams params) {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT ");
@@ -897,9 +901,9 @@ public class VistasJDBCRepository implements VistasRepository {
 	private String findReporteEconomicoQuery(VwReporteEconomicoFilter vwReporteEconomicoFilter, WhereParams params) {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT ");
-		sql.append(" v.codigoDSite, v.nombreReal, v.area, v.proyecto, v.gestor, v.departamento, v.asignacion, v.importePresupuestoOferta, v.importeIngresoOferta, ");
-		sql.append(" v.ordenCompra, v.facturado, v.importeLiquidacionOferta, v.importeIngresoLiquidacion, v.actas, v.fechaLiquidacion, v.estatusGep, v.variacionMas, ");
-		sql.append(" v.numeroOrdenCompraComplementaria, v.variacionMenos, v.notaCredito, v.importeGastos, v.importeRentabilidad, v.porcentajeRentabilidad, ");
+		sql.append(" v.codigoDSite, v.nombreReal, v.area, v.proyecto, v.gestor, v.departamento, v.asignacion, v.importeIngreso, v.importePresupuestoOferta, ");
+		sql.append(" v.importeIngresoOferta, v.ordenCompra, v.facturado, v.importeLiquidacionOferta, v.importeIngresoLiquidacion, v.actas, v.fechaLiquidacion, v.estatusGep, ");
+		sql.append(" v.variacionMas, v.numeroOrdenCompraComplementaria, v.variacionMenos, v.notaCredito, v.importeGastos, v.importeRentabilidad, v.porcentajeRentabilidad, ");
 		sql.append(" v.importeTotalPresupuestadoContrata, v.importeTotalPagosContrata, v.importeCajas, v.importeViaticos, v.importeTotalCajas ");
 		sql.append(" FROM vwReporteEconomico v ");
 		sql.append(" WHERE 1=1");
@@ -937,8 +941,8 @@ public class VistasJDBCRepository implements VistasRepository {
 	private String findPanelContratasQuery(VwPanelContratasFilter vwPanelContratasFilter, WhereParams params) {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT ");
-		sql.append(" v.categoria, v.nombreCorto, v.importeAbjudicado, v.importeAvanceTotal, v.porcentaje, v.importeRestante, v.importeLiquidado, ");
-		sql.append(" v.importeCancelado, v.importePendiente, v.importeProyectado ");
+		sql.append(" v.idTGCategoria, v.categoria, v.nombreCorto, v.importeAbjudicado, v.importeAvanceTotal, v.porcentaje, v.importeRestante, ");
+		sql.append(" v.importeLiquidado, v.importeCancelado, v.importePendiente, v.importeProyectado ");
 		sql.append(" FROM vwPanelContratas v ");
 		sql.append(" WHERE 1=1");
 		return sql.toString();

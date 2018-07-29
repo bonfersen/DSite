@@ -57,6 +57,8 @@ public class ContratasObra implements Serializable {
 	private BigDecimal importeTipoCambio;
 
 	private BigDecimal importeTotalAdelanto;
+	
+	private BigDecimal importeTotalPagado;
 
 	private BigDecimal porcentajeActasAprobadas;
 
@@ -251,6 +253,14 @@ public class ContratasObra implements Serializable {
 
 	public void setImporteTotalAdelanto(BigDecimal importeTotalAdelanto) {
 		this.importeTotalAdelanto = importeTotalAdelanto;
+	}
+
+	public BigDecimal getImporteTotalPagado() {
+		return importeTotalPagado;
+	}
+
+	public void setImporteTotalPagado(BigDecimal importeTotalPagado) {
+		this.importeTotalPagado = importeTotalPagado;
 	}
 
 	public BigDecimal getPorcentajeActasAprobadas() {

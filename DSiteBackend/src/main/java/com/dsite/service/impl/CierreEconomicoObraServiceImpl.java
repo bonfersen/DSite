@@ -53,6 +53,13 @@ public class CierreEconomicoObraServiceImpl implements CierreEconomicoObraServic
 			return null;
 	}
 	
+	public List<CierreEconomicoObraDTO> findByIdCierreEconomico(Integer idCierreEconomicoObra) {
+		CierreEconomicoObraDTO dto = new CierreEconomicoObraDTO();
+		dto.setIdCierreEconomicoObra(idCierreEconomicoObra);
+		List<CierreEconomicoObraDTO> lstDTO = cierreEconomicoObraJDBCRepository.findCierreEconomicoObraByCriteria(dto);
+		return lstDTO;
+	}
+	
 	public List<CierreEconomicoObraDTO> findByIdObra(Integer idObra) {
 		CierreEconomicoObraDTO dto = new CierreEconomicoObraDTO();
 		dto.setIdObra(idObra);

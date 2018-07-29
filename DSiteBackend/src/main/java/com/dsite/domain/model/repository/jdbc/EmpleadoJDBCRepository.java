@@ -42,22 +42,4 @@ public class EmpleadoJDBCRepository implements EmpleadoRepository {
 			sql.append(params.filter(" AND e.idUsuario = :idUsuario ", dto.getIdUsuario()));
 		return sql.toString();
 	}
-
-//	@Override
-//	public EmpleadoDTO findEmpleadoByUsuario(Integer idUsuario) {
-//		WhereParams params = new WhereParams();
-//        String sql = findEmpleadoByUsuarioQuery(idUsuario, params);
-//
-//        return jdbcTemplate.queryForObject(sql.toString(),
-//                params.getParams(), new BeanPropertyRowMapper<EmpleadoDTO>(EmpleadoDTO.class));
-//	}
-//	
-//	private String findEmpleadoByUsuarioQuery(Integer idUsuario, WhereParams params) {
-//		StringBuilder sql = new StringBuilder();
-//		sql.append(" SELECT ");
-//		
-//		sql.append(" FROM Empleado v ");
-//		sql.append(" WHERE 1=1");
-//		return sql.toString();
-//	}
 }

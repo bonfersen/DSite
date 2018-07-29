@@ -50,7 +50,7 @@ public class DSiteCoreConstants {
 	public final static String ESTADO_ACTA_CONTRATA_ENVIADO = "EACO002";
 	public final static String ESTADO_ACTA_CONTRATA_APROBADO = "EACO003";
 	public final static String ESTADO_ACTA_CONTRATA_RECHAZADO = "EACO004";
-	public final static String ESTADO_ACTA_CONTRATA_NOAPLICA = "EACO005";
+	public final static String ESTADO_ACTA_CONTRATA_NO_APLICA = "EACO005";
 
 	/**
 	 * ESTADO_PAGO_CONTRATA
@@ -98,10 +98,6 @@ public class DSiteCoreConstants {
 	public final static String CATEGORIA_CONTRATA_MEDIANO = "CACO002";
 	public final static String CATEGORIA_CONTRATA_PEQUENO = "CACO003";
 
-	public final static String CATEGORIA_CONTRATA_GRANDE_DESCRIPCION = "Grande";
-	public final static String CATEGORIA_CONTRATA_MEDIANO_DESCRIPCION = "Mediano";
-	public final static String CATEGORIA_CONTRATA_PEQUENO_DESCRIPCION = "Pequeño";
-	
 	/**
 	 * CLASIFICACION_CAJA_CHICA
 	 */
@@ -122,6 +118,12 @@ public class DSiteCoreConstants {
 	public static final String ESTADO_LIQUIDACION_CONTRATA_PENDIENTE = "ELCO002";
 	public static final String ESTADO_LIQUIDACION_CONTRATA_SOLICITADO = "ELCO003";
 	public static final String ESTADO_LIQUIDACION_CONTRATA_LIQUIDADO = "ELCO004";
+	
+	/**
+	 * TIPO_SOLICITUD_PAGO
+	 */
+	public static final String TIPO_SOLICITUD_PAGO_ADELANTO = "TSPA001";
+	public static final String TIPO_SOLICITUD_PAGO_LIQUIDACION = "TSPA002";
 	
 	/**
 	 * Valores enteros

@@ -1,5 +1,7 @@
 package com.dsite.dto.model.views;
 
+import java.lang.reflect.Field;
+
 public class VwLiquidacionContrataFilter {
 // (filtrar por codigoDSite tipoTrabajo idContrata) OK
 	private String codigoDSite;
@@ -23,5 +25,12 @@ public class VwLiquidacionContrataFilter {
 	}
 	public void setTipoTrabajo(String tipoTrabajo) {
 		this.tipoTrabajo = tipoTrabajo;
+	}
+	
+	public boolean checkNull() throws IllegalAccessException {
+	    for (Field f : getClass().getDeclaredFields())
+	        if (f.get(this) != null)
+	            return false;
+	    return true;            
 	}
 }

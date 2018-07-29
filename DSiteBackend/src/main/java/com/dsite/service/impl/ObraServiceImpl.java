@@ -264,8 +264,27 @@ public class ObraServiceImpl implements ObraService {
 		}
 		if (ValidateUtil.isNotEmpty(obraDTO.getIdTGEstadoObra())) {
 			TablaGeneral tablaGeneral = tablaGeneralJpaRepository.findOne(obraDTO.getIdTGEstadoObra());
+			
+			switch (tablaGeneral.getIdTablaGeneral()) {
+			case DSiteCoreConstants.ESTADO_OBRA_ANULADO:
+				obraEntidad.setFechaAnulacion(new Date());
+				break;
+			case DSiteCoreConstants.ESTADO_OBRA_CERRADO:
+				obraEntidad.setFechaCierreObra(new Date());
+				break;
+			case DSiteCoreConstants.ESTADO_OBRA_PARALIZADO:
+				obraEntidad.setFechaParalizacion(new Date());
+				break;
+			case DSiteCoreConstants.ESTADO_OBRA_REACTIVADO:
+				obraEntidad.setFechaReactivacion(new Date());
+				break;
+			default:
+				break;
+			}
+			
 			obraEntidad.setTablaGeneralEstadoObra(tablaGeneral);
 		}
+		//La obra pasa a ejecucion si esta creada y se coloca una fecha de inicio
 		else
 		{
 			TablaGeneral tablaGeneral = obraEntidad.getTablaGeneralEstadoObra();

@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 
 import com.dsite.constants.DSiteCoreConstants;
 import com.dsite.domain.model.entities.Usuario;
+import com.dsite.domain.model.repository.jdbc.AutorizacionesJDBCRepository;
 import com.dsite.domain.model.repository.jdbc.EmpleadoAreaObraJDBCRepository;
 import com.dsite.domain.model.repository.jdbc.EmpleadoJDBCRepository;
 import com.dsite.domain.model.repository.jpa.EmpleadoJPARepository;
 import com.dsite.domain.model.repository.jpa.UsuarioJPARepository;
+import com.dsite.dto.model.AutorizacionesDTO;
 import com.dsite.dto.model.EmpleadoAreaObraDTO;
 import com.dsite.dto.model.EmpleadoDTO;
 import com.dsite.dto.model.UsuarioDTO;
@@ -34,6 +36,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 	EmpleadoAreaObraJDBCRepository empleadoAreaObraJDBCRepository;
 
 	@Autowired
+	AutorizacionesJDBCRepository autorizacionesJDBCRepository;
+	
+	@Autowired
 	Mapper mapper;
 
 	@Override
@@ -53,11 +58,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 		if (usuarioEntity.getActivo().compareToIgnoreCase(DSiteCoreConstants.ACTIVO) != 0)
 			return null;
 
-		/*
-		 * Empleado empleadoEntity = empleadoJPARepository.findEmpleadoByUsuario(usuarioEntity.getIdUsuario()); EmpleadoDTO
-		 * empleadoDTO = new EmpleadoDTO(); mapper.map(empleadoEntity, empleadoDTO);
-		 */
-
 		EmpleadoDTO empleadoDTO = new EmpleadoDTO();
 		empleadoDTO.setIdUsuario(usuarioEntity.getIdUsuario());
 		List<EmpleadoDTO> lstEmpleado = empleadoJDBCRepository.findEmpleadoByCriteria(empleadoDTO);
@@ -66,47 +66,22 @@ public class UsuarioServiceImpl implements UsuarioService {
 			return null;
 		empleadoDTO = lstEmpleado.get(0);
 		
+		/*
+		 * Areas asociadas a un empleado
+		 */
 		EmpleadoAreaObraDTO empleadoAreaObraDTO = new EmpleadoAreaObraDTO();
 		empleadoAreaObraDTO.setIdEmpleado(empleadoDTO.getIdEmpleado());
 		List<EmpleadoAreaObraDTO> lstEmpleadoAreaObraDTO = empleadoAreaObraJDBCRepository.findEmpleadoAreaObraByCriteria(empleadoAreaObraDTO);
 
-		// empleadoDTO.setIdUsuario(empleadoEntity.getUsuario().getIdUsuario());
-
 		/*
-		 * List<EmpleadoAreaObraDTO> lstEmpleadoAreaObraDTO = new ArrayList<EmpleadoAreaObraDTO>(); for (EmpleadoAreaObra
-		 * empleadoAreaObra : empleadoEntity.getEmpleadoAreaObras()) { EmpleadoAreaObraDTO empleadoAreaObraDTO = new
-		 * EmpleadoAreaObraDTO(); empleadoAreaObraDTO.setIdEmpleado(empleadoAreaObra.getEmpleado().getIdEmpleado());
-		 * empleadoAreaObraDTO.setIdTGEmpleadoAreaObra(empleadoAreaObra.getTablaGeneralEmpleadoAreaObra().getIdTablaGeneral());
-		 * empleadoAreaObraDTO.setIdTGEmpleadoAreaObraDescripcion(empleadoAreaObra.getTablaGeneralEmpleadoAreaObra().
-		 * getDescripcion()); lstEmpleadoAreaObraDTO.add(empleadoAreaObraDTO); }
+		 * Autorizaciones asociadas a un empleado
 		 */
+		AutorizacionesDTO autorizacionesDTO = new AutorizacionesDTO();
+		autorizacionesDTO.setIdTGRol(usuarioEntity.getTablaGeneralRol().getIdTablaGeneral());
+		List<AutorizacionesDTO> lstAutorizacionesDTO = autorizacionesJDBCRepository.findAutorizacionesByCriteria(autorizacionesDTO);
+		
 		empleadoDTO.setEmpleadoAreaObras(lstEmpleadoAreaObraDTO);
-
+		empleadoDTO.setAutorizaciones(lstAutorizacionesDTO);
 		return empleadoDTO;
 	}
-
-	@Override
-	public void saveUsuario(UsuarioDTO usuario) {
-		// XXX Auto-generated method stub
-
-	}
-
-	@Override
-	public void updateUsuario(UsuarioDTO usuario) {
-		// XXX Auto-generated method stub
-
-	}
-
-	@Override
-	public void deleteUsuarioById(long id) {
-		// XXX Auto-generated method stub
-
-	}
-
-	@Override
-	public boolean isUsuarioExist(UsuarioDTO usuario) {
-		// XXX Auto-generated method stub
-		return false;
-	}
-
 }

@@ -39,6 +39,8 @@ public class ContratasObraDTO {
 	private BigDecimal importeTipoCambio;
 
 	private BigDecimal importeTotalAdelanto;
+	
+	private BigDecimal importeTotalPagado;
 
 	private BigDecimal porcentajeActasAprobadas;
 
@@ -202,6 +204,14 @@ public class ContratasObraDTO {
 
 	public void setImporteTotalAdelanto(BigDecimal importeTotalAdelanto) {
 		this.importeTotalAdelanto = importeTotalAdelanto;
+	}
+
+	public BigDecimal getImporteTotalPagado() {
+		return importeTotalPagado;
+	}
+
+	public void setImporteTotalPagado(BigDecimal importeTotalPagado) {
+		this.importeTotalPagado = importeTotalPagado;
 	}
 
 	public BigDecimal getPorcentajeActasAprobadas() {

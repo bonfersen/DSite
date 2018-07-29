@@ -9,6 +9,8 @@ public class UsuarioDTO {
 	private String cuentaUsuario;
 
 	private String password;
+	
+	private String idTGRol;
 
 	public int getIdUsuario() {
 		return idUsuario;
@@ -40,5 +42,13 @@ public class UsuarioDTO {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getIdTGRol() {
+		return idTGRol;
+	}
+
+	public void setIdTGRol(String idTGRol) {
+		this.idTGRol = idTGRol;
 	}
 }

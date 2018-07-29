@@ -123,7 +123,7 @@ public interface VistasRepository {
 	
 	List<VwPagoContrata> findPagoContrata(VwPagoContrataFilter vwPagoContrataFilter);
 	
-	List<VwLiquidacionContrata> findLiquidacionContrata(VwLiquidacionContrataFilter vwLiquidacionContrataFilter);
+	List<VwLiquidacionContrata> findLiquidacionContrata(VwLiquidacionContrataFilter vwLiquidacionContrataFilter) throws IllegalAccessException;
 	
 	List<VwAdelantoContrata> findAdelantoContrata(VwAdelantoContrataFilter vwAdelantoContrataFilter);
 	

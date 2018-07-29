@@ -41,6 +41,8 @@ public class EmpleadoDTO {
 	
 	private List<EmpleadoAreaObraDTO> empleadoAreaObras;
 	
+	private List<AutorizacionesDTO> autorizaciones;
+	
 	public EmpleadoDTO() {
 	}
 
@@ -186,5 +188,13 @@ public class EmpleadoDTO {
 
 	public void setIdUsuario(int idUsuario) {
 		this.idUsuario = idUsuario;
+	}
+
+	public List<AutorizacionesDTO> getAutorizaciones() {
+		return autorizaciones;
+	}
+
+	public void setAutorizaciones(List<AutorizacionesDTO> autorizaciones) {
+		this.autorizaciones = autorizaciones;
 	}
 }

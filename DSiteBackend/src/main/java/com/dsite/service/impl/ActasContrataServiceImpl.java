@@ -1,5 +1,6 @@
 package com.dsite.service.impl;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -94,6 +95,31 @@ public class ActasContrataServiceImpl implements ActasContrataService {
 		}
 		if (ValidateUtil.isNotEmpty(actasContrataDTO.getIdTGEstadoActa())) {
 			TablaGeneral tablaGeneral = tablaGeneralJpaRepository.findOne(actasContrataDTO.getIdTGEstadoActa());
+			switch (tablaGeneral.getIdTablaGeneral()) {
+			case DSiteCoreConstants.ESTADO_ACTA_CONTRATA_APROBADO:
+				int totalAprobadas = 1;
+				List<ActasContrata> lstActasContratas = actasContrataJPARepository.findByContratasObra(actasContrataEntity.getContratasObra());
+				if (lstActasContratas.size() > 0) {
+					for (ActasContrata actasContrata : lstActasContratas) {
+						if (actasContrata.getTablaGeneralEstadoActa().getIdTablaGeneral().compareTo(DSiteCoreConstants.ESTADO_ACTA_CONTRATA_APROBADO) == 0) {
+							if (actasContrata.getIdActasContrata() != actasContrataDTO.getIdActasContrata())
+								totalAprobadas++;
+						}
+					}
+					BigDecimal porcentajeAprob = new BigDecimal(totalAprobadas).divide(new BigDecimal(lstActasContratas.size()));
+					porcentajeAprob = porcentajeAprob.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+					/*
+					 * Se actualiza el porcentaje en contratas obras
+					 */
+					ContratasObra contratasObra = contratasObraJPARepository.findOne(actasContrataEntity.getContratasObra().getIdContratasObra());
+					contratasObra.setPorcentajeActasAprobadas(porcentajeAprob);
+					contratasObraJPARepository.save(contratasObra);
+					contratasObraJPARepository.flush();
+				}
+				break;
+			default:
+				break;
+			}
 			actasContrataEntity.setTablaGeneralEstadoActa(tablaGeneral);
 		}
 		if (ValidateUtil.isNotEmpty(actasContrataDTO.getIdTGMotivoRechazo())) {

@@ -10,10 +10,12 @@ import org.springframework.stereotype.Service;
 
 import com.dsite.constants.DSiteCoreConstants;
 import com.dsite.domain.model.entities.ContratasObra;
+import com.dsite.domain.model.entities.Obra;
 import com.dsite.domain.model.entities.PagosContrata;
 import com.dsite.domain.model.entities.TablaGeneral;
 import com.dsite.domain.model.entities.Usuario;
 import com.dsite.domain.model.repository.jpa.ContratasObraJPARepository;
+import com.dsite.domain.model.repository.jpa.ObraJPARepository;
 import com.dsite.domain.model.repository.jpa.PagosContrataJPARepository;
 import com.dsite.domain.model.repository.jpa.TablaGeneralJPARepository;
 import com.dsite.domain.model.repository.jpa.UsuarioJPARepository;
@@ -27,6 +29,9 @@ public class PagosContrataServiceImpl implements PagosContrataService {
 
 	@Autowired
 	PagosContrataJPARepository pagosContrataJPARepository;
+
+	@Autowired
+	ObraJPARepository obraJPARepository;
 
 	@Autowired
 	ContratasObraJPARepository contratasObraJPARepository;
@@ -46,12 +51,6 @@ public class PagosContrataServiceImpl implements PagosContrataService {
 		PagosContrata pagosContrataEntity = pagosContrataJPARepository.findOne(id);
 		mapper.map(pagosContrataEntity, pagosContrataDTO);
 		return pagosContrataDTO;
-	}
-
-	@Override
-	public List<PagosContrataDTO> findAllPagosContratas() {
-		// XXX Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -94,12 +93,11 @@ public class PagosContrataServiceImpl implements PagosContrataService {
 						sumaAdelantoPagos = sumaAdelantoPagos.add(pagosContrata.getImporteAdelanto());
 				}
 				if (sumaAdelantoPagos.compareTo(BigDecimal.ZERO) > 0) {
-					Double presupuesto = contratasObra.getImportePresupuestoObra().doubleValue();
-					Double suma = sumaAdelantoPagos.doubleValue();
-					Double res = (suma * 100) / presupuesto;
-					Double porcentajePermitido = new Double("80");
+					BigDecimal porcentajeAcum = sumaAdelantoPagos.multiply(new BigDecimal(DSiteCoreConstants.CIEN_CADENA));
+					porcentajeAcum = porcentajeAcum.divide(contratasObra.getImportePresupuestoObra(), BigDecimal.ROUND_HALF_EVEN);
+					porcentajeAcum = porcentajeAcum.setScale(2, BigDecimal.ROUND_HALF_EVEN);
 
-					if (res.compareTo(porcentajePermitido) > 0) {
+					if (porcentajeAcum.compareTo(new BigDecimal("80")) > 0) {
 						notificacionDTO.setCodigo(null);
 						notificacionDTO.setSeverity("warning");
 						notificacionDTO.setSummary("DSite Error");
@@ -195,7 +193,6 @@ public class PagosContrataServiceImpl implements PagosContrataService {
 			case DSiteCoreConstants.ESTADO_PAGO_CONTRATA_APROBADO:
 				BigDecimal importeTotalAdelantoObra = BigDecimal.ZERO;
 				BigDecimal importeAdelanto = BigDecimal.ZERO;
-				tablaGeneralEstadoLiquidacion.setIdTablaGeneral(DSiteCoreConstants.ESTADO_LIQUIDACION_CONTRATA_GENERADO);
 
 				// se suma los adelanto al total si estas se aprueban
 				if (ValidateUtil.isNotEmpty(contratasObra.getImporteTotalAdelanto()))
@@ -203,7 +200,7 @@ public class PagosContrataServiceImpl implements PagosContrataService {
 				importeAdelanto = pagosContrataEntity.getImporteAdelanto();
 				importeTotalAdelantoObra = importeTotalAdelantoObra.add(importeAdelanto);
 				contratasObra.setImporteTotalAdelanto(importeTotalAdelantoObra);
-				contratasObra.setTablaGeneralEstadoLiquidacion(tablaGeneralEstadoLiquidacion);
+				// contratasObra.setTablaGeneralEstadoLiquidacion(tablaGeneralEstadoLiquidacion);
 
 				contratasObraJPARepository.save(contratasObra);
 				contratasObraJPARepository.flush();
@@ -214,25 +211,27 @@ public class PagosContrataServiceImpl implements PagosContrataService {
 				pagosContrataEntity.setFechaRechazo(new Date());
 				break;
 			case DSiteCoreConstants.ESTADO_PAGO_CONTRATA_PAGADO:
-				/*
-				 * Si TODOS los adelantos de una contrata estan en estado pagado o rechazado se pasa a pendiente
-				 */
-				contratasObra = contratasObraJPARepository.findOne(pagosContrataEntity.getContratasObra().getIdContratasObra());
-				for (PagosContrata pagosContrata : contratasObra.getPagosContratas()) {
-					if (pagosContrata.getTablaGeneralEstadoPagoContrata().getIdTablaGeneral().compareTo(DSiteCoreConstants.ESTADO_PAGO_CONTRATA_PAGADO) == 0
-							|| pagosContrata.getTablaGeneralEstadoPagoContrata().getIdTablaGeneral().compareTo(DSiteCoreConstants.ESTADO_PAGO_CONTRATA_RECHAZADO) == 0) {
-						tablaGeneralEstadoLiquidacion.setIdTablaGeneral(DSiteCoreConstants.ESTADO_LIQUIDACION_CONTRATA_PENDIENTE);
-						contratasObra.setTablaGeneralEstadoLiquidacion(tablaGeneralEstadoLiquidacion);
-					}
-					else {
-						tablaGeneralEstadoLiquidacion.setIdTablaGeneral(DSiteCoreConstants.ESTADO_LIQUIDACION_CONTRATA_GENERADO);
-						contratasObra.setTablaGeneralEstadoLiquidacion(tablaGeneralEstadoLiquidacion);
-						break;
-					}
-				}
 
-				contratasObraJPARepository.save(contratasObra);
-				contratasObraJPARepository.flush();
+				if (pagosContrataEntity.getTablaGeneralTipoSolicitud().getIdTablaGeneral().compareTo(DSiteCoreConstants.TIPO_SOLICITUD_PAGO_ADELANTO) == 0) {
+					/*
+					 * Si TODOS los adelantos de una contrata estan en estado pagado o rechazado se pasa a pendiente
+					 */
+					contratasObra = contratasObraJPARepository.findOne(pagosContrataEntity.getContratasObra().getIdContratasObra());
+					for (PagosContrata pagosContrata : contratasObra.getPagosContratas()) {
+						if (pagosContrata.getTablaGeneralEstadoPagoContrata().getIdTablaGeneral().compareTo(DSiteCoreConstants.ESTADO_PAGO_CONTRATA_PAGADO) == 0
+								|| pagosContrata.getTablaGeneralEstadoPagoContrata().getIdTablaGeneral().compareTo(DSiteCoreConstants.ESTADO_PAGO_CONTRATA_RECHAZADO) == 0) {
+							tablaGeneralEstadoLiquidacion.setIdTablaGeneral(DSiteCoreConstants.ESTADO_LIQUIDACION_CONTRATA_PENDIENTE);
+							contratasObra.setTablaGeneralEstadoLiquidacion(tablaGeneralEstadoLiquidacion);
+						}
+						else {
+							tablaGeneralEstadoLiquidacion.setIdTablaGeneral(DSiteCoreConstants.ESTADO_LIQUIDACION_CONTRATA_GENERADO);
+							contratasObra.setTablaGeneralEstadoLiquidacion(tablaGeneralEstadoLiquidacion);
+							break;
+						}
+					}
+					contratasObraJPARepository.save(contratasObra);
+					contratasObraJPARepository.flush();
+				}
 
 				pagosContrataEntity.setFechaPago(new Date());
 				break;
@@ -254,5 +253,39 @@ public class PagosContrataServiceImpl implements PagosContrataService {
 		}
 		pagosContrataJPARepository.save(pagosContrataEntity);
 		pagosContrataJPARepository.flush();
+
+		/*
+		 * Esta opcion se ejecuta cuando se abona el pago
+		 */
+		if (ValidateUtil.isNotEmpty(pagosContrataDTO.getIdTGEstadoPagoContrata())
+				&& pagosContrataDTO.getIdTGEstadoPagoContrata().compareTo(DSiteCoreConstants.ESTADO_PAGO_CONTRATA_PAGADO) == 0) {
+			/*
+			 * Se suman los importes abonados de la contrata
+			 */
+			List<PagosContrata> lstPagosContrata = pagosContrataJPARepository.findByContratasObra(pagosContrataEntity.getContratasObra());
+			BigDecimal importeTotalPagado = BigDecimal.ZERO;
+			for (PagosContrata pagosContrata : lstPagosContrata) {
+				if (ValidateUtil.isNotEmpty(pagosContrata.getImporteAdelanto()))
+					importeTotalPagado = importeTotalPagado.add(pagosContrata.getImporteAdelanto());
+			}
+			ContratasObra contratasObraIA = contratasObraJPARepository.findOne(pagosContrataEntity.getContratasObra().getIdContratasObra());
+			contratasObraIA.setImporteTotalPagado(importeTotalPagado);
+			contratasObraJPARepository.save(contratasObraIA);
+			contratasObraJPARepository.flush();
+			
+			/*
+			 * Se suman los importes totales abonados de cada contrata obra
+			 */
+			List<ContratasObra> lstContratasObra = contratasObraJPARepository.findByObra(pagosContrataEntity.getContratasObra().getObra());
+			BigDecimal importeTotalPagosContrata = BigDecimal.ZERO;
+			for (ContratasObra entity : lstContratasObra) {
+				if (ValidateUtil.isNotEmpty(entity.getImporteTotalPagado()))
+					importeTotalPagosContrata = importeTotalPagosContrata.add(entity.getImporteTotalPagado());
+			}
+			Obra obra = obraJPARepository.findOne(pagosContrataEntity.getContratasObra().getObra().getIdObra());
+			obra.setImporteTotalPagosContrata(importeTotalPagosContrata);
+			obraJPARepository.save(obra);
+			obraJPARepository.flush();
+		}
 	}
 }

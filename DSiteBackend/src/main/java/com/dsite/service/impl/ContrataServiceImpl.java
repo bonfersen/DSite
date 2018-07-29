@@ -1,16 +1,12 @@
 package com.dsite.service.impl;
 
-import static java.util.stream.Collectors.toList;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dsite.domain.model.entities.Contrata;
-import com.dsite.domain.model.repository.jpa.ContrataJPARepository;
+import com.dsite.domain.model.repository.jdbc.ContrataJDBCRepository;
 import com.dsite.dto.model.ContrataDTO;
 import com.dsite.service.intf.ContrataService;
 
@@ -18,7 +14,7 @@ import com.dsite.service.intf.ContrataService;
 public class ContrataServiceImpl implements ContrataService {
 	
 	@Autowired
-	ContrataJPARepository contrataJPARepository;
+	ContrataJDBCRepository contrataJDBCRepository;
 	
 	@Autowired
 	Mapper mapper;
@@ -31,17 +27,16 @@ public class ContrataServiceImpl implements ContrataService {
 
 	@Override
 	public List<ContrataDTO> findAllContratas() {
-		List<Contrata> lstContrataEntity = (List<Contrata>) contrataJPARepository.findAll();
-		List<ContrataDTO> lstDTO = new ArrayList<ContrataDTO>();		
-		if(lstContrataEntity != null)
-			lstDTO = lstContrataEntity.stream().map(m -> mapper.map(m, ContrataDTO.class)).collect(toList());
-		return lstDTO ;
+		List<ContrataDTO> lstDTO = contrataJDBCRepository.findContrataByCriteria(null);
+		return lstDTO;
 	}
 
 	@Override
 	public void saveContrata(ContrataDTO ContrataDTO) {
 		// XXX Auto-generated method stub
-
+		/*
+		 * importeTotalPendientePago = 0 al crearse
+		 */
 	}
 
 	@Override

@@ -24,6 +24,11 @@ public class Usuario implements Serializable {
 
 	private String password;
 
+	// bi-directional many-to-one association to TablaGeneral
+	@ManyToOne
+	@JoinColumn(name = "idTGRol")
+	private TablaGeneral tablaGeneralRol;
+
 	// bi-directional many-to-one association to ActasContrata
 	@OneToMany(mappedBy = "usuarioRechaza")
 	private List<ActasContrata> actasContratasUsuarioRechaza;
@@ -176,6 +181,14 @@ public class Usuario implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public TablaGeneral getTablaGeneralRol() {
+		return tablaGeneralRol;
+	}
+
+	public void setTablaGeneralRol(TablaGeneral tablaGeneralRol) {
+		this.tablaGeneralRol = tablaGeneralRol;
 	}
 
 	public List<ActasContrata> getActasContratasUsuarioRechaza() {

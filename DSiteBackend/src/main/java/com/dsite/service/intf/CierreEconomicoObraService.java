@@ -17,5 +17,7 @@ public interface CierreEconomicoObraService {
 	
 	void deleteCierreEconomicoObraById(Integer id);
 	
+	List<CierreEconomicoObraDTO> findByIdCierreEconomico(Integer idCierreEconomicoObra);
+	
 	List<CierreEconomicoObraDTO> findByIdObra(Integer idObra);
 }

@@ -42,6 +42,8 @@ private final NamedParameterJdbcTemplate jdbcTemplate;
 		sql.append(" WHERE 1=1");
 		if (ValidateUtil.isNotEmpty(dto.getIdObra()))
 			sql.append(params.filter(" AND co.idObra = :idObra ", dto.getIdObra()));
+		if (ValidateUtil.isNotEmpty(dto.getIdContratasObra()))
+			sql.append(params.filter(" AND co.idContratasObra = :idContratasObra ", dto.getIdContratasObra()));
 		return sql.toString();
 	}
 }

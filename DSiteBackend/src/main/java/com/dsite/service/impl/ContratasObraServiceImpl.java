@@ -1,5 +1,6 @@
 package com.dsite.service.impl;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -94,13 +95,26 @@ public class ContratasObraServiceImpl implements ContratasObraService {
 		TablaGeneral tablaGeneralEstadoCierreEconomico = new TablaGeneral();
 		tablaGeneralEstadoCierreEconomico.setIdTablaGeneral(DSiteCoreConstants.ESTADO_CIERRE_ECONOMICO_PENDIENTE);
 		contratasObraEntity.setTablaGeneralEstadoCierreEconomico(tablaGeneralEstadoCierreEconomico);
-		// Estado liquidacion de contrataObra en generado		
+		// Estado liquidacion de contrataObra en generado
 		TablaGeneral tablaGeneralEstadoLiquidacion = new TablaGeneral();
 		tablaGeneralEstadoLiquidacion.setIdTablaGeneral(DSiteCoreConstants.ESTADO_LIQUIDACION_CONTRATA_GENERADO);
 		contratasObraEntity.setTablaGeneralEstadoLiquidacion(tablaGeneralEstadoLiquidacion);
 		if (ValidateUtil.isEmpty(contratasObraDTO.getUsuarioCreacion()))
 			contratasObraEntity.setUsuarioCreacion(DSiteCoreConstants.USUARIO_ADMIN);
 		createUpdateContratasObra(contratasObraDTO, contratasObraEntity);
+		
+		/*
+		 * Actualizar la cantidad de contratas
+		 */
+		Obra obra = contratasObraEntity.getObra();
+		ContratasObraDTO contratasObraDTOCC = new ContratasObraDTO();
+		contratasObraDTOCC.setIdObra(contratasObraEntity.getObra().getIdObra());
+		List<ContratasObraDTO> lstContratasObra = contratasObraJDBCRepository.findContratasObraByCriteria(contratasObraDTOCC);
+		if (lstContratasObra.size() > 0) {
+			obra.setCantidadContratasAsignadas(lstContratasObra.size());
+			obraJPARepository.save(obra);
+			obraJPARepository.flush();
+		}
 		
 		/*
 		 * Ingresar datos a la Acta Contrata
@@ -151,6 +165,8 @@ public class ContratasObraServiceImpl implements ContratasObraService {
 			contratasObraDTO.setImporteTipoCambio(contratasObraEntity.getImporteTipoCambio());
 		if (ValidateUtil.isEmpty(contratasObraDTO.getImporteTotalAdelanto()))
 			contratasObraDTO.setImporteTotalAdelanto(contratasObraEntity.getImporteTotalAdelanto());
+		if (ValidateUtil.isEmpty(contratasObraDTO.getImporteTotalPagado()))
+			contratasObraDTO.setImporteTotalPagado(contratasObraEntity.getImporteTotalPagado());
 		if (ValidateUtil.isEmpty(contratasObraDTO.getPorcentajeActasAprobadas()))
 			contratasObraDTO.setPorcentajeActasAprobadas(contratasObraEntity.getPorcentajeActasAprobadas());
 		if (ValidateUtil.isEmpty(contratasObraDTO.getTipoTrabajo()))
@@ -187,8 +203,10 @@ public class ContratasObraServiceImpl implements ContratasObraService {
 
 			switch (contratasObraDTO.getIdTGEstadoCierreEconomico()) {
 			case DSiteCoreConstants.ESTADO_CIERRE_ECONOMICO_PARCIAL:
-				lstCierreEconomicoObraDTO = cierreEconomicoObraService.findByIdObra(contratasObraDTO.getIdObra());
-				for (CierreEconomicoObraDTO cierreEconomicoObraDTO : lstCierreEconomicoObraDTO) {
+				lstCierreEconomicoObraDTO = cierreEconomicoObraService.findByIdObra(contratasObraEntity.getObra().getIdObra());
+				// Una obra siempre esta asignado a un solo cierre
+				if (lstCierreEconomicoObraDTO.size() > 0) {
+					CierreEconomicoObraDTO cierreEconomicoObraDTO = lstCierreEconomicoObraDTO.get(0);
 					CierreEconomico cierreEconomico = cierreEconomicoJPARepository.findOne(cierreEconomicoObraDTO.getIdCierreEconomico());
 					TablaGeneral tablaGeneralEstadoCierreEconomico = new TablaGeneral();
 					tablaGeneralEstadoCierreEconomico.setIdTablaGeneral(DSiteCoreConstants.ESTADO_CIERRE_ECONOMICO_PARCIAL);
@@ -200,15 +218,22 @@ public class ContratasObraServiceImpl implements ContratasObraService {
 				break;
 			case DSiteCoreConstants.ESTADO_CIERRE_ECONOMICO_FINALIZADO:
 				boolean estado = true;
-				lstCierreEconomicoObraDTO = cierreEconomicoObraService.findByIdObra(contratasObraDTO.getIdObra());
-				for (CierreEconomicoObraDTO cierreEconomicoObraDTO : lstCierreEconomicoObraDTO) {
-					List<ContratasObraDTO> lstContratasObraDTO = this.findByIdObra(cierreEconomicoObraDTO.getIdObra());
-					for (ContratasObraDTO bean : lstContratasObraDTO) {
-						if (bean.getIdTGEstadoCierreEconomico().compareTo(DSiteCoreConstants.ESTADO_CIERRE_ECONOMICO_FINALIZADO) != 0) {
-							estado = false;
-							break;
+
+				List<CierreEconomicoObraDTO> lstCierreEconomicoObraDTOTemp = cierreEconomicoObraService.findByIdObra(contratasObraEntity.getObra().getIdObra());
+				if (lstCierreEconomicoObraDTOTemp.size() > 0) {
+					CierreEconomicoObraDTO cierreEconomicoObraDTO = lstCierreEconomicoObraDTOTemp.get(0);
+					lstCierreEconomicoObraDTO = cierreEconomicoObraService.findByIdCierreEconomico(cierreEconomicoObraDTO.getIdCierreEconomico());
+					// Verificar que cada contrata obra este finalizado para finalizar el cierre
+					for (CierreEconomicoObraDTO cierreEconomicoObra : lstCierreEconomicoObraDTO) {
+						List<ContratasObraDTO> lstContratasObraDTO = this.findByIdObra(cierreEconomicoObra.getIdObra());
+						for (ContratasObraDTO bean : lstContratasObraDTO) {
+							if (bean.getIdTGEstadoCierreEconomico().compareTo(DSiteCoreConstants.ESTADO_CIERRE_ECONOMICO_FINALIZADO) != 0) {
+								estado = false;
+								break;
+							}
 						}
 					}
+					// Si todas las contratas obras estan finalizadas se cierra la obra
 					if (estado) {
 						CierreEconomico cierreEconomico = cierreEconomicoJPARepository.findOne(cierreEconomicoObraDTO.getIdCierreEconomico());
 						TablaGeneral tablaGeneralEstadoCierreEconomico = new TablaGeneral();
@@ -244,6 +269,23 @@ public class ContratasObraServiceImpl implements ContratasObraService {
 
 		contratasObraJPARepository.save(contratasObraEntity);
 		contratasObraJPARepository.flush();
+
+		/*
+		 * Si la contrata se liquida se suman los importes finales de cada contrata obra
+		 */
+		if (ValidateUtil.isNotEmpty(contratasObraDTO.getImporteFinal())) {
+			List<ContratasObraDTO> lstContratasObraDTO = this.findByIdObra(contratasObraEntity.getObra().getIdObra());
+			BigDecimal importeTotalPresupuestadoContrata = BigDecimal.ZERO;
+
+			for (ContratasObraDTO dto : lstContratasObraDTO) {
+				if (ValidateUtil.isNotEmpty(dto.getImporteFinal()))
+					importeTotalPresupuestadoContrata = importeTotalPresupuestadoContrata.add(dto.getImporteFinal());
+			}
+			Obra obra = obraJPARepository.findOne(contratasObraEntity.getObra().getIdObra());
+			obra.setImporteTotalPresupuestadoContrata(importeTotalPresupuestadoContrata);
+			obraJPARepository.save(obra);
+			obraJPARepository.flush();
+		}
 	}
 
 	public NotificacionDTO deleteContratasObraById(int id) {

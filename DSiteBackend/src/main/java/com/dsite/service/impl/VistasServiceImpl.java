@@ -215,7 +215,7 @@ public class VistasServiceImpl implements VistasService {
 	}
 
 	@Override
-	public List<VwLiquidacionContrata> findLiquidacionContrata(VwLiquidacionContrataFilter vwLiquidacionContrataFilter) {
+	public List<VwLiquidacionContrata> findLiquidacionContrata(VwLiquidacionContrataFilter vwLiquidacionContrataFilter) throws IllegalAccessException {
 		List<VwLiquidacionContrata> vwLiquidacionContratas = vistasRepository.findLiquidacionContrata(vwLiquidacionContrataFilter);
 		return vwLiquidacionContratas;
 	}
