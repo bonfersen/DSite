@@ -32,6 +32,7 @@ public class VwOfertaCustomerService implements Serializable {
 	private String proyecto;
 	private int idOfertaLiquidacionObra;
 	private int idPresupuestoObra;
+	private String idTGEstadoObra;
 
 	public VwOfertaCustomerService() {
 	}
@@ -180,5 +181,13 @@ public class VwOfertaCustomerService implements Serializable {
 
 	public void setIdPresupuestoObra(int idPresupuestoObra) {
 		this.idPresupuestoObra = idPresupuestoObra;
+	}
+
+	public String getIdTGEstadoObra() {
+		return idTGEstadoObra;
+	}
+
+	public void setIdTGEstadoObra(String idTGEstadoObra) {
+		this.idTGEstadoObra = idTGEstadoObra;
 	}
 }

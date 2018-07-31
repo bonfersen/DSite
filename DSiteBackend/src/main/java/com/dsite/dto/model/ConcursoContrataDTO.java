@@ -31,6 +31,10 @@ public class ConcursoContrataDTO {
 
 	private String idTGArea;
 
+	private Date fechaCreacionContrataObra;
+	
+	private String idTGAreaContrataObra;
+
 	public ConcursoContrataDTO() {
 	}
 
@@ -136,5 +140,21 @@ public class ConcursoContrataDTO {
 
 	public void setIdTGArea(String idTGArea) {
 		this.idTGArea = idTGArea;
+	}
+
+	public Date getFechaCreacionContrataObra() {
+		return fechaCreacionContrataObra;
+	}
+
+	public void setFechaCreacionContrataObra(Date fechaCreacionContrataObra) {
+		this.fechaCreacionContrataObra = fechaCreacionContrataObra;
+	}
+
+	public String getIdTGAreaContrataObra() {
+		return idTGAreaContrataObra;
+	}
+
+	public void setIdTGAreaContrataObra(String idTGAreaContrataObra) {
+		this.idTGAreaContrataObra = idTGAreaContrataObra;
 	}
 }

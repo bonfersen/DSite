@@ -68,6 +68,8 @@ public class ContratasObraDTO {
 
 	private Integer idUsuarioCECompletado;
 	
+	private String idTGAreaObra;
+	
 	private List<PagosContrataDTO> pagosContratasDTO;
 
 	public Integer getIdContratasObra() {
@@ -324,5 +326,13 @@ public class ContratasObraDTO {
 
 	public void setPagosContratasDTO(List<PagosContrataDTO> pagosContratasDTO) {
 		this.pagosContratasDTO = pagosContratasDTO;
+	}
+
+	public String getIdTGAreaObra() {
+		return idTGAreaObra;
+	}
+
+	public void setIdTGAreaObra(String idTGAreaObra) {
+		this.idTGAreaObra = idTGAreaObra;
 	}
 }

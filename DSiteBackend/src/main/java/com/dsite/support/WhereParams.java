@@ -63,6 +63,15 @@ public class WhereParams {
         return "";
     }
 
+    public String formatDate_LIM(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        if (date != null) {
+            return " '" + sdf.format(date) + " 00:00:00'  ";
+        }
+        return "";
+    }
+    
     public String filterDateFrom_LIM(String sqlFilterStart, Date start) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 

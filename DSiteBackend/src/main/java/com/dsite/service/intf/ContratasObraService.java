@@ -9,9 +9,9 @@ public interface ContratasObraService {
 
 	List<ContratasObraDTO> findByIdObra(int id);
 
-	void createContratasObra(ContratasObraDTO ContratasObraDTO);
+	NotificacionDTO createContratasObra(ContratasObraDTO ContratasObraDTO);
 
-	void updateContratasObra(ContratasObraDTO ContratasObraDTO);
+	NotificacionDTO updateContratasObra(ContratasObraDTO ContratasObraDTO);
 
 	NotificacionDTO deleteContratasObraById(int id);
 }

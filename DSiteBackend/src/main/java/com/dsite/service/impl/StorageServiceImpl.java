@@ -51,7 +51,7 @@ public class StorageServiceImpl implements StorageService {
 	@Override
 	public void store(MultipartFile file, Integer idTabla, String idTGNombreTabla, Integer idTipoDocumentoAdjunto) throws Exception {
 		String filename = StringUtils.cleanPath(file.getOriginalFilename());
-		filename = StringUtil.getFileName(filename) + DSiteCoreConstants.GUION_ABAJO + StringUtils.replace(DateUtil.getHourFromDate(new Date()), DSiteCoreConstants.DOS_PUNTOS, "")
+		filename = (new Date().getTime()) + DSiteCoreConstants.GUION_ABAJO + StringUtils.replace(DateUtil.getHourFromDate(new Date()), DSiteCoreConstants.DOS_PUNTOS, "")
 				+ DSiteCoreConstants.GUION_ABAJO + idTabla + DSiteCoreConstants.GUION_ABAJO + idTGNombreTabla + DSiteCoreConstants.GUION_ABAJO + idTipoDocumentoAdjunto
 				+ DSiteCoreConstants.PUNTO + StringUtil.getExtension(filename);
 

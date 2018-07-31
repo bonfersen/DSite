@@ -7,4 +7,6 @@ import com.dsite.dto.model.ContratasObraDTO;
 public interface ContratasObraRepository {
 
 	List<ContratasObraDTO> findContratasObraByCriteria(ContratasObraDTO contratasObraDTO);
+	
+	List<ContratasObraDTO> findAllContratasObra(ContratasObraDTO dto);
 }

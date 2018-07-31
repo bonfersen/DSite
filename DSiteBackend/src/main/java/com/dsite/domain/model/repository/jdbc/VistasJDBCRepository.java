@@ -345,7 +345,7 @@ public class VistasJDBCRepository implements VistasRepository {
 		sql.append(" SELECT ");
 		sql.append(" v.codigoDSite, v.idTGArea, v.area, v.idTGProyecto, v.proyecto, v.OTAutogenerada, v.gestorProyecto, ");
 		sql.append(" v.departamento, v.fechaCreacion, v.nombreReal, v.importeOferta, v.fechaOferta, v.moneda, ");
-		sql.append(" v.correlativoOferta, v.estadoFinanzas, v.observacionFinanzas, v.idOfertaLiquidacionObra, v.idPresupuestoObra ");
+		sql.append(" v.correlativoOferta, v.estadoFinanzas, v.observacionFinanzas, v.idOfertaLiquidacionObra, v.idPresupuestoObra, v.idTGEstadoObra ");
 		sql.append(" FROM vwOfertaCustomerService v ");
 		sql.append(" WHERE 1=1");
 		if (ValidateUtil.isNotEmpty(vwOfertaCustomerServiceFilter.getCodigoDSite()))
@@ -762,8 +762,8 @@ public class VistasJDBCRepository implements VistasRepository {
 		sql.append(" v.idResumenRendicionCajaChica, v.idCajaChicaObra, v.codigoDSite ");
 		sql.append(" FROM vwBandejaReembolsoDescuentoCajaChica v ");
 		sql.append(" WHERE 1=1");
-		if (ValidateUtil.isNotEmpty(vwBandejaReembolsoDescuentoCajaChicaFilter.getIdTGEstadoRendicion()))
-			sql.append(params.filter(" AND v.idTGEstadoRendicion = :idTGEstadoRendicion ", vwBandejaReembolsoDescuentoCajaChicaFilter.getIdTGEstadoRendicion()));
+		if (ValidateUtil.isNotEmpty(vwBandejaReembolsoDescuentoCajaChicaFilter.getIdTGEstadoRendicion()) && vwBandejaReembolsoDescuentoCajaChicaFilter.getIdTGEstadoRendicion().length > 0)
+			sql.append(" AND v.idTGEstadoRendicion in ('" + String.join("','", vwBandejaReembolsoDescuentoCajaChicaFilter.getIdTGEstadoRendicion()) + "')");
 		return sql.toString();
 	}
 
