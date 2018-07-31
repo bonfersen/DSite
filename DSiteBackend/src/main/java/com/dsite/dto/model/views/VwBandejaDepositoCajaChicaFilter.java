@@ -7,6 +7,8 @@ public class VwBandejaDepositoCajaChicaFilter {
 	private Date fechaPagoInicio;
 	
 	private Date fechaPagoFin;
+	
+	private String[] idTGEstadoCajaChica;
 
 	public Date getFechaPagoInicio() {
 		return fechaPagoInicio;
@@ -22,5 +24,13 @@ public class VwBandejaDepositoCajaChicaFilter {
 
 	public void setFechaPagoFin(Date fechaPagoFin) {
 		this.fechaPagoFin = fechaPagoFin;
+	}
+
+	public String[] getIdTGEstadoCajaChica() {
+		return idTGEstadoCajaChica;
+	}
+
+	public void setIdTGEstadoCajaChica(String[] idTGEstadoCajaChica) {
+		this.idTGEstadoCajaChica = idTGEstadoCajaChica;
 	}
 }

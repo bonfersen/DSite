@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.dsite.constants.DSiteCoreConstants;
 import com.dsite.domain.model.views.VwAdelantoContrata;
 import com.dsite.domain.model.views.VwAdelantoPagadoContrata;
 import com.dsite.domain.model.views.VwBandejaAdelantoRechazadoContrata;
@@ -668,14 +669,30 @@ public class VistasJDBCRepository implements VistasRepository {
 
 	private String findBandejaDepositoCajaChicaQuery(VwBandejaDepositoCajaChicaFilter vwBandejaDepositoCajaChicaFilter, WhereParams params) {
 		StringBuilder sql = new StringBuilder();
+		String[] lstEstadosCajaChica = vwBandejaDepositoCajaChicaFilter.getIdTGEstadoCajaChica();
+		String operadorLogico = "";
 		sql.append(" SELECT ");
 		sql.append(" v.nombreReal, v.idTGProyecto, v.idTGArea, v.codigoDSite, v.proyecto, v.area, v.idEmpleadoSustentador, v.idTGTipoCaja, ");
 		sql.append(" v.idEmpleadoBeneficiario, v.importeCaja, v.importeViatico, v.importeTotal, v.detalle, v.idTGEstadoCajaChica, v.fechaAprobacion, ");
 		sql.append(" v.motivoRechazo, v.fechaPago, v.empleadoSustentador, v.empleadoBeneficiario, v.tipoCaja, v.estadoCajaChica, v.idCajaChicaObra, v.idObra ");
 		sql.append(" FROM vwBandejaDepositoCajaChica v ");
 		sql.append(" WHERE 1=1");
-		sql.append(params.filterDateFrom_LIM(" AND v.fechaPago ", vwBandejaDepositoCajaChicaFilter.getFechaPagoInicio()));
-		sql.append(params.filterDateTo_LIM(" AND v.fechaPago ", vwBandejaDepositoCajaChicaFilter.getFechaPagoFin()));
+
+		for (String token : lstEstadosCajaChica) {
+			if (lstEstadosCajaChica.length == 2)
+				operadorLogico = " OR ";
+			else
+				operadorLogico = " AND ";
+			if (token.equals(DSiteCoreConstants.ESTADO_CAJA_CHICA_APROBADO)) {
+				sql.append(params.filterDateFrom_LIM(" AND (v.fechaAprobacion ", vwBandejaDepositoCajaChicaFilter.getFechaPagoInicio()));
+				sql.append(params.filterDateTo_LIM(" AND v.fechaAprobacion ", vwBandejaDepositoCajaChicaFilter.getFechaPagoFin()) + ")" );
+			}
+			if (token.equals(DSiteCoreConstants.ESTADO_CAJA_CHICA_DEPOSITADO)) {
+
+				sql.append(params.filterDateFrom_LIM(" " + operadorLogico + " (v.fechaPago ", vwBandejaDepositoCajaChicaFilter.getFechaPagoInicio()));
+				sql.append(params.filterDateTo_LIM(" AND v.fechaPago ", vwBandejaDepositoCajaChicaFilter.getFechaPagoFin()) + ")" );
+			}
+		}
 		return sql.toString();
 	}
 
@@ -762,7 +779,8 @@ public class VistasJDBCRepository implements VistasRepository {
 		sql.append(" v.idResumenRendicionCajaChica, v.idCajaChicaObra, v.codigoDSite ");
 		sql.append(" FROM vwBandejaReembolsoDescuentoCajaChica v ");
 		sql.append(" WHERE 1=1");
-		if (ValidateUtil.isNotEmpty(vwBandejaReembolsoDescuentoCajaChicaFilter.getIdTGEstadoRendicion()) && vwBandejaReembolsoDescuentoCajaChicaFilter.getIdTGEstadoRendicion().length > 0)
+		if (ValidateUtil.isNotEmpty(vwBandejaReembolsoDescuentoCajaChicaFilter.getIdTGEstadoRendicion())
+				&& vwBandejaReembolsoDescuentoCajaChicaFilter.getIdTGEstadoRendicion().length > 0)
 			sql.append(" AND v.idTGEstadoRendicion in ('" + String.join("','", vwBandejaReembolsoDescuentoCajaChicaFilter.getIdTGEstadoRendicion()) + "')");
 		return sql.toString();
 	}

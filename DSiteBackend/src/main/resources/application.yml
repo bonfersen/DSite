@@ -30,7 +30,7 @@ spring:
 # ===============================
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: 'jdbc:mysql://13.68.130.135:3306/dsite?autoReconnect=true&useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=America/Lima'
+    url: 'jdbc:mysql://13.68.130.135:3306/dsitetest?autoReconnect=true&useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=America/Lima'
     username: huiracocha
     password: w0k950Yx005BEBb
     tomcat:
@@ -105,7 +105,7 @@ spring:
 
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: 'jdbc:mysql://10.0.0.5:3306/dsite?autoReconnect=true&useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=America/Lima'
+    url: 'jdbc:mysql://10.0.0.5:3306/dsitetest?autoReconnect=true&useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=America/Lima'
     username: huiracocha
     password: w0k950Yx005BEBb
     tomcat:

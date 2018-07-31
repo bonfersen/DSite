@@ -244,6 +244,8 @@ public class ContratasObraServiceImpl implements ContratasObraService {
 					tablaGeneralEstadoCierreEconomico.setIdTablaGeneral(DSiteCoreConstants.ESTADO_CIERRE_ECONOMICO_PARCIAL);
 					cierreEconomico.setTablaGeneralEstadoCierreEconomico(tablaGeneralEstadoCierreEconomico);
 
+					contratasObraEntity.setFechaCEParcial(new Date());
+
 					cierreEconomicoJPARepository.save(cierreEconomico);
 					cierreEconomicoJPARepository.flush();
 				}
@@ -259,10 +261,13 @@ public class ContratasObraServiceImpl implements ContratasObraService {
 					for (CierreEconomicoObraDTO cierreEconomicoObra : lstCierreEconomicoObraDTO) {
 						List<ContratasObraDTO> lstContratasObraDTO = this.findByIdObra(cierreEconomicoObra.getIdObra());
 						for (ContratasObraDTO bean : lstContratasObraDTO) {
-							if (bean.getIdTGEstadoCierreEconomico().compareTo(DSiteCoreConstants.ESTADO_CIERRE_ECONOMICO_FINALIZADO) != 0) {
-								estado = false;
-								break;
-							}
+							if (bean.getIdContratasObra().compareTo(contratasObraDTO.getIdContratasObra()) != 0)
+								if (bean.getImporteTotalAdelanto() != null && bean.getImporteTotalAdelanto().compareTo(BigDecimal.ZERO) > 0) {
+									if (bean.getIdTGEstadoCierreEconomico().compareTo(DSiteCoreConstants.ESTADO_CIERRE_ECONOMICO_FINALIZADO) != 0) {
+										estado = false;
+										break;
+									}
+								}
 						}
 					}
 					// Si todas las contratas obras estan finalizadas se cierra la obra
@@ -271,6 +276,8 @@ public class ContratasObraServiceImpl implements ContratasObraService {
 						TablaGeneral tablaGeneralEstadoCierreEconomico = new TablaGeneral();
 						tablaGeneralEstadoCierreEconomico.setIdTablaGeneral(DSiteCoreConstants.ESTADO_CIERRE_ECONOMICO_FINALIZADO);
 						cierreEconomico.setTablaGeneralEstadoCierreEconomico(tablaGeneralEstadoCierreEconomico);
+
+						contratasObraEntity.setFechaCECompletado(new Date());
 
 						cierreEconomicoJPARepository.save(cierreEconomico);
 						cierreEconomicoJPARepository.flush();
@@ -288,7 +295,7 @@ public class ContratasObraServiceImpl implements ContratasObraService {
 			switch (contratasObraDTO.getIdTGEstadoLiquidacion()) {
 			case DSiteCoreConstants.ESTADO_LIQUIDACION_CONTRATA_LIQUIDADO:
 				/*
-				 * Se validan los topes abjudicados de la contrata
+				 * Se validan los topes adjudicados de la contrata
 				 */
 				ContratasObra contratasObra = contratasObraJPARepository.findOne(contratasObraDTO.getIdContratasObra());
 				ContratasObraDTO dto = new ContratasObraDTO();
@@ -296,6 +303,7 @@ public class ContratasObraServiceImpl implements ContratasObraService {
 				dto.setImporteFinal(contratasObraDTO.getImporteFinal());
 				dto.setIdContrata(contratasObra.getContrata().getIdContrata());
 				dto.setIdObra(contratasObra.getObra().getIdObra());
+				dto.setIdContratasObra(contratasObraDTO.getIdContratasObra());
 				dto.setIdTGEstadoLiquidacion(DSiteCoreConstants.ESTADO_LIQUIDACION_CONTRATA_LIQUIDADO);
 				notificacionDTO = validarImporteAbjudicado(dto);
 				if (ValidateUtil.isNotEmpty(notificacionDTO)) {
@@ -383,7 +391,7 @@ public class ContratasObraServiceImpl implements ContratasObraService {
 		concursoContrataDTO.setIdContrata(contratasObraDTO.getIdContrata());
 		List<ConcursoContrataDTO> lstConcursoContrataDTO = concursoContrataJDBCRepository.findConcursoContrataByCriteria(concursoContrataDTO);
 
-		BigDecimal importeAbjudicado = BigDecimal.ZERO;
+		BigDecimal importeAdjudicado = BigDecimal.ZERO;
 		BigDecimal sumaMontoContrata = BigDecimal.ZERO;
 		if (contratasObraDTO.getIdTGEstadoLiquidacion() != null
 				&& contratasObraDTO.getIdTGEstadoLiquidacion().compareTo(DSiteCoreConstants.ESTADO_LIQUIDACION_CONTRATA_LIQUIDADO) == 0)
@@ -393,25 +401,27 @@ public class ContratasObraServiceImpl implements ContratasObraService {
 		if (lstConcursoContrataDTO.size() > 0) {
 			ConcursoContrataDTO concursoContrataDTOIA = lstConcursoContrataDTO.get(0);
 			if (ValidateUtil.isNotEmpty(concursoContrataDTOIA.getImporteAbjudicado())) {
-				importeAbjudicado = lstConcursoContrataDTO.get(0).getImporteAbjudicado();
+				importeAdjudicado = lstConcursoContrataDTO.get(0).getImporteAbjudicado();
 				ContratasObraDTO contratasObraDTOFAC = new ContratasObraDTO();
 				contratasObraDTOFAC.setIdContrata(concursoContrataDTOIA.getIdContrata());
 				contratasObraDTOFAC.setIdTGAreaObra(obraEntity.getTablaGeneralArea().getIdTablaGeneral());
 				List<ContratasObraDTO> lstContratasObraDTO = contratasObraJDBCRepository.findAllContratasObra(contratasObraDTOFAC);
 
-				for (ContratasObraDTO dto : lstContratasObraDTO) {
-					if (dto.getIdTGEstadoLiquidacion() != null
-							&& dto.getIdTGEstadoLiquidacion().compareTo(DSiteCoreConstants.ESTADO_LIQUIDACION_CONTRATA_LIQUIDADO) == 0)
-						sumaMontoContrata = sumaMontoContrata.add(dto.getImporteFinal());
-					else
-						sumaMontoContrata = sumaMontoContrata.add(dto.getImportePresupuestoObra());
+				for (ContratasObraDTO contrataObraEntity : lstContratasObraDTO) {
+					if (contrataObraEntity.getIdContratasObra() != contratasObraDTO.getIdContratasObra()) {
+						if (contrataObraEntity.getIdTGEstadoLiquidacion() != null
+								&& contrataObraEntity.getIdTGEstadoLiquidacion().compareTo(DSiteCoreConstants.ESTADO_LIQUIDACION_CONTRATA_LIQUIDADO) == 0)
+							sumaMontoContrata = sumaMontoContrata.add(contrataObraEntity.getImporteFinal());
+						else
+							sumaMontoContrata = sumaMontoContrata.add(contrataObraEntity.getImportePresupuestoObra());
+					}
 				}
-				if (sumaMontoContrata.compareTo(importeAbjudicado) > 0) {
+				if (sumaMontoContrata.compareTo(importeAdjudicado) > 0) {
 					NotificacionDTO notificacionDTO = new NotificacionDTO();
 					notificacionDTO.setCodigo(null);
 					notificacionDTO.setSeverity("warning");
 					notificacionDTO.setSummary("DSite warning");
-					notificacionDTO.setDetail("El monto total presupuestado de la contrata es mayor al abjudicado ");
+					notificacionDTO.setDetail("El monto total presupuestado de la contrata es mayor al adjudicado ");
 					return notificacionDTO;
 				}
 			}
@@ -421,7 +431,7 @@ public class ContratasObraServiceImpl implements ContratasObraService {
 			notificacionDTO.setCodigo(null);
 			notificacionDTO.setSeverity("warning");
 			notificacionDTO.setSummary("DSite warning");
-			notificacionDTO.setDetail("No existe importe abjudicado para la contrata ");
+			notificacionDTO.setDetail("No existe importe adjudicado para la contrata ");
 			return notificacionDTO;
 		}
 		return null;
