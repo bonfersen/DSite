@@ -105,7 +105,7 @@ spring:
 
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: 'jdbc:mysql://10.0.0.5:3306/dsitetest?autoReconnect=true&useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=America/Lima'
+    url: 'jdbc:mysql://10.0.0.5:3306/dsiteprod?autoReconnect=true&useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=America/Lima'
     username: huiracocha
     password: w0k950Yx005BEBb
     tomcat:
@@ -148,3 +148,66 @@ spring:
             
 server:
   port: 8080
+  
+---
+
+spring:
+  profiles: test
+  tokenExpirationTime: 240
+  refreshTokenExpTime: 1440
+  tokenIssuer: http://www.tss.com.pe
+  tokenSigningKey: xm8EV6Hy5RMFK4EEACIDAwQus  
+
+  mail:
+    host: smtp.gmail.com
+    port: 465
+    sender: admin@dsite.pe
+    username: admin@dsite.pe
+    password: admin
+    fromIP: dsite.pe
+
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: 'jdbc:mysql://10.0.0.6:3306/dsitetest?autoReconnect=true&useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=America/Lima'
+    username: huiracocha
+    password: w0k950Yx005BEBb
+    tomcat:
+      initial-size: 2
+      max-idle: 1
+      min-idle: 0
+      max-active: 50
+      
+      test-while-idle: true
+      test-on-borrow: true
+      validation-query: SELECT 1
+      
+      time-between-eviction-runs-millis: 5000
+      min-evictable-idle-time-millis: 60000
+      
+      num-tests-per-eviction-run: 10
+      remove-abandoned: true
+      remove-abandoned-timeout: 180
+      defaultReadOnly: false
+      
+  jpa:    
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    show-sql: true
+    
+    hibernate:
+      ddl-auto: none
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        
+    properties:
+      hibernate:
+          order_inserts: true
+          order_updates: true
+          ejb:
+            interceptor: com.dsite.jpa.DsiteEntityInterceptorImpl
+          jdbc:
+            batch_size: 400
+            batch_versioned_data: true
+            
+server:
+  port: 8080  
