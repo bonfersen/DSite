@@ -57,6 +57,8 @@ public class PresupuestoObra implements Serializable {
 	private Date fechaOfertado;
 
 	private BigDecimal importePresupuestoLiquidacion;
+	
+	private BigDecimal importeTipoCambio;
 
 	private BigDecimal importePresupuestoOferta;
 
@@ -130,6 +132,14 @@ public class PresupuestoObra implements Serializable {
 	private BigDecimal importeVariacionLiquidacion;
 
 	public PresupuestoObra() {
+	}
+
+	public BigDecimal getImporteTipoCambio() {
+		return importeTipoCambio;
+	}
+
+	public void setImporteTipoCambio(BigDecimal importeTipoCambio) {
+		this.importeTipoCambio = importeTipoCambio;
 	}
 
 	public int getIdPresupuestoObra() {

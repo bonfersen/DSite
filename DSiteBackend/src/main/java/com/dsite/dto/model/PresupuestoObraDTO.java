@@ -27,6 +27,8 @@ public class PresupuestoObraDTO {
 	private BigDecimal importePresupuestoLiquidacion;
 
 	private BigDecimal importePresupuestoOferta;
+	
+	private BigDecimal importeTipoCambio;
 
 	private String observacionFinanzas;
 
@@ -62,6 +64,14 @@ public class PresupuestoObraDTO {
 	
 	private BigDecimal importeVariacionLiquidacion;
 
+	public BigDecimal getImporteTipoCambio() {
+		return importeTipoCambio;
+	}
+
+	public void setImporteTipoCambio(BigDecimal importeTipoCambio) {
+		this.importeTipoCambio = importeTipoCambio;
+	}
+	
 	public int getIdPresupuestoObra() {
 		return idPresupuestoObra;
 	}
