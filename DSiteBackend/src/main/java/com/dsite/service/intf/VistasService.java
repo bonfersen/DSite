@@ -130,6 +130,8 @@ public interface VistasService {
 	List<VwBandejaCrm> findBandejaCrm(VwBandejaCrmFilter vwBandejaCrmFilter);
 
 	List<VwCrm> findCrm(VwCrmFilter vwCrmFilter);
+	
+	List<VwCrm> findCrmExcel(VwCrmFilter vwCrmFilter);
 
 	List<VwBandejaSolicitudCajaChica> findBandejaSolicitudCajaChica(VwBandejaSolicitudCajaChicaFilter vwBandejaSolicitudCajaChicaFilter);
 

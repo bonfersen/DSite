@@ -641,6 +641,33 @@ public class VistasJDBCRepository implements VistasRepository {
 	}
 
 	@Override
+	public List<VwCrm> findCrmExcel(VwCrmFilter vwCrmFilter) {
+		WhereParams params = new WhereParams();
+		String sql = findCrmExcelQuery(vwCrmFilter, params);
+
+		return jdbcTemplate.query(sql.toString(), params.getParams(), new BeanPropertyRowMapper<VwCrm>(VwCrm.class));
+	}
+
+	private String findCrmExcelQuery(VwCrmFilter vwCrmFilter, WhereParams params) {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT ");
+		sql.append(" v.codigoDSite, v.idObra, v.idPresupuestoObra, v.correlativoOfertaLiquidacion, v.idTGArea, v.area, v.idTGProyecto, ");
+		sql.append(" v.proyecto, v.idTGGestorProyecto, v.gestorProyecto, v.idTGGerenteProyecto, v.gerenteProyecto, v.OTAutogenerada, ");
+		sql.append(" v.departamento, v.idTGTipoGasto, v.tipoGasto, v.fechaCreacion, v.nombreReal, v.numeroOrdenCompra, v.idTGEstadoFinanzas, ");
+		sql.append(" v.estadoFinanzas, v.fechaLiquidacion, v.importePresupuestoOferta, v.importePresupuestoLiquidacion, v.idEnvioOferta, ");
+		sql.append(" v.importeOferta, v.idEnvioLiquidacion, v.importeLiquidacion, v.importeVarMas, v.importeVarMenos, v.idEnvioActaCampo, ");
+		sql.append(" v.actaCampo, v.fechaActaCampo, v.idEnvioActaFinal, v.actaFinal, v.fechaActaFinal, v.estadoActaAdministracion, ");
+		sql.append(" v.importeOrdenCompra, v.cetificado, v.facturaDSite, v.importeOrdenCompraComplementaria, v.numeroOrdenCompraComplementaria, ");
+		sql.append(" v.cetificadoComplementaria, v.facturaDSiteComplementaria, v.notaCredito, v.idTGEstadoObra, v.estadoObra, ");
+		sql.append(" v.estadoActaCampo, v.estadoActaFinal, v.importeVariacionOferta, v.importeVariacionLiquidacion ");
+		sql.append(" FROM vwCrmExcel v ");
+		sql.append(" WHERE 1=1");
+		sql.append(params.filterDateFrom_LIM(" AND v.fechaCreacion ", vwCrmFilter.getFechaCreacionInicio()));
+		sql.append(params.filterDateTo_LIM(" AND v.fechaCreacion ", vwCrmFilter.getFechaCreacionFin()));
+		return sql.toString();
+	}
+
+	@Override
 	public List<VwBandejaSolicitudCajaChica> findBandejaSolicitudCajaChica(VwBandejaSolicitudCajaChicaFilter vwBandejaSolicitudCajaChicaFilter) {
 		WhereParams params = new WhereParams();
 		String sql = findBandejaSolicitudCajaChicaQuery(vwBandejaSolicitudCajaChicaFilter, params);
@@ -678,19 +705,21 @@ public class VistasJDBCRepository implements VistasRepository {
 		sql.append(" FROM vwBandejaDepositoCajaChica v ");
 		sql.append(" WHERE 1=1");
 
-		for (String token : lstEstadosCajaChica) {
-			if (lstEstadosCajaChica.length == 2)
-				operadorLogico = " OR ";
-			else
-				operadorLogico = " AND ";
-			if (token.equals(DSiteCoreConstants.ESTADO_CAJA_CHICA_APROBADO)) {
-				sql.append(params.filterDateFrom_LIM(" AND (v.fechaAprobacion ", vwBandejaDepositoCajaChicaFilter.getFechaPagoInicio()));
-				sql.append(params.filterDateTo_LIM(" AND v.fechaAprobacion ", vwBandejaDepositoCajaChicaFilter.getFechaPagoFin()) + ")" );
-			}
-			if (token.equals(DSiteCoreConstants.ESTADO_CAJA_CHICA_DEPOSITADO)) {
+		if (ValidateUtil.isNotEmpty(lstEstadosCajaChica)) {
+			for (String token : lstEstadosCajaChica) {
+				if (lstEstadosCajaChica.length == 2)
+					operadorLogico = " OR ";
+				else
+					operadorLogico = " AND ";
+				if (token.equals(DSiteCoreConstants.ESTADO_CAJA_CHICA_APROBADO)) {
+					sql.append(params.filterDateFrom_LIM(" AND (v.fechaAprobacion ", vwBandejaDepositoCajaChicaFilter.getFechaPagoInicio()));
+					sql.append(params.filterDateTo_LIM(" AND v.fechaAprobacion ", vwBandejaDepositoCajaChicaFilter.getFechaPagoFin()) + ")");
+				}
+				if (token.equals(DSiteCoreConstants.ESTADO_CAJA_CHICA_DEPOSITADO)) {
 
-				sql.append(params.filterDateFrom_LIM(" " + operadorLogico + " (v.fechaPago ", vwBandejaDepositoCajaChicaFilter.getFechaPagoInicio()));
-				sql.append(params.filterDateTo_LIM(" AND v.fechaPago ", vwBandejaDepositoCajaChicaFilter.getFechaPagoFin()) + ")" );
+					sql.append(params.filterDateFrom_LIM(" " + operadorLogico + " (v.fechaPago ", vwBandejaDepositoCajaChicaFilter.getFechaPagoInicio()));
+					sql.append(params.filterDateTo_LIM(" AND v.fechaPago ", vwBandejaDepositoCajaChicaFilter.getFechaPagoFin()) + ")");
+				}
 			}
 		}
 		return sql.toString();

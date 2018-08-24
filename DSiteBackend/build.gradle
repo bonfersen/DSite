@@ -56,8 +56,9 @@ dependencies {
 	compile("org.springframework.boot:spring-boot-starter-thymeleaf") // Motor de plantillas de XML/XHTML/HTML5
 	//compile('org.springframework.boot:spring-boot-starter-security') // Seguridad al servicio
 	
-	compile ('mysql:mysql-connector-java:6.0.6')
-	compile group: 'joda-time', name: 'joda-time', version: '2.3'
+	compile('org.apache.poi:poi-ooxml:3.10.1') // Excel
+	compile ('mysql:mysql-connector-java:6.0.6') // Conector BD
+	compile group: 'joda-time', name: 'joda-time', version: '2.3' // Formato de Fechas
 	
 	compileOnly 'org.projectlombok:lombok:1.16.20'	
 	compile('net.sf.dozer:dozer:5.5.1')

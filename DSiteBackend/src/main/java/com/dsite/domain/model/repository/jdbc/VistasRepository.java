@@ -131,6 +131,8 @@ public interface VistasRepository {
 	
 	List<VwCrm> findCrm(VwCrmFilter vwCrmFilter);
 	
+	List<VwCrm> findCrmExcel(VwCrmFilter vwCrmFilter);
+	
 	List<VwBandejaSolicitudCajaChica> findBandejaSolicitudCajaChica(VwBandejaSolicitudCajaChicaFilter vwBandejaSolicitudCajaChicaFilter);
 	
 	List<VwBandejaDepositoCajaChica> findBandejaDepositoCajaChica(VwBandejaDepositoCajaChicaFilter vwBandejaDepositoCajaChicaFilter);

@@ -237,6 +237,12 @@ public class VistasServiceImpl implements VistasService {
 		List<VwCrm> vwCrms = vistasRepository.findCrm(vwCrmFilter);
 		return vwCrms;
 	}
+	
+	@Override
+	public List<VwCrm> findCrmExcel(VwCrmFilter vwCrmFilter) {
+		List<VwCrm> vwCrms = vistasRepository.findCrmExcel(vwCrmFilter);
+		return vwCrms;
+	}
 
 	@Override
 	public List<VwBandejaSolicitudCajaChica> findBandejaSolicitudCajaChica(VwBandejaSolicitudCajaChicaFilter vwBandejaSolicitudCajaChicaFilter) {
