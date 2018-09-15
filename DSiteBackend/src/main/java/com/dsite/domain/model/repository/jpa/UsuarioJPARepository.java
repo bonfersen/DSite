@@ -13,4 +13,7 @@ public interface UsuarioJPARepository extends CrudRepository<Usuario, Integer>, 
 
 	@Query("SELECT u FROM Usuario u WHERE u.cuentaUsuario = :cuentaUsuario and u.password = :password ")
 	Usuario loginUsuario(@Param("cuentaUsuario") String cuentaUsuario, @Param("password") String password);
+	
+	@Query("SELECT u FROM Usuario u WHERE u.cuentaUsuario = :cuentaUsuario")
+	Usuario getUsuarioByCuenta(@Param("cuentaUsuario") String cuentaUsuario);
 }

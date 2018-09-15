@@ -12,7 +12,14 @@ public class VwPagoContrata implements Serializable {
 	private String contrata;
     private BigDecimal importeFinal;
     private String tipoTrabajo;
+    private String tipoMoneda;
     
+	public String getTipoMoneda() {
+		return tipoMoneda;
+	}
+	public void setTipoMoneda(String tipoMoneda) {
+		this.tipoMoneda = tipoMoneda;
+	}
 	public Integer getIdContrata() {
 		return idContrata;
 	}

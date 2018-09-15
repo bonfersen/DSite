@@ -47,6 +47,9 @@ import com.dsite.domain.model.views.VwListaActasContrata;
 import com.dsite.domain.model.views.VwListaCajaChica;
 import com.dsite.domain.model.views.VwListaContratasAsignada;
 import com.dsite.domain.model.views.VwListaPagosContrata;
+import com.dsite.domain.model.views.VwMantenimientoContrata;
+import com.dsite.domain.model.views.VwMantenimientoTablaGeneral;
+import com.dsite.domain.model.views.VwMantenimientoUsuario;
 import com.dsite.domain.model.views.VwOfertaCustomerService;
 import com.dsite.domain.model.views.VwPagoContrata;
 import com.dsite.domain.model.views.VwPanelContratas;
@@ -85,6 +88,9 @@ import com.dsite.dto.model.views.VwListaActasContrataFilter;
 import com.dsite.dto.model.views.VwListaCajaChicaFilter;
 import com.dsite.dto.model.views.VwListaContratasAsignadaFilter;
 import com.dsite.dto.model.views.VwListaPagosContrataFilter;
+import com.dsite.dto.model.views.VwMantenimientoContrataFilter;
+import com.dsite.dto.model.views.VwMantenimientoTablaGeneralFilter;
+import com.dsite.dto.model.views.VwMantenimientoUsuarioFilter;
 import com.dsite.dto.model.views.VwOfertaCustomerServiceFilter;
 import com.dsite.dto.model.views.VwPagoContrataFilter;
 import com.dsite.dto.model.views.VwRendicionCajaChicaFilter;
@@ -679,6 +685,36 @@ public class VistasController {
 		List<VwBandejaSolicitudRendicion> result;
 		VwBandejaSolicitudRendicionFilter filter = null;
 		result = vistasService.findBandejaSolicitudRendicion(filter);
+		if (result == null)
+			result = new ArrayList<>();
+
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/findMantenimientoContrata", method = RequestMethod.POST)
+	public @ResponseBody ResponseEntity<List<VwMantenimientoContrata>> findMantenimientoContrata(@RequestBody VwMantenimientoContrataFilter filter) {
+		List<VwMantenimientoContrata> result;
+		result = vistasService.findMantenimientoContrata(filter);
+		if (result == null)
+			result = new ArrayList<>();
+
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/findMantenimientoUsuario", method = RequestMethod.POST)
+	public @ResponseBody ResponseEntity<List<VwMantenimientoUsuario>> findMantenimientoUsuario(@RequestBody VwMantenimientoUsuarioFilter filter) {
+		List<VwMantenimientoUsuario> result;
+		result = vistasService.findMantenimientoUsuario(filter);
+		if (result == null)
+			result = new ArrayList<>();
+
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/findMantenimientoTablaGeneral", method = RequestMethod.POST)
+	public @ResponseBody ResponseEntity<List<VwMantenimientoTablaGeneral>> findMantenimientoTablaGeneral(@RequestBody VwMantenimientoTablaGeneralFilter filter) {
+		List<VwMantenimientoTablaGeneral> result;
+		result = vistasService.findMantenimientoTablaGeneral(filter);
 		if (result == null)
 			result = new ArrayList<>();
 

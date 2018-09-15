@@ -6,6 +6,8 @@ import java.util.stream.Stream;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dsite.dto.model.NotificacionDTO;
+
 public interface StorageService {
 
     void init() throws Exception;
@@ -20,4 +22,5 @@ public interface StorageService {
 
     void deleteAll();
 
+    NotificacionDTO deleteFile(Integer id);
 }

@@ -57,7 +57,8 @@ public class ContratasObraJDBCRepository implements ContratasObraRepository {
 
 	private String findAllContratasObraQuery(ContratasObraDTO dto, WhereParams params) {
 		StringBuilder sql = new StringBuilder();
-		sql.append(" SELECT  co.idContratasObra, co.idContrata, co.idObra, co.importePresupuestoObra, co.importeFinal, co.idTGEstadoLiquidacion ");
+		sql.append(" SELECT  co.idContratasObra, co.idContrata, co.idObra, co.importePresupuestoObra, co.importeFinal, co.idTGEstadoLiquidacion, ");
+		sql.append(" co.importeTipoCambio ");
 		sql.append(" FROM contratasObra co ");
 		sql.append(" inner join obra o on o.idObra= co.idObra ");
 		sql.append(" where o.idTGEstadoObra != 'ESOB003' and co.idContrata = ").append(dto.getIdContrata());

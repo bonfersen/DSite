@@ -7,4 +7,6 @@ import com.dsite.dto.model.EmpleadoDTO;
 interface EmpleadoRepository {
 
 	List<EmpleadoDTO> findEmpleadoByCriteria(EmpleadoDTO empleadoDTO);
+	
+	List<EmpleadoDTO> loginEmpleado(EmpleadoDTO dto);
 }

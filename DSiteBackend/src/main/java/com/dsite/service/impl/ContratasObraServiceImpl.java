@@ -303,6 +303,7 @@ public class ContratasObraServiceImpl implements ContratasObraService {
 				dto.setImporteFinal(contratasObraDTO.getImporteFinal());
 				dto.setIdContrata(contratasObra.getContrata().getIdContrata());
 				dto.setIdObra(contratasObra.getObra().getIdObra());
+				dto.setImporteTipoCambio(contratasObra.getImporteTipoCambio());
 				dto.setIdContratasObra(contratasObraDTO.getIdContratasObra());
 				dto.setIdTGEstadoLiquidacion(DSiteCoreConstants.ESTADO_LIQUIDACION_CONTRATA_LIQUIDADO);
 				notificacionDTO = validarImporteAbjudicado(dto);
@@ -343,8 +344,11 @@ public class ContratasObraServiceImpl implements ContratasObraService {
 			BigDecimal importeTotalPresupuestadoContrata = BigDecimal.ZERO;
 
 			for (ContratasObraDTO dto : lstContratasObraDTO) {
-				if (ValidateUtil.isNotEmpty(dto.getImporteFinal()))
+				if (ValidateUtil.isNotEmpty(dto.getImporteFinal())) {
+					//BigDecimal importeFinal = contratasObraEntity.getImporteTipoCambio().multiply(dto.getImporteFinal());
+					//importeTotalPresupuestadoContrata = importeTotalPresupuestadoContrata.add(importeFinal);
 					importeTotalPresupuestadoContrata = importeTotalPresupuestadoContrata.add(dto.getImporteFinal());
+				}
 			}
 			Obra obra = obraJPARepository.findOne(contratasObraEntity.getObra().getIdObra());
 			obra.setImporteTotalPresupuestadoContrata(importeTotalPresupuestadoContrata);
@@ -383,6 +387,11 @@ public class ContratasObraServiceImpl implements ContratasObraService {
 		return notificacionDTO;
 	}
 
+	/**
+	 * Validacion para que una contrata asignada a cualquier obra no exceda el monto abjudicado tanto en la liquidacion y el presupuesto
+	 * @param contratasObraDTO
+	 * @return
+	 */
 	NotificacionDTO validarImporteAbjudicado(ContratasObraDTO contratasObraDTO) {
 		Obra obraEntity = obraJPARepository.findOne(contratasObraDTO.getIdObra());
 		ConcursoContrataDTO concursoContrataDTO = new ConcursoContrataDTO();
@@ -395,9 +404,9 @@ public class ContratasObraServiceImpl implements ContratasObraService {
 		BigDecimal sumaMontoContrata = BigDecimal.ZERO;
 		if (contratasObraDTO.getIdTGEstadoLiquidacion() != null
 				&& contratasObraDTO.getIdTGEstadoLiquidacion().compareTo(DSiteCoreConstants.ESTADO_LIQUIDACION_CONTRATA_LIQUIDADO) == 0)
-			sumaMontoContrata = contratasObraDTO.getImporteFinal();
+			sumaMontoContrata = contratasObraDTO.getImporteFinal().multiply(contratasObraDTO.getImporteTipoCambio());
 		else
-			sumaMontoContrata = contratasObraDTO.getImportePresupuestoObra();
+			sumaMontoContrata = contratasObraDTO.getImportePresupuestoObra().multiply(contratasObraDTO.getImporteTipoCambio());
 		if (lstConcursoContrataDTO.size() > 0) {
 			ConcursoContrataDTO concursoContrataDTOIA = lstConcursoContrataDTO.get(0);
 			if (ValidateUtil.isNotEmpty(concursoContrataDTOIA.getImporteAbjudicado())) {
@@ -411,9 +420,9 @@ public class ContratasObraServiceImpl implements ContratasObraService {
 					if (contrataObraEntity.getIdContratasObra() != contratasObraDTO.getIdContratasObra()) {
 						if (contrataObraEntity.getIdTGEstadoLiquidacion() != null
 								&& contrataObraEntity.getIdTGEstadoLiquidacion().compareTo(DSiteCoreConstants.ESTADO_LIQUIDACION_CONTRATA_LIQUIDADO) == 0)
-							sumaMontoContrata = sumaMontoContrata.add(contrataObraEntity.getImporteFinal());
+							sumaMontoContrata = sumaMontoContrata.add(contrataObraEntity.getImporteFinal().multiply(contrataObraEntity.getImporteTipoCambio()));
 						else
-							sumaMontoContrata = sumaMontoContrata.add(contrataObraEntity.getImportePresupuestoObra());
+							sumaMontoContrata = sumaMontoContrata.add(contrataObraEntity.getImportePresupuestoObra().multiply(contrataObraEntity.getImporteTipoCambio()));
 					}
 				}
 				if (sumaMontoContrata.compareTo(importeAdjudicado) > 0) {

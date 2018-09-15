@@ -13,7 +13,7 @@ import com.dsite.domain.model.entities.TablaGeneral;
 @Repository
 public interface TablaGeneralJPARepository extends CrudRepository<TablaGeneral, String>, JpaRepository<TablaGeneral, String> {
 
-	@Query("SELECT t FROM TablaGeneral t WHERE t.categoria LIKE :categoria")
+	@Query("SELECT t FROM TablaGeneral t WHERE t.categoria LIKE :categoria and t.activo = '1'")
     List<TablaGeneral> findByCategoria(@Param("categoria") String categoria);
 	
 	@Query("SELECT t FROM TablaGeneral t WHERE t.categoria = :categoria and  t.idTablaGeneral = :idTablaGeneral")

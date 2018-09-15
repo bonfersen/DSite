@@ -35,11 +35,35 @@ public class EmpleadoJDBCRepository implements EmpleadoRepository {
 		sql.append(" SELECT ");		
 		sql.append(" e.idEmpleado, e.idTGTipoDocumento, e.numeroDocumento, e.nombre, e.apellidoPaterno, e.apellidoMaterno, e.idCargo, ");
 		sql.append(" e.responsableObra, e.activo, e.idUsuario, e.idTGNivelUsuario, e.fechaCreacion, e.usuarioCreacion, e.fechaModificacion, ");
-		sql.append(" e.usuarioModificacion ");
+		sql.append(" e.usuarioModificacion, e.idContrata, u.idTGRol ");
 		sql.append(" FROM empleado e ");
-		sql.append(" WHERE 1=1");
+		sql.append(" inner join usuario u on e.idUsuario = u.idUsuario ");
+		sql.append(" WHERE e.idTGTipoDocumento = 'TIDO001' and u.idTGRol != 'ROLE002' and e.activo = '1' ");
 		if (ValidateUtil.isNotEmpty(dto.getIdUsuario()))
 			sql.append(params.filter(" AND e.idUsuario = :idUsuario ", dto.getIdUsuario()));
+		if (ValidateUtil.isNotEmpty(dto.getResponsableObra()))
+			sql.append(params.filter(" AND e.responsableObra = :responsableObra ", dto.getResponsableObra()));
+		return sql.toString();
+	}
+	
+	@Override
+	public List<EmpleadoDTO> loginEmpleado(EmpleadoDTO dto) {
+		WhereParams params = new WhereParams();
+        String sql = loginEmpleadoQuery(dto, params);
+
+        return jdbcTemplate.query(sql.toString(),
+                params.getParams(), new BeanPropertyRowMapper<EmpleadoDTO>(EmpleadoDTO.class));
+	}
+	
+	private String loginEmpleadoQuery(EmpleadoDTO dto, WhereParams params) {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT ");		
+		sql.append(" e.idEmpleado, e.idTGTipoDocumento, e.numeroDocumento, e.nombre, e.apellidoPaterno, e.apellidoMaterno, e.idCargo, ");
+		sql.append(" e.responsableObra, e.activo, e.idUsuario, e.idTGNivelUsuario, e.fechaCreacion, e.usuarioCreacion, e.fechaModificacion, ");
+		sql.append(" e.usuarioModificacion, e.idContrata, u.idTGRol ");
+		sql.append(" FROM empleado e ");
+		sql.append(" inner join usuario u on e.idUsuario = u.idUsuario ");
+		sql.append(params.filter(" AND e.idUsuario = :idUsuario ", dto.getIdUsuario()));
 		return sql.toString();
 	}
 }

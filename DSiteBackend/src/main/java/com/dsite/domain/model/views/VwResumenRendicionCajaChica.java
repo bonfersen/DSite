@@ -18,7 +18,14 @@ public class VwResumenRendicionCajaChica implements Serializable {
     private String codigoRendicion;
     private String idTGEstado;
     private String idTGEstadoRendicion;
+    private String empleadoSustentador;
     
+	public String getEmpleadoSustentador() {
+		return empleadoSustentador;
+	}
+	public void setEmpleadoSustentador(String empleadoSustentador) {
+		this.empleadoSustentador = empleadoSustentador;
+	}
 	public BigDecimal getImporteAbonoCaja() {
 		return importeAbonoCaja;
 	}

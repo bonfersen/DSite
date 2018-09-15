@@ -233,7 +233,7 @@ public class PagosContrataServiceImpl implements PagosContrataService {
 					contratasObraJPARepository.flush();
 				}
 
-				pagosContrataEntity.setFechaPago(new Date());
+				//pagosContrataEntity.setFechaPago(new Date());
 				break;
 			default:
 				break;

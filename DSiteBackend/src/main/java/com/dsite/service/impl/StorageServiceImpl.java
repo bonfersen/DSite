@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.dsite.config.StorageProperties;
 import com.dsite.constants.DSiteCoreConstants;
 import com.dsite.dto.model.DocumentosAdjuntoDTO;
+import com.dsite.dto.model.NotificacionDTO;
 import com.dsite.exception.StorageException;
 import com.dsite.exception.StorageFileNotFoundException;
 import com.dsite.service.intf.DocumentosAdjuntoService;
@@ -136,5 +137,25 @@ public class StorageServiceImpl implements StorageService {
 		catch (IOException e) {
 			throw new StorageException("Could not initialize storage", e);
 		}
+	}
+
+	@Override
+	public NotificacionDTO deleteFile(Integer id) {
+		NotificacionDTO notificacionDTO = new NotificacionDTO();
+		try {
+			documentosAdjuntoService.deleteDocumentosAdjuntoById(id);
+			
+			notificacionDTO.setCodigo(null);
+			notificacionDTO.setSeverity("success");
+			notificacionDTO.setSummary("DSite success");
+			notificacionDTO.setDetail("Se elimino el documento: " + id);
+		}
+		catch (Exception e) {
+			notificacionDTO.setCodigo(null);
+			notificacionDTO.setSeverity("warning");
+			notificacionDTO.setSummary("DSite warning");
+			notificacionDTO.setDetail(e.getCause().getCause().getMessage());
+		}
+		return notificacionDTO;
 	}
 }

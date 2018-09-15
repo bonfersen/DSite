@@ -3,7 +3,6 @@ package com.dsite.rest;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.dsite.dto.model.EmpleadoDTO;
+import com.dsite.dto.model.NotificacionDTO;
 import com.dsite.service.intf.EmpleadoService;
 import com.dsite.util.ValidateUtil;
 
@@ -54,47 +54,16 @@ public class EmpleadoController {
 	}
 
 	@RequestMapping(value = "/save/", method = RequestMethod.POST)
-	public ResponseEntity<Void> saveEmpleado(@RequestBody EmpleadoDTO dto, UriComponentsBuilder ucBuilder) {
-		System.out.println("Creando Empleado " + dto.getNombre());
+	public ResponseEntity<NotificacionDTO> saveEmpleado(@RequestBody EmpleadoDTO dto, UriComponentsBuilder ucBuilder) {
+		NotificacionDTO notificacion = null;
 
-		if (empleadoService.isEmpleadoExist(dto)) {
-			System.out.println("La empleado de nombre " + dto.getNombre() + " ya existe");
-			return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+		if (ValidateUtil.isEmpty(dto.getIdEmpleado())) {
+			notificacion = empleadoService.createEmpleado(dto);
+			return new ResponseEntity<NotificacionDTO>(notificacion, HttpStatus.OK);
 		}
-
-		empleadoService.saveEmpleado(dto);
-		// Delvover el id generado con ucBuilder, exponiendo una URL
-		HttpHeaders headers = new HttpHeaders();
-		headers.setLocation(ucBuilder.path("/save/").buildAndExpand(dto.getIdEmpleado()).toUri());
-		return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
-	}
-
-	@RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<EmpleadoDTO> updateUser(@PathVariable("id") int id, @RequestBody EmpleadoDTO empleadoDTO) {
-		System.out.println("Actualizando Empleado Id " + id);
-
-		// La validacion del empleado debe ir en el service
-		EmpleadoDTO currentEmpleado = empleadoService.findById(id);
-		if (currentEmpleado == null) {
-			System.out.println("El empleado con el id " + id + " no se encuentra");
-			return new ResponseEntity<EmpleadoDTO>(HttpStatus.NOT_FOUND);
+		else {
+			notificacion = empleadoService.updateEmpleado(dto);
+			return new ResponseEntity<NotificacionDTO>(notificacion, HttpStatus.OK);
 		}
-
-		empleadoService.updateEmpleado(empleadoDTO);
-		return new ResponseEntity<EmpleadoDTO>(currentEmpleado, HttpStatus.OK);
-	}
-
-	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<EmpleadoDTO> deleteUser(@PathVariable("id") int id) {
-		System.out.println("Eliminado Empleado con Id " + id);
-
-		EmpleadoDTO dto = empleadoService.findById(id);
-		if (dto == null) {
-			System.out.println("No se puede eliminar. La empleado con " + id + " no se encuentra");
-			return new ResponseEntity<EmpleadoDTO>(HttpStatus.NOT_FOUND);
-		}
-
-		empleadoService.deleteEmpleadoById(id);
-		return new ResponseEntity<EmpleadoDTO>(HttpStatus.NO_CONTENT);
 	}
 }

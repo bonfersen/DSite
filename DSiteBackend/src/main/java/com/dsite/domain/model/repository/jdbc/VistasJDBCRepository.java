@@ -40,12 +40,16 @@ import com.dsite.domain.model.views.VwListaActasContrata;
 import com.dsite.domain.model.views.VwListaCajaChica;
 import com.dsite.domain.model.views.VwListaContratasAsignada;
 import com.dsite.domain.model.views.VwListaPagosContrata;
+import com.dsite.domain.model.views.VwMantenimientoContrata;
+import com.dsite.domain.model.views.VwMantenimientoTablaGeneral;
+import com.dsite.domain.model.views.VwMantenimientoUsuario;
 import com.dsite.domain.model.views.VwOfertaCustomerService;
 import com.dsite.domain.model.views.VwPagoContrata;
 import com.dsite.domain.model.views.VwPanelContratas;
 import com.dsite.domain.model.views.VwRendicionCajaChica;
 import com.dsite.domain.model.views.VwReporteEconomico;
 import com.dsite.domain.model.views.VwReporteEconomicoDetalleContrata;
+import com.dsite.domain.model.views.VwReporteEconomicoExcel;
 import com.dsite.domain.model.views.VwResumenRendicionCajaChica;
 import com.dsite.domain.model.views.VwSeguimientoActaContrata;
 import com.dsite.domain.model.views.VwUbigeo;
@@ -81,11 +85,15 @@ import com.dsite.dto.model.views.VwListaActasContrataFilter;
 import com.dsite.dto.model.views.VwListaCajaChicaFilter;
 import com.dsite.dto.model.views.VwListaContratasAsignadaFilter;
 import com.dsite.dto.model.views.VwListaPagosContrataFilter;
+import com.dsite.dto.model.views.VwMantenimientoContrataFilter;
+import com.dsite.dto.model.views.VwMantenimientoTablaGeneralFilter;
+import com.dsite.dto.model.views.VwMantenimientoUsuarioFilter;
 import com.dsite.dto.model.views.VwOfertaCustomerServiceFilter;
 import com.dsite.dto.model.views.VwPagoContrataFilter;
 import com.dsite.dto.model.views.VwPanelContratasFilter;
 import com.dsite.dto.model.views.VwRendicionCajaChicaFilter;
 import com.dsite.dto.model.views.VwReporteEconomicoDetalleContrataFilter;
+import com.dsite.dto.model.views.VwReporteEconomicoExcelFilter;
 import com.dsite.dto.model.views.VwReporteEconomicoFilter;
 import com.dsite.dto.model.views.VwResumenRendicionCajaChicaFilter;
 import com.dsite.dto.model.views.VwSeguimientoActaContrataFilter;
@@ -488,7 +496,7 @@ public class VistasJDBCRepository implements VistasRepository {
 		sql.append(" SELECT ");
 		sql.append(" v.idObra, v.codigoDSite, v.area, v.contrata, v.tipoTrabajo, v.porcentajeActasAprobadas, v.estadoActaCampo, ");
 		sql.append(" v.estadoActaFinal, v.estadoRptFoto, v.estadoSga, v.idActaCampo, v.idActaFinal, v.idRptFoto, v.idSga, v.idMotivoRechazoActaCampo, ");
-		sql.append(" v.idMotivoRechazoActaFinal, v.idMotivoRechazoRptFoto, v.idMotivoRechazoSga, v.nombreReal ");
+		sql.append(" v.idMotivoRechazoActaFinal, v.idMotivoRechazoRptFoto, v.idMotivoRechazoSga, v.nombreReal, v.idContrata ");
 		sql.append(" FROM vwSeguimientoActaContrata v ");
 		sql.append(" WHERE 1=1");
 		if (ValidateUtil.isNotEmpty(vwSeguimientoActaContrataFilter.getEstadoActaCampo()))
@@ -499,6 +507,8 @@ public class VistasJDBCRepository implements VistasRepository {
 			sql.append(params.filter(" AND v.estadoRptFoto = :estadoRptFoto ", vwSeguimientoActaContrataFilter.getEstadoRptFoto()));
 		if (ValidateUtil.isNotEmpty(vwSeguimientoActaContrataFilter.getEstadoSga()))
 			sql.append(params.filter(" AND v.estadoSga = :estadoSga ", vwSeguimientoActaContrataFilter.getEstadoSga()));
+		if (ValidateUtil.isNotEmpty(vwSeguimientoActaContrataFilter.getIdContrata()))
+			sql.append(params.filter(" AND v.idContrata = :idContrata ", vwSeguimientoActaContrataFilter.getIdContrata()));
 		return sql.toString();
 	}
 
@@ -537,7 +547,7 @@ public class VistasJDBCRepository implements VistasRepository {
 	private String findPagoContrataQuery(VwPagoContrataFilter vwPagoContrataFilter, WhereParams params) {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT ");
-		sql.append(" v.idContrata, v.idObra, v.codigoDSite, v.contrata, v.importeFinal, v.tipoTrabajo ");
+		sql.append(" v.idContrata, v.idObra, v.codigoDSite, v.contrata, v.importeFinal, v.tipoTrabajo, v.tipoMoneda ");
 		sql.append(" FROM vwPagoContrata v ");
 		sql.append(" WHERE 1=1");
 		if (ValidateUtil.isNotEmpty(vwPagoContrataFilter.getCodigoDSite()))
@@ -559,7 +569,7 @@ public class VistasJDBCRepository implements VistasRepository {
 		sql.append(" v.idObra, v.codigoDSite, v.idContratasObra, v.idContrata, v.contrata, v.tipoTrabajo, v.importePresupuestoObra, ");
 		sql.append(" v.importeLiquidadacionObra, v.importeAdicional, v.comentarioImporteAdicional, v.importeDescuentoOperativo, ");
 		sql.append(" v.comentarioDescuentoOperativo, v.importeFinal, v.importePendientePago, v.estadoPagoContrata, v.importeTotalContratas, ");
-		sql.append(" v.importeObra, v.porcentajeCostos, v.importeTotalAdelanto, v.porcentajePagado, v.idTGEstadoLiquidacion ");
+		sql.append(" v.importeObra, v.porcentajeCostos, v.importeTotalAdelanto, v.porcentajePagado, v.idTGEstadoLiquidacion, v.tipoMoneda ");
 		sql.append(" FROM vwLiquidacionContrata v ");
 		sql.append(" WHERE 1=1");
 		if (vwLiquidacionContrataFilter.checkNull())
@@ -1045,7 +1055,7 @@ public class VistasJDBCRepository implements VistasRepository {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT ");
 		sql.append(" v.importeAbonoCaja, v.importeRendidoCaja, v.importeReembolsoCaja, v.importeDescuentoCaja, v.importeAbonoViatico, v.importeRendidoViatico, ");
-		sql.append(" v.importeDescuentoViatico, v.idResumenRendicionCajaChica, v.codigoRendicion, v.idTGEstado, v.idTGEstadoRendicion ");
+		sql.append(" v.importeDescuentoViatico, v.idResumenRendicionCajaChica, v.codigoRendicion, v.idTGEstado, v.idTGEstadoRendicion, v.empleadoSustentador ");
 		sql.append(" FROM vwResumenRendicionCajaChica v ");
 		sql.append(" WHERE 1=1");
 		if (ValidateUtil.isNotEmpty(vwResumenRendicionCajaChicaFilter.getCodigoRendicion()))
@@ -1067,6 +1077,88 @@ public class VistasJDBCRepository implements VistasRepository {
 		sql.append(" v.idResumenRendicionCajaChica, v.codigoRendicion, v.idEmpleadoSustentador, v.empleadoSustentador, v.importeRendido, v.fechaCreacion ");
 		sql.append(" FROM vwBandejaSolicitudRendicion v ");
 		sql.append(" WHERE 1=1");
+		return sql.toString();
+	}
+
+	@Override
+	public List<VwReporteEconomicoExcel> findReporteEconomicoExcel(VwReporteEconomicoExcelFilter vwReporteEconomicoExcelFilter) {
+		WhereParams params = new WhereParams();
+		String sql = findReporteEconomicoExcelQuery(vwReporteEconomicoExcelFilter, params);
+
+		return jdbcTemplate.query(sql.toString(), params.getParams(), new BeanPropertyRowMapper<VwReporteEconomicoExcel>(VwReporteEconomicoExcel.class));
+	}
+
+	private String findReporteEconomicoExcelQuery(VwReporteEconomicoExcelFilter vwReporteEconomicoExcelFilter, WhereParams params) {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT ");
+		sql.append(" v.codigoDSite, v.nombreReal, v.area, v.proyecto, v.gestor, v.departamento, v.asignacion, v.importeIngreso, v.importeIngresoOferta, ");
+		sql.append(" v.facturado, v.actas, v.importeGastos, v.importeRentabilidad, v.porcentajeRentabilidad ");
+		sql.append(" FROM vwReporteEconomicoExcel v ");
+		sql.append(" WHERE 1=1");
+		if (ValidateUtil.isNotEmpty(vwReporteEconomicoExcelFilter.getAnyo()))
+			sql.append(params.filter(" AND year(v.asignacion) = :anyo ", vwReporteEconomicoExcelFilter.getAnyo()));
+		return sql.toString();
+	}
+
+	@Override
+	public List<VwMantenimientoContrata> findMantenimientoContrata(VwMantenimientoContrataFilter vwMantenimientoContrataFilter) {
+		WhereParams params = new WhereParams();
+		String sql = findMantenimientoContrataQuery(vwMantenimientoContrataFilter, params);
+
+		return jdbcTemplate.query(sql.toString(), params.getParams(), new BeanPropertyRowMapper<VwMantenimientoContrata>(VwMantenimientoContrata.class));
+	}
+
+	private String findMantenimientoContrataQuery(VwMantenimientoContrataFilter vwMantenimientoContrataFilter, WhereParams params) {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT ");
+		sql.append(" v.idContrata, v.idTGCategoria, v.categoria, v.nombreCorto, v.razonSocial, v.RUC, v.direccion, v.contacto, v.telefono, ");
+		sql.append(" v.correo, v.activo ");
+		sql.append(" FROM vwMantenimientoContrata v ");
+		sql.append(" WHERE 1=1");
+		if (ValidateUtil.isNotEmpty(vwMantenimientoContrataFilter.getIdContrata()))
+			sql.append(params.filter(" AND v.idContrata = :idContrata ", vwMantenimientoContrataFilter.getIdContrata()));
+		return sql.toString();
+	}
+
+	@Override
+	public List<VwMantenimientoUsuario> findMantenimientoUsuario(VwMantenimientoUsuarioFilter vwMantenimientoUsuarioFilter) {
+		WhereParams params = new WhereParams();
+		String sql = findMantenimientoUsuarioQuery(vwMantenimientoUsuarioFilter, params);
+
+		return jdbcTemplate.query(sql.toString(), params.getParams(), new BeanPropertyRowMapper<VwMantenimientoUsuario>(VwMantenimientoUsuario.class));
+	}
+
+	private String findMantenimientoUsuarioQuery(VwMantenimientoUsuarioFilter vwMantenimientoUsuarioFilter, WhereParams params) {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT ");
+		sql.append(" v.idEmpleado, v.idTGTipoDocumento, v.tipoDocumento, v.numeroDocumento, v.nombre, v.apellidoPaterno, v.apellidoMaterno, v.idCargo, v.cargo, ");
+		sql.append(" v.idArea, v.area, v.idGerencia, v.gerencia, v.responsableObra, v.activo, v.idUsuario, v.cuentaUsuario, v.password, v.activoUsuario, ");
+		sql.append(" v.idTGRol, v.rol, v.idContrata, v.nombreCorto, v.idEmpleadoAreaObra, v.empleadoAreaObra ");
+		sql.append(" FROM vwMantenimientoUsuario v ");
+		sql.append(" WHERE 1=1");
+		if (ValidateUtil.isNotEmpty(vwMantenimientoUsuarioFilter.getIdEmpleado()))
+			sql.append(params.filter(" AND v.idEmpleado = :idEmpleado ", vwMantenimientoUsuarioFilter.getIdEmpleado()));
+		return sql.toString();
+	}
+
+	@Override
+	public List<VwMantenimientoTablaGeneral> findMantenimientoTablaGeneral(VwMantenimientoTablaGeneralFilter vwMantenimientoTablaGeneralFilter) {
+		WhereParams params = new WhereParams();
+		String sql = findMantenimientoTablaGeneralQuery(vwMantenimientoTablaGeneralFilter, params);
+
+		return jdbcTemplate.query(sql.toString(), params.getParams(), new BeanPropertyRowMapper<VwMantenimientoTablaGeneral>(VwMantenimientoTablaGeneral.class));
+	}
+
+	private String findMantenimientoTablaGeneralQuery(VwMantenimientoTablaGeneralFilter vwMantenimientoTablaGeneralFilter, WhereParams params) {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT ");
+		sql.append(" v.idTablaGeneral, v.descripcion, v.categoria, v.activo, v.idTGPadre, v.descripcionPadre ");
+		sql.append(" FROM vwMantenimientoTablaGeneral v ");
+		sql.append(" WHERE 1=1");
+		if (ValidateUtil.isNotEmpty(vwMantenimientoTablaGeneralFilter.getCategoria()))
+			sql.append(params.filter(" AND v.categoria = :categoria ", vwMantenimientoTablaGeneralFilter.getCategoria()));
+		if (ValidateUtil.isNotEmpty(vwMantenimientoTablaGeneralFilter.getIdTablaGeneral()))
+			sql.append(params.filter(" AND v.idTablaGeneral = :idTablaGeneral ", vwMantenimientoTablaGeneralFilter.getIdTablaGeneral()));
 		return sql.toString();
 	}
 }

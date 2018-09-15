@@ -25,7 +25,14 @@ public class VwSeguimientoActaContrata implements Serializable {
     private String idMotivoRechazoRptFoto;
     private String idMotivoRechazoSga;
     private String nombreReal;
+    private Integer idContrata;
     
+	public Integer getIdContrata() {
+		return idContrata;
+	}
+	public void setIdContrata(Integer idContrata) {
+		this.idContrata = idContrata;
+	}
 	public Integer getIdObra() {
 		return idObra;
 	}

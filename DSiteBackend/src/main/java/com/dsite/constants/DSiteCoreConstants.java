@@ -14,6 +14,11 @@ public class DSiteCoreConstants {
 	 * Carpeta de acceso WEB para fotos
 	 */
 	public final static String RUTA_WEB_FOTOS = "/imagenes";
+	
+	/**
+	 * NIVEL_USUARIO_SISTEMA
+	 */
+	public final static String NIVEL_USUARIO_SISTEMA_DEFAULT = "NUSI001";
 
 	/**
 	 * ESTADO_CAJA_CHICA

@@ -20,7 +20,7 @@ public class EmpleadoDTO {
 	private String nombre;
 
 	private String numeroDocumento;
-	
+
 	private String responsableObra;
 
 	private String usuarioCreacion;
@@ -31,19 +31,79 @@ public class EmpleadoDTO {
 
 	private List<CajaChicaObraDTO> cajaChicaObrasEmpleadoBeneficiario;
 
-	private int idCargo;
+	private Integer idCargo;
 
 	private String idTGTipoDocumento;
-	
+
 	private int idUsuario;
 
+	private String idTGNivelUsuario;
+
 	private List<ObraDTO> obras;
-	
+
 	private List<EmpleadoAreaObraDTO> empleadoAreaObras;
-	
+
 	private List<AutorizacionesDTO> autorizaciones;
+
+	private String cuentaUsuario;
 	
+	private String password;
+	
+	private String activoUsuario;
+
+	private String idTGRol;
+	
+	private Integer idContrata;
+
 	public EmpleadoDTO() {
+	}
+
+	public Integer getIdContrata() {
+		return idContrata;
+	}
+
+	public void setIdContrata(Integer idContrata) {
+		this.idContrata = idContrata;
+	}
+
+	public String getCuentaUsuario() {
+		return cuentaUsuario;
+	}
+
+	public void setCuentaUsuario(String cuentaUsuario) {
+		this.cuentaUsuario = cuentaUsuario;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getActivoUsuario() {
+		return activoUsuario;
+	}
+
+	public void setActivoUsuario(String activoUsuario) {
+		this.activoUsuario = activoUsuario;
+	}
+
+	public String getIdTGRol() {
+		return idTGRol;
+	}
+
+	public void setIdTGRol(String idTGRol) {
+		this.idTGRol = idTGRol;
+	}
+
+	public String getIdTGNivelUsuario() {
+		return idTGNivelUsuario;
+	}
+
+	public void setIdTGNivelUsuario(String idTGNivelUsuario) {
+		this.idTGNivelUsuario = idTGNivelUsuario;
 	}
 
 	public int getIdEmpleado() {
@@ -150,14 +210,6 @@ public class EmpleadoDTO {
 		this.cajaChicaObrasEmpleadoBeneficiario = cajaChicaObrasEmpleadoBeneficiario;
 	}
 
-	public int getIdCargo() {
-		return idCargo;
-	}
-
-	public void setIdCargo(int idCargo) {
-		this.idCargo = idCargo;
-	}
-
 	public String getIdTGTipoDocumento() {
 		return idTGTipoDocumento;
 	}
@@ -173,7 +225,7 @@ public class EmpleadoDTO {
 	public void setObras(List<ObraDTO> obras) {
 		this.obras = obras;
 	}
-
+	
 	public List<EmpleadoAreaObraDTO> getEmpleadoAreaObras() {
 		return empleadoAreaObras;
 	}
@@ -196,5 +248,13 @@ public class EmpleadoDTO {
 
 	public void setAutorizaciones(List<AutorizacionesDTO> autorizaciones) {
 		this.autorizaciones = autorizaciones;
+	}
+
+	public Integer getIdCargo() {
+		return idCargo;
+	}
+
+	public void setIdCargo(Integer idCargo) {
+		this.idCargo = idCargo;
 	}
 }

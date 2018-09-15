@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.dsite.dto.model.ContrataDTO;
 import com.dsite.support.WhereParams;
+import com.dsite.util.ValidateUtil;
 
 @Repository
 public class ContrataJDBCRepository implements ContrataRepository {
@@ -34,7 +35,9 @@ public class ContrataJDBCRepository implements ContrataRepository {
 		sql.append(" c.idContrata, c.activo, c.contacto, c.correo, c.direccion, c.fechaCreacion, c.fechaModificacion, c.importeTotalPendientePago, ");
 		sql.append(" c.nombreCorto, c.razonSocial, c.ruc, c.telefono, c.usuarioCreacion, c.usuarioModificacion, c.idTGCategoria ");
 		sql.append(" FROM contrata c ");
-		sql.append(" WHERE 1=1");
+		sql.append(" WHERE activo='1' ");
+		if (ValidateUtil.isNotEmpty(dto.getIdContrata()))
+			sql.append(params.filter(" AND c.idContrata = :idContrata ", dto.getIdContrata()));
 		return sql.toString();
 	}
 }

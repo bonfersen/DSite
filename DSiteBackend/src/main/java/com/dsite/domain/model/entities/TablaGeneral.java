@@ -16,7 +16,6 @@ public class TablaGeneral implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private String idTablaGeneral;
 
 	private String activo;
@@ -34,6 +33,10 @@ public class TablaGeneral implements Serializable {
 	private String usuarioCreacion;
 
 	private String usuarioModificacion;
+
+	// bi-directional many-to-one association to ActasContrata
+	@OneToMany(mappedBy = "tablaGeneralNivelUsuario")
+	private List<Empleado> empleadosTGNivelUsuario;
 
 	// bi-directional many-to-one association to ActasContrata
 	@OneToMany(mappedBy = "tablaGeneralActas")
@@ -184,6 +187,14 @@ public class TablaGeneral implements Serializable {
 	private List<TablaGeneral> tablaGeneralRol;
 
 	public TablaGeneral() {
+	}
+
+	public List<Empleado> getEmpleadosTGNivelUsuario() {
+		return empleadosTGNivelUsuario;
+	}
+
+	public void setEmpleadosTGNivelUsuario(List<Empleado> empleadosTGNivelUsuario) {
+		this.empleadosTGNivelUsuario = empleadosTGNivelUsuario;
 	}
 
 	public String getIdTablaGeneral() {

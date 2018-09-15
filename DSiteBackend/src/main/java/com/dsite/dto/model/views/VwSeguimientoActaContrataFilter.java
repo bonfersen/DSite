@@ -5,7 +5,14 @@ public class VwSeguimientoActaContrataFilter {
     private String estadoActaFinal;
     private String estadoRptFoto;
     private String estadoSga;
+    private Integer idContrata;
     
+	public Integer getIdContrata() {
+		return idContrata;
+	}
+	public void setIdContrata(Integer idContrata) {
+		this.idContrata = idContrata;
+	}
 	public String getEstadoActaCampo() {
 		return estadoActaCampo;
 	}

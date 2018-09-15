@@ -18,7 +18,7 @@
             <!-- daily rollover -->
             <fileNamePattern>dsite.%d{yyyy-MM-dd}.%i.zip</fileNamePattern>
 			<!-- archive at this file size -->
-			<maxFileSize>10MB</maxFileSize> 
+			<maxFileSize>15MB</maxFileSize> 
             <!-- keep 30 days' worth of history -->
             <maxHistory>30</maxHistory>
             <!-- maximum size of all logs -->

@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,7 +49,7 @@ public class ActasContrataServiceImpl implements ActasContrataService {
 		return actasContrataDTO;
 	}
 
-	@Override
+	@Transactional
 	public void createActasContrata(ActasContrataDTO actasContrataDTO) {
 		ActasContrata actasContrataEntity = new ActasContrata();
 		actasContrataDTO.setIdTGEstadoActa(DSiteCoreConstants.ESTADO_ACTA_CONTRATA_PENDIENTE);
@@ -62,7 +64,7 @@ public class ActasContrataServiceImpl implements ActasContrataService {
 
 	}
 
-	@Override
+	@Transactional
 	public void updateActasContrata(ActasContrataDTO actasContrataDTO) {
 		ActasContrata actasContrataEntity = new ActasContrata();
 		if (ValidateUtil.isNotEmpty(actasContrataDTO.getIdActasContrata()))
@@ -142,10 +144,8 @@ public class ActasContrataServiceImpl implements ActasContrataService {
 		actasContrataJPARepository.flush();
 	}
 
-	@Override
+	@Transactional
 	public void deleteActasContrataById(int id) {
-		// XXX Auto-generated method stub
-
 	}
 
 	@Override

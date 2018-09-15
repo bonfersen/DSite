@@ -91,8 +91,34 @@ public class Empleado implements Serializable {
 	// bi-directional many-to-one association to ResumenRendicionCajaChica
 	@OneToMany(mappedBy = "empleadoSustentador")
 	private List<ResumenRendicionCajaChica> resumenRendicionCajaChicas;
+	
+	// bi-directional many-to-one association to TablaGeneral
+	@ManyToOne
+	@JoinColumn(name = "idTGNivelUsuario")
+	private TablaGeneral tablaGeneralNivelUsuario;
+	
+	// bi-directional many-to-one association to Contrata
+	@ManyToOne
+	@JoinColumn(name = "idContrata")
+	private Contrata contrata;
 
 	public Empleado() {
+	}
+
+	public Contrata getContrata() {
+		return contrata;
+	}
+
+	public void setContrata(Contrata contrata) {
+		this.contrata = contrata;
+	}
+
+	public TablaGeneral getTablaGeneralNivelUsuario() {
+		return tablaGeneralNivelUsuario;
+	}
+
+	public void setTablaGeneralNivelUsuario(TablaGeneral tablaGeneralNivelUsuario) {
+		this.tablaGeneralNivelUsuario = tablaGeneralNivelUsuario;
 	}
 
 	public int getIdEmpleado() {

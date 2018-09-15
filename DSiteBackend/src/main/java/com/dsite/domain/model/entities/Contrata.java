@@ -6,19 +6,18 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-
 /**
  * The persistent class for the contrata database table.
  * 
  */
 @Entity
 @Table(name = "contrata")
-@NamedQuery(name="Contrata.findAll", query="SELECT c FROM Contrata c")
+@NamedQuery(name = "Contrata.findAll", query = "SELECT c FROM Contrata c")
 public class Contrata implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idContrata;
 
 	private String activo;
@@ -49,20 +48,32 @@ public class Contrata implements Serializable {
 
 	private String usuarioModificacion;
 
-	//bi-directional many-to-one association to ConcursoContrata
-	@OneToMany(mappedBy="contrata")
+	// bi-directional many-to-one association to ConcursoContrata
+	@OneToMany(mappedBy = "contrata")
 	private List<ConcursoContrata> concursoContratas;
 
-	//bi-directional many-to-one association to TablaGeneral
+	// bi-directional many-to-one association to TablaGeneral
 	@ManyToOne
-	@JoinColumn(name="idTGCategoria")
+	@JoinColumn(name = "idTGCategoria")
 	private TablaGeneral tablaGeneralCategoria;
 
-	//bi-directional many-to-one association to ContratasObra
-	@OneToMany(mappedBy="contrata")
+	// bi-directional many-to-one association to ContratasObra
+	@OneToMany(mappedBy = "contrata")
 	private List<ContratasObra> contratasObras;
 
+	// bi-directional many-to-one association to Empleado
+	@OneToMany(mappedBy = "contrata")
+	private List<Empleado> empleados;
+
 	public Contrata() {
+	}
+
+	public List<Empleado> getEmpleados() {
+		return empleados;
+	}
+
+	public void setEmpleados(List<Empleado> empleados) {
+		this.empleados = empleados;
 	}
 
 	public int getIdContrata() {

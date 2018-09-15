@@ -34,12 +34,16 @@ import com.dsite.domain.model.views.VwListaActasContrata;
 import com.dsite.domain.model.views.VwListaCajaChica;
 import com.dsite.domain.model.views.VwListaContratasAsignada;
 import com.dsite.domain.model.views.VwListaPagosContrata;
+import com.dsite.domain.model.views.VwMantenimientoContrata;
+import com.dsite.domain.model.views.VwMantenimientoTablaGeneral;
+import com.dsite.domain.model.views.VwMantenimientoUsuario;
 import com.dsite.domain.model.views.VwOfertaCustomerService;
 import com.dsite.domain.model.views.VwPagoContrata;
 import com.dsite.domain.model.views.VwPanelContratas;
 import com.dsite.domain.model.views.VwRendicionCajaChica;
 import com.dsite.domain.model.views.VwReporteEconomico;
 import com.dsite.domain.model.views.VwReporteEconomicoDetalleContrata;
+import com.dsite.domain.model.views.VwReporteEconomicoExcel;
 import com.dsite.domain.model.views.VwResumenRendicionCajaChica;
 import com.dsite.domain.model.views.VwSeguimientoActaContrata;
 import com.dsite.domain.model.views.VwUbigeo;
@@ -75,11 +79,15 @@ import com.dsite.dto.model.views.VwListaActasContrataFilter;
 import com.dsite.dto.model.views.VwListaCajaChicaFilter;
 import com.dsite.dto.model.views.VwListaContratasAsignadaFilter;
 import com.dsite.dto.model.views.VwListaPagosContrataFilter;
+import com.dsite.dto.model.views.VwMantenimientoContrataFilter;
+import com.dsite.dto.model.views.VwMantenimientoTablaGeneralFilter;
+import com.dsite.dto.model.views.VwMantenimientoUsuarioFilter;
 import com.dsite.dto.model.views.VwOfertaCustomerServiceFilter;
 import com.dsite.dto.model.views.VwPagoContrataFilter;
 import com.dsite.dto.model.views.VwPanelContratasFilter;
 import com.dsite.dto.model.views.VwRendicionCajaChicaFilter;
 import com.dsite.dto.model.views.VwReporteEconomicoDetalleContrataFilter;
+import com.dsite.dto.model.views.VwReporteEconomicoExcelFilter;
 import com.dsite.dto.model.views.VwReporteEconomicoFilter;
 import com.dsite.dto.model.views.VwResumenRendicionCajaChicaFilter;
 import com.dsite.dto.model.views.VwSeguimientoActaContrataFilter;
@@ -158,6 +166,8 @@ public interface VistasRepository {
 	List<VwDocumentosAdjuntos> findDocumentosAdjuntos(VwDocumentosAdjuntosFilter vwDocumentosAdjuntosFilter);
 	
 	List<VwReporteEconomico> findReporteEconomico(VwReporteEconomicoFilter vwReporteEconomicoFilter);
+	
+	List<VwReporteEconomicoExcel> findReporteEconomicoExcel(VwReporteEconomicoExcelFilter vwReporteEconomicoExcelFilter);
 
 	List<VwReporteEconomicoDetalleContrata> findReporteEconomicoDetalleContrata(VwReporteEconomicoDetalleContrataFilter vwReporteEconomicoDetalleContrataFilter);
 	
@@ -170,4 +180,10 @@ public interface VistasRepository {
 	List<VwResumenRendicionCajaChica> findResumenRendicionCajaChica(VwResumenRendicionCajaChicaFilter vwResumenRendicionCajaChicaFilter);
 	
 	List<VwBandejaSolicitudRendicion> findBandejaSolicitudRendicion(VwBandejaSolicitudRendicionFilter vwBandejaSolicitudRendicionFilter);
+	
+	List<VwMantenimientoContrata> findMantenimientoContrata(VwMantenimientoContrataFilter vwMantenimientoContrataFilter);
+	
+	List<VwMantenimientoUsuario> findMantenimientoUsuario(VwMantenimientoUsuarioFilter vwMantenimientoUsuarioFilter);
+	
+	List<VwMantenimientoTablaGeneral> findMantenimientoTablaGeneral(VwMantenimientoTablaGeneralFilter vwMantenimientoTablaGeneralFilter);
 }

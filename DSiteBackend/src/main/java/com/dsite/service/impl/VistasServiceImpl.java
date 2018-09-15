@@ -41,12 +41,16 @@ import com.dsite.domain.model.views.VwListaActasContrata;
 import com.dsite.domain.model.views.VwListaCajaChica;
 import com.dsite.domain.model.views.VwListaContratasAsignada;
 import com.dsite.domain.model.views.VwListaPagosContrata;
+import com.dsite.domain.model.views.VwMantenimientoContrata;
+import com.dsite.domain.model.views.VwMantenimientoTablaGeneral;
+import com.dsite.domain.model.views.VwMantenimientoUsuario;
 import com.dsite.domain.model.views.VwOfertaCustomerService;
 import com.dsite.domain.model.views.VwPagoContrata;
 import com.dsite.domain.model.views.VwPanelContratas;
 import com.dsite.domain.model.views.VwRendicionCajaChica;
 import com.dsite.domain.model.views.VwReporteEconomico;
 import com.dsite.domain.model.views.VwReporteEconomicoDetalleContrata;
+import com.dsite.domain.model.views.VwReporteEconomicoExcel;
 import com.dsite.domain.model.views.VwResumenRendicionCajaChica;
 import com.dsite.domain.model.views.VwSeguimientoActaContrata;
 import com.dsite.domain.model.views.VwUbigeo;
@@ -82,11 +86,15 @@ import com.dsite.dto.model.views.VwListaActasContrataFilter;
 import com.dsite.dto.model.views.VwListaCajaChicaFilter;
 import com.dsite.dto.model.views.VwListaContratasAsignadaFilter;
 import com.dsite.dto.model.views.VwListaPagosContrataFilter;
+import com.dsite.dto.model.views.VwMantenimientoContrataFilter;
+import com.dsite.dto.model.views.VwMantenimientoTablaGeneralFilter;
+import com.dsite.dto.model.views.VwMantenimientoUsuarioFilter;
 import com.dsite.dto.model.views.VwOfertaCustomerServiceFilter;
 import com.dsite.dto.model.views.VwPagoContrataFilter;
 import com.dsite.dto.model.views.VwPanelContratasFilter;
 import com.dsite.dto.model.views.VwRendicionCajaChicaFilter;
 import com.dsite.dto.model.views.VwReporteEconomicoDetalleContrataFilter;
+import com.dsite.dto.model.views.VwReporteEconomicoExcelFilter;
 import com.dsite.dto.model.views.VwReporteEconomicoFilter;
 import com.dsite.dto.model.views.VwResumenRendicionCajaChicaFilter;
 import com.dsite.dto.model.views.VwSeguimientoActaContrataFilter;
@@ -355,6 +363,30 @@ public class VistasServiceImpl implements VistasService {
 	@Override
 	public List<VwBandejaSolicitudRendicion> findBandejaSolicitudRendicion(VwBandejaSolicitudRendicionFilter filter) {
 		List<VwBandejaSolicitudRendicion> vwList = vistasRepository.findBandejaSolicitudRendicion(filter);
+		return vwList;
+	}
+
+	@Override
+	public List<VwReporteEconomicoExcel> findReporteEconomicoExcel(VwReporteEconomicoExcelFilter filter) {
+		List<VwReporteEconomicoExcel> vwList = vistasRepository.findReporteEconomicoExcel(filter);
+		return vwList;
+	}
+
+	@Override
+	public List<VwMantenimientoContrata> findMantenimientoContrata(VwMantenimientoContrataFilter filter) {
+		List<VwMantenimientoContrata> vwList = vistasRepository.findMantenimientoContrata(filter);
+		return vwList;
+	}
+
+	@Override
+	public List<VwMantenimientoUsuario> findMantenimientoUsuario(VwMantenimientoUsuarioFilter filter) {
+		List<VwMantenimientoUsuario> vwList = vistasRepository.findMantenimientoUsuario(filter);
+		return vwList;
+	}
+
+	@Override
+	public List<VwMantenimientoTablaGeneral> findMantenimientoTablaGeneral(VwMantenimientoTablaGeneralFilter filter) {
+		List<VwMantenimientoTablaGeneral> vwList = vistasRepository.findMantenimientoTablaGeneral(filter);
 		return vwList;
 	}
 }

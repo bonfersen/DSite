@@ -27,7 +27,14 @@ public class VwLiquidacionContrata implements Serializable {
     private BigDecimal importeTotalAdelanto;
     private BigDecimal porcentajePagado;
     private String idTGEstadoLiquidacion;
+    private String tipoMoneda;
     
+	public String getTipoMoneda() {
+		return tipoMoneda;
+	}
+	public void setTipoMoneda(String tipoMoneda) {
+		this.tipoMoneda = tipoMoneda;
+	}
 	public Integer getIdObra() {
 		return idObra;
 	}

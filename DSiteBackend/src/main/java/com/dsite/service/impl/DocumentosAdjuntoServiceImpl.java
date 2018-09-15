@@ -95,9 +95,9 @@ public class DocumentosAdjuntoServiceImpl implements DocumentosAdjuntoService {
 		documentosAdjuntoJPARepository.flush();
 	}
 
-	@Override
+	@Transactional
 	public void deleteDocumentosAdjuntoById(Integer id) {
 		// XXX Auto-generated method stub
-
+		documentosAdjuntoJPARepository.delete(id);
 	}
 }
